@@ -1,31 +1,34 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using RogueSharp;
-using RogueSharpTutorial.View;
+using RogueSharpTutorial.Model.Interfaces;
 using RogueSharpTutorial.Controller;
 
 namespace RogueSharpTutorial.Model
 {
     public class DungeonMap : Map
     {
-        private Game                game;
-        private MapGenerator        mapGenerator;
+        private Game                            game;
+        private MapGenerator                    mapGenerator;
 
-        public  List<Rectangle>     Rooms;
-        public  List<Door>          Doors           { get; set; }
-        private List<Monster>       monsters;
-        public  Stairs              StairsUp        { get; set; }
-        public  Stairs              StairsDown      { get; set; }
+        public  List<Rectangle>                 Rooms;
+        public  List<Door>                      Doors           { get; set; }
+        public  Stairs                          StairsUp        { get; set; }
+        public  Stairs                          StairsDown      { get; set; }
+
+        private readonly List<Monster>          monsters;
+        private readonly List<TreasurePile>     treasurePiles;
 
         public DungeonMap (Game game)
         {
-            this.game   = game;
+            this.game       = game;
 
             game.SchedulingSystem.Clear();                                                  // When going down a level, clear the move schedule
 
-            Rooms       = new List<Rectangle>();
-            monsters    = new List<Monster>();
-            Doors       = new List<Door>();
+            Rooms           = new List<Rectangle>();
+            monsters        = new List<Monster>();
+            treasurePiles   = new List<TreasurePile>();
+            Doors           = new List<Door>();
         }
 
         /// <summary>
@@ -106,6 +109,50 @@ namespace RogueSharpTutorial.Model
         }
 
         /// <summary>
+        /// Add gold to the map. Will add the gold as a treasure pile.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="amount"></param>
+        public void AddGold(int x, int y, int amount)
+        {
+            if (amount > 0)
+            {
+                AddTreasure(x, y, new Gold(amount, game));
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="treasure"></param>
+        public void AddTreasure(int x, int y, ITreasure treasure)
+        {
+            treasurePiles.Add(new TreasurePile(x, y, treasure));
+        }
+
+        /// <summary>
+        /// Attempt to pick up treasure piles as a specific location.
+        /// </summary>
+        /// <param name="actor"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        private void PickUpTreasure(Actor actor, int x, int y)
+        {
+            List<TreasurePile> treasureAtLocation = treasurePiles.Where(g => g.X == x && g.Y == y).ToList();
+
+            foreach (TreasurePile treasurePile in treasureAtLocation)
+            {
+                if (treasurePile.Treasure.PickUp(actor))
+                {
+                    treasurePiles.Remove(treasurePile);
+                }
+            }
+        }
+
+        /// <summary>
         /// The Draw method will be called each time the map is updated.
         /// It will send all of the symbols/colors for each cell to the graphics view
         /// </summary>
@@ -123,6 +170,12 @@ namespace RogueSharpTutorial.Model
 
             StairsUp.Draw(this);
             StairsDown.Draw(this);
+
+            foreach (TreasurePile treasurePile in treasurePiles)
+            {
+                IDrawable drawableTreasure = treasurePile.Treasure as IDrawable;
+                drawableTreasure?.Draw(this);
+            }
 
             int i = -1;                                                                         // Keep an index so we know which position to draw monster stats at
                                                                                                 // Start at -1 in case no monsters in view, then can clear the stat bars
@@ -169,6 +222,7 @@ namespace RogueSharpTutorial.Model
         {
             if (GetCell(x, y).IsWalkable)                                                       // Only allow actor placement if the cell is walkable
             {
+                PickUpTreasure(actor, x, y);                                                    // If the actor walks over treasure pile, attempt to pick it up
                 SetIsWalkable(actor.X, actor.Y, true);                                          // The cell the actor was previously on is now walkable
                 actor.X = x;                                                                    // Update the actor's position
                 actor.Y = y;

@@ -248,7 +248,7 @@ namespace RogueSharpTutorial.Controller
             else if (defender is Monster)
             {
                 game.World.RemoveMonster((Monster)defender);
-
+                game.World.AddGold(defender.X, defender.Y, defender.Gold);
                 game.MessageLog.Add(defender.Name + " died and dropped " + defender.Gold + " gold.");
             }
         }

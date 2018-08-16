@@ -12,6 +12,8 @@ namespace RogueSharpTutorial.View
             { Colors.White,             Color.white },
             { Colors.Black,             Color.black },
             { Colors.FloorBackground,   Color.black },
+            { Colors.Yellow,            Color.yellow },
+            { Colors.YellowGray,        Palette.YellowGray },
 
             { Colors.Floor,             Palette.AlternateDarkest },
             { Colors.FloorBackgroundFov,Palette.DbDark },

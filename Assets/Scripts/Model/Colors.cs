@@ -5,6 +5,8 @@
         Clear,
         White,
         Black,
+        Yellow,
+        YellowGray,
 
         FloorBackground,
         Floor,

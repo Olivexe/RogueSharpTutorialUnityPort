@@ -48,5 +48,7 @@ namespace RogueSharpTutorial.View
         public static Color DbSky               = new Color32(109, 194, 202, 255);
         public static Color DbSun               = new Color32(218, 212, 94, 255);
         public static Color DbLight             = new Color32(222, 238, 214, 255);
+
+        public static Color YellowGray          = new Color32(130, 130, 83, 255);
     }
 }
