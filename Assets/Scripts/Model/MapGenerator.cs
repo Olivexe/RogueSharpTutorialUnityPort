@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using RogueSharpTutorial.Controller;
+using RogueSharpTutorial.Utilities;
 using RogueSharp;
 using RogueSharp.DiceNotation;
 
@@ -9,14 +10,16 @@ namespace RogueSharpTutorial.Model
 {
     public class MapGenerator
     {
-        private readonly int        width;
-        private readonly int        height;
-        private readonly int        maxRooms;
-        private readonly int        roomMaxSize;
-        private readonly int        roomMinSize;
+        private readonly int                width;
+        private readonly int                height;
+        private readonly int                maxRooms;
+        private readonly int                roomMaxSize;
+        private readonly int                roomMinSize;
+        private readonly int                level;
+        private readonly DungeonMap         map;
+        private readonly Game               game;
 
-        private readonly DungeonMap map;
-        private readonly Game       game;
+        private readonly EquipmentGenerator equipmentGenerator;
 
         /// <summary>
         /// Constructing a new MapGenerator requires the dimensions of the maps it will create as well as the sizes and maximum number of rooms.
@@ -35,6 +38,7 @@ namespace RogueSharpTutorial.Model
             this.roomMinSize    = roomMinSize;
             this.game           = game;
             map                 = new DungeonMap(game);
+            equipmentGenerator  = new EquipmentGenerator(game, level);
         }
 
         /// <summary>
@@ -89,6 +93,7 @@ namespace RogueSharpTutorial.Model
             CreateStairs();
             PlacePlayer(game);
             PlaceMonsters();
+            PlaceEquipment();
 
             return map;
         }
@@ -248,15 +253,15 @@ namespace RogueSharpTutorial.Model
         /// </summary>
         private void PlaceMonsters()
         {
-            foreach (var room in map.Rooms)
+            for (int j = 1; j < map.Rooms.Count; j++)                                       // Not starting at zero. Player is in room zero.
             {             
                 if (Dice.Roll("1D10") < 7)                                                  // Each room has a 60% chance of having monsters
                 {                  
                     var numberOfMonsters = Dice.Roll("1D4");                                // Generate between 1 and 4 monsters
 
-                    for (int i = 1; i < numberOfMonsters; i++)                              // Not starting at zero. Player is in room zero.
+                    for (int i = 0; i < numberOfMonsters; i++)                              
                     {                       
-                        Point randomRoomLocation = map.GetRandomWalkableLocationInRoom(room);// Find a random walkable location in the room to place the monster                       
+                        Point randomRoomLocation = map.GetRandomWalkableLocationInRoom(map.Rooms[j]);// Find a random walkable location in the room to place the monster                       
                         
                         if (randomRoomLocation != Point.Zero)                               // It's possible that the room doesn't have space to place a monster
                         {                                                                   // In that case skip creating the monster                           
@@ -264,6 +269,38 @@ namespace RogueSharpTutorial.Model
                             monster.X = randomRoomLocation.X;
                             monster.Y = randomRoomLocation.Y;
                             map.AddMonster(monster);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Make a chance to place a piece of equipment in every room except the starting room with the player.
+        /// </summary>
+        private void PlaceEquipment()
+        {
+            foreach (var room in map.Rooms)
+            {
+                if (Dice.Roll("1D10") < 3)
+                {
+                    if (map.DoesRoomHaveWalkableSpace(room))
+                    {
+                        Point randomRoomLocation = map.GetRandomLocationInRoom(room);
+                        if (randomRoomLocation != null)
+                        {
+                            Equipment equipment;
+                            try
+                            {
+                                equipment = equipmentGenerator.CreateEquipment();
+                            }
+                            catch (InvalidOperationException)
+                            {
+                                // no more equipment to generate so just quit adding to this level
+                                return;
+                            }
+                            Point location = map.GetRandomLocationInRoom(room);
+                            map.AddTreasure(location.X, location.Y, equipment);
                         }
                     }
                 }

@@ -29,6 +29,9 @@
         DoorBackground,
         Door,
         DoorBackgroundFov,
-        DoorFov
+        DoorFov,
+        
+        DbOldStone,
+        DbLight
     }
 }

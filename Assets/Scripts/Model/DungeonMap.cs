@@ -250,6 +250,39 @@ namespace RogueSharpTutorial.Model
         }
 
         /// <summary>
+        /// Grt random walkable location in any room on the map.
+        /// </summary>
+        /// <returns></returns>
+        public Point GetRandomLocation()
+        {
+            int roomNumber = Game.Random.Next(0, Rooms.Count - 1);
+            Rectangle randomRoom = Rooms[roomNumber];
+
+            if (!DoesRoomHaveWalkableSpace(randomRoom))
+            {
+                GetRandomLocation();
+            }
+
+            return GetRandomLocationInRoom(randomRoom);
+        }
+
+        /// <summary>
+        /// Look for any random location in a room. Doesn't have to be walkable.
+        /// </summary>
+        /// <param name="room"></param>
+        /// <returns></returns>
+        public Point GetRandomLocationInRoom(Rectangle room)
+        {
+            int x = Game.Random.Next(1, room.Width - 2) + room.X;
+            int y = Game.Random.Next(1, room.Height - 2) + room.Y;
+            if (!IsWalkable(x, y))
+            {
+                GetRandomLocationInRoom(room);
+            }
+            return new Point(x, y);
+        }
+
+        /// <summary>
         /// Look for a random location in the room that is walkable.
         /// </summary>
         /// <param name="room"></param>

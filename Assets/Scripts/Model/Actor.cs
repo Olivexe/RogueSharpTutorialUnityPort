@@ -8,26 +8,29 @@ namespace RogueSharpTutorial.Model
     public class Actor : IActor, IDrawable, IScheduleable
     {
         // IActor
+        public string   Name            { get; set; }
+        public int      Gold            { get; set; }
+        public int      Health          { get; set; }
+
         private int     attack;
-        public  int     Attack          { get { return attack; }        set { attack = value; } }
+        public  int     Attack          { get { return attack + Head.Attack + Body.Attack + Hand.Attack + Feet.Attack; } set { attack = value; } }
         private int     attackChance;
-        public  int     AttackChance    { get { return attackChance; }  set { attackChance = value; } }
+        public  int     AttackChance    { get { return attackChance + Head.AttackChance + Body.AttackChance + Hand.AttackChance + Feet.AttackChance; } set { attackChance = value; } }
         private int     defense;
-        public  int     Defense         { get { return defense; }       set { defense = value; } }
+        public  int     Defense         { get { return defense + Head.Defense + Body.Defense + Hand.Defense + Feet.Defense; } set { defense = value; } }
         private int     defenseChance;
-        public  int     DefenseChance   { get { return defenseChance; } set { defenseChance = value; } }
-        private int     gold;
-        public  int     Gold            { get { return gold; }          set { gold = value; } }
-        private int     health;
-        public  int     Health          { get { return health; }        set { health = value; } }
+        public  int     DefenseChance   { get { return defenseChance + Head.DefenseChance + Body.DefenseChance + Hand.DefenseChance + Feet.DefenseChance; } set { defenseChance = value; } }
         private int     maxHealth;
-        public  int     MaxHealth       { get { return maxHealth; }     set { maxHealth = value; } }
+        public  int     MaxHealth       { get { return maxHealth + Head.MaxHealth + Body.MaxHealth + Hand.MaxHealth + Feet.MaxHealth; } set { maxHealth = value; } }
         private int     speed;
-        public  int     Speed           { get { return speed; }         set { speed = value; } }
-        private string  name;
-        public string   Name            { get { return name; }          set { name = value; } }
+        public  int     Speed           { get { return speed + Head.Speed + Body.Speed + Hand.Speed + Feet.Speed; } set { speed = value; } }
         private int     awareness;
-        public  int     Awareness       { get { return awareness; }     set { awareness = value; } }
+        public  int     Awareness       { get { return awareness + Head.Awareness + Body.Awareness + Hand.Awareness + Feet.Awareness; } set { awareness = value; } }
+
+        public  HeadEquipment Head      { get; set; }
+        public  BodyEquipment Body      { get; set; }
+        public  HandEquipment Hand      { get; set; }
+        public  FeetEquipment Feet      { get; set; }
 
         // IDrawable
         public  Colors  Color           { get; set; }
@@ -43,6 +46,11 @@ namespace RogueSharpTutorial.Model
         public Actor(Game game)
         {
             this.game = game;
+
+            Head = HeadEquipment.None(game);
+            Body = BodyEquipment.None(game);
+            Hand = HandEquipment.None(game);
+            Feet = FeetEquipment.None(game);
         }
 
         public void Draw(IMap map)

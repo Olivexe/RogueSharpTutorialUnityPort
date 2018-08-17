@@ -28,14 +28,17 @@ namespace RogueSharpTutorial.View
 
             { Colors.TextHeading,       Color.white },
             { Colors.Text,              Palette.DbLight },
-            { Colors. Gold,             Palette.DbSun },
+            { Colors.Gold,              Palette.DbSun },
 
             { Colors.KoboldColor,       Palette.DbBrightWood },
 
             { Colors.DoorBackground,    Palette.ComplimentDarkest },
             { Colors.Door,              Palette.ComplimentLighter },
             { Colors.DoorBackgroundFov, Palette.ComplimentDarker },
-            { Colors.DoorFov,           Palette.ComplimentLightest }
-        };
+            { Colors.DoorFov,           Palette.ComplimentLightest },
+
+            { Colors.DbOldStone,        Palette.DbOldStone },
+            { Colors.DbLight,           Palette.DbLight }
+    };
     }
 }

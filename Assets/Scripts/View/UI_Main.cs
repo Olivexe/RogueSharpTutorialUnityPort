@@ -133,6 +133,11 @@ namespace RogueSharpTutorial.View
             uiStats.DrawPlayerStats(game);
         }
 
+        public void DrawPlayerInventory()
+        {
+            uiStats.DrawPlayerInventory(game);
+        }
+
         public void DrawMonsterStats(Monster monster, int position)
         {
             uiStats.DrawMonsterStats(monster, position);

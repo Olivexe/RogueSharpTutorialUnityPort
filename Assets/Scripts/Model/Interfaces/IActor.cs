@@ -2,6 +2,11 @@
 {
     public interface IActor
     {
+        HeadEquipment Head  { get; set; }
+        BodyEquipment Body  { get; set; }
+        HandEquipment Hand  { get; set; }
+        FeetEquipment Feet  { get; set; }
+
         int Attack          { get; set; }
         int AttackChance    { get; set; }
         int Awareness       { get; set; }

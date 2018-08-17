@@ -247,9 +247,26 @@ namespace RogueSharpTutorial.Controller
             }
             else if (defender is Monster)
             {
-                game.World.RemoveMonster((Monster)defender);
+                if (defender.Head != null && defender.Head != HeadEquipment.None(game))
+                {
+                    game.World.AddTreasure(defender.X, defender.Y, defender.Head);
+                }
+                if (defender.Body != null && defender.Body != BodyEquipment.None(game))
+                {
+                    game.World.AddTreasure(defender.X, defender.Y, defender.Body);
+                }
+                if (defender.Hand != null && defender.Hand != HandEquipment.None(game))
+                {
+                    game.World.AddTreasure(defender.X, defender.Y, defender.Hand);
+                }
+                if (defender.Feet != null && defender.Feet != FeetEquipment.None(game))
+                {
+                    game.World.AddTreasure(defender.X, defender.Y, defender.Feet);
+                }
                 game.World.AddGold(defender.X, defender.Y, defender.Gold);
-                game.MessageLog.Add(defender.Name + " died and dropped " + defender.Gold + " gold.");
+                game.World.RemoveMonster((Monster)defender);
+
+                game.MessageLog.Add($"  {defender.Name} died and dropped {defender.Gold} gold");
             }
         }
     }

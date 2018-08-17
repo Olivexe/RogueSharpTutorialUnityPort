@@ -24,6 +24,7 @@ namespace RogueSharpTutorial.Model
         public void DrawStats()
         {
             game.DrawPlayerStats();
+            game.DrawPlayerInventory();
         }
     }
 }

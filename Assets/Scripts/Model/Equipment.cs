@@ -95,33 +95,33 @@ namespace RogueSharpTutorial.Model
 
         public bool PickUp(IActor actor)
         {
-            //if (this is HeadEquipment)
-            //{
-            //    actor.Head = this as HeadEquipment;
-            //    Game.MessageLog.Add($"{actor.Name} picked up a {Name} helmet");
-            //    return true;
-            //}
+            if (this is HeadEquipment)
+            {
+                actor.Head = this as HeadEquipment;
+                game.MessageLog.Add($"{actor.Name} picked up a {Name} helmet");
+                return true;
+            }
 
-            //if (this is BodyEquipment)
-            //{
-            //    actor.Body = this as BodyEquipment;
-            //    Game.MessageLog.Add($"{actor.Name} picked up {Name} body armor");
-            //    return true;
-            //}
+            if (this is BodyEquipment)
+            {
+                actor.Body = this as BodyEquipment;
+                game.MessageLog.Add($"{actor.Name} picked up {Name} body armor");
+                return true;
+            }
 
-            //if (this is HandEquipment)
-            //{
-            //    actor.Hand = this as HandEquipment;
-            //    Game.MessageLog.Add($"{actor.Name} picked up a {Name}");
-            //    return true;
-            //}
+            if (this is HandEquipment)
+            {
+                actor.Hand = this as HandEquipment;
+                game.MessageLog.Add($"{actor.Name} picked up a {Name}");
+                return true;
+            }
 
-            //if (this is FeetEquipment)
-            //{
-            //    actor.Feet = this as FeetEquipment;
-            //    Game.MessageLog.Add($"{actor.Name} picked up {Name} boots");
-            //    return true;
-            //}
+            if (this is FeetEquipment)
+            {
+                actor.Feet = this as FeetEquipment;
+                game.MessageLog.Add($"{actor.Name} picked up {Name} boots");
+                return true;
+            }
 
             return false;
         }

@@ -62,6 +62,11 @@ namespace RogueSharpTutorial.Controller
             rootConsole.DrawPlayerStats();
         }
 
+        public void DrawPlayerInventory()
+        {
+            rootConsole.DrawPlayerInventory();
+        }
+
         public void DrawMonsterStats(Monster monster, int position)
         {
             rootConsole.DrawMonsterStats(monster, position);
