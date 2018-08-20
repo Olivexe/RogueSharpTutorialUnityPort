@@ -12,9 +12,9 @@ namespace RogueSharpTutorial.View
     {
         public event UpdateEventHandler         UpdateView;
 
-        //[SerializeField] private UI_Inventory   uiInventory;
         [SerializeField] private UI_Stats       uiStats;
         [SerializeField] private UI_Messages    uiMessages;
+        [SerializeField] private UI_Inventory   uiInventory;
         [SerializeField] private InputKeyboard  inputKeyboard;
         [SerializeField] private PlayerCamera   playerCamera;
         [SerializeField] private TileUnity      tilePrefab;
@@ -24,10 +24,11 @@ namespace RogueSharpTutorial.View
 
         private void Start()
         {
-            //uiInventory     = GetComponent<UI_Inventory>();
             uiStats         = GetComponent<UI_Stats>();
             uiMessages      = GetComponent<UI_Messages>();
             inputKeyboard   = GetComponent<InputKeyboard>();
+            uiInventory     = GetComponent<UI_Inventory>();
+
             game            = new Game(this);
         }
 
@@ -135,7 +136,7 @@ namespace RogueSharpTutorial.View
 
         public void DrawPlayerInventory()
         {
-            uiStats.DrawPlayerInventory(game);
+            uiInventory.DrawPlayerInventory(game);
         }
 
         public void DrawMonsterStats(Monster monster, int position)

@@ -1,7 +1,5 @@
-﻿using RogueSharp;
-using RogueSharp.DiceNotation;
+﻿using RogueSharp.DiceNotation;
 using RogueSharpTutorial.Controller;
-using RogueSharpTutorial.View;
 
 namespace RogueSharpTutorial.Model
 {
@@ -9,7 +7,7 @@ namespace RogueSharpTutorial.Model
     {
         public Kobold(Game game) : base(game) { }
 
-        public static Kobold Create(int level, Game game)
+        public static Kobold Create(Game game, int level)
         {
             int health = Dice.Roll("2D5");
 

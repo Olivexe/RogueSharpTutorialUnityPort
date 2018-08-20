@@ -31,6 +31,8 @@ namespace RogueSharpTutorial.View
             { Colors.Gold,              Palette.DbSun },
 
             { Colors.KoboldColor,       Palette.DbBrightWood },
+            { Colors.GoblinColor,       new Color(255, 165, 0) },
+            { Colors.OozeColor,         new Color(102, 205, 170) },
 
             { Colors.DoorBackground,    Palette.ComplimentDarkest },
             { Colors.Door,              Palette.ComplimentLighter },

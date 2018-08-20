@@ -250,6 +250,15 @@ namespace RogueSharpTutorial.Model
         }
 
         /// <summary>
+        /// Returns a List of Points of all monsters in the map.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Point> GetMonsterLocations()
+        {
+            return monsters.Select(m => new Point { X = m.X, Y = m.Y });
+        }
+
+        /// <summary>
         /// Grt random walkable location in any room on the map.
         /// </summary>
         /// <returns></returns>

@@ -269,5 +269,54 @@ namespace RogueSharpTutorial.Controller
                 game.MessageLog.Add($"  {defender.Name} died and dropped {defender.Gold} gold");
             }
         }
+        
+        public static bool UseItem(int itemNum, Game game)
+        { 
+            bool didUseItem = false;
+
+            if (itemNum == 1)
+            {
+                didUseItem = game.Player.Item1.Use();
+            }
+            else if (itemNum == 2)
+            {
+                didUseItem = game.Player.Item2.Use();
+            }
+            else if (itemNum == 3)
+            {
+                didUseItem = game.Player.Item3.Use();
+            }
+            else if (itemNum == 4)
+            {
+                didUseItem = game.Player.Item4.Use();
+            }
+
+            if (didUseItem )
+            {
+                RemoveItemsWithNoRemainingUses(game);
+            }
+
+            return didUseItem;
+      }
+        
+        private static void RemoveItemsWithNoRemainingUses(Game game)
+        {
+            if (game.Player.Item1.RemainingUses <= 0)
+            {
+                game.Player.Item1 = new NoItem(game);
+            }
+            if (game.Player.Item2.RemainingUses <= 0)
+            {
+                game.Player.Item2 = new NoItem(game);
+            }
+            if (game.Player.Item3.RemainingUses <= 0)
+            {
+                game.Player.Item3 = new NoItem(game);
+            }
+            if (game.Player.Item4.RemainingUses <= 0)
+            {
+                game.Player.Item4 = new NoItem(game);
+            }
+        }
     }
 }

@@ -62,6 +62,42 @@ namespace RogueSharpTutorial.View
             {
                 return InputCommands.StairsDown;
             }
+            else if (Input.GetKeyUp(KeyCode.Comma))
+            {
+                return InputCommands.StairsUp;
+            }
+            else if (Input.GetKeyUp(KeyCode.Alpha1))
+            {
+                return InputCommands.Item1;
+            }
+            else if (Input.GetKeyUp(KeyCode.Alpha2))
+            {
+                return InputCommands.Item2;
+            }
+            else if (Input.GetKeyUp(KeyCode.Alpha3))
+            {
+                return InputCommands.Item3;
+            }
+            else if (Input.GetKeyUp(KeyCode.Alpha4))
+            {
+                return InputCommands.Item4;
+            }
+            else if (Input.GetKeyUp(KeyCode.Q))
+            {
+                return InputCommands.QAbility;
+            }
+            else if (Input.GetKeyUp(KeyCode.W))
+            {
+                return InputCommands.WAbility;
+            }
+            else if (Input.GetKeyUp(KeyCode.E))
+            {
+                return InputCommands.EAbility;
+            }
+            else if (Input.GetKeyUp(KeyCode.R))
+            {
+                return InputCommands.RAbility;
+            }
             else if (Input.GetKeyUp(KeyCode.Escape))
             {
                 return InputCommands.CloseGame;

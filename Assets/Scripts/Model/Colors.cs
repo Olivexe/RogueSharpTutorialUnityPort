@@ -25,6 +25,8 @@
         Gold,
 
         KoboldColor,
+        GoblinColor,
+        OozeColor,
 
         DoorBackground,
         Door,

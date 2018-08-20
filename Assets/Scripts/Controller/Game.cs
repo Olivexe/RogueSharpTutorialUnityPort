@@ -15,7 +15,7 @@ namespace RogueSharpTutorial.Controller
         private UI_Main                 rootConsole;
         private InputKeyboard           inputControl;
 
-        private CommandSystem           commandSystem;
+        public  CommandSystem           commandSystem;
         private static readonly int     mapWidth            = 80;
         private static readonly int     mapHeight           = 48;
         private bool                    renderRequired      = true;
@@ -44,6 +44,10 @@ namespace RogueSharpTutorial.Controller
             GenerateMap();
             rootConsole.SetPlayer(Player);
             World.UpdatePlayerFieldOfView(Player);
+
+            Player.Item1 = new RevealMapScroll(this);
+            Player.Item2 = new RevealMapScroll(this);
+
             Draw();
         }
 
@@ -80,6 +84,7 @@ namespace RogueSharpTutorial.Controller
         private void OnUpdate(object sender, UpdateEventArgs e)
         {
             CheckKeyboard();
+            MessageLog.Draw();
 
             if (renderRequired)
             {
@@ -100,7 +105,6 @@ namespace RogueSharpTutorial.Controller
             World.Draw();
             Player.Draw(World);
             Player.DrawStats();
-            MessageLog.Draw();
         }
 
         private void CheckKeyboard()
@@ -136,6 +140,30 @@ namespace RogueSharpTutorial.Controller
                         break;
                     case InputCommands.DownRight:
                         didPlayerAct = commandSystem.MovePlayer(Direction.DownRight);
+                        break;
+                    case InputCommands.QAbility:
+                        didPlayerAct = Player.QAbility.Perform();
+                        break;
+                    case InputCommands.WAbility:
+                        didPlayerAct = Player.WAbility.Perform();
+                        break;
+                    case InputCommands.EAbility:
+                        didPlayerAct = Player.EAbility.Perform();
+                        break;
+                    case InputCommands.RAbility:
+                        didPlayerAct = Player.RAbility.Perform();
+                        break;
+                    case InputCommands.Item1:
+                        didPlayerAct = CommandSystem.UseItem(1, this);
+                        break;
+                    case InputCommands.Item2:
+                        didPlayerAct = CommandSystem.UseItem(2, this);
+                        break;
+                    case InputCommands.Item3:
+                        didPlayerAct = CommandSystem.UseItem(3, this);
+                        break;
+                    case InputCommands.Item4:
+                        didPlayerAct = CommandSystem.UseItem(4, this);
                         break;
                     case InputCommands.StairsDown:
                         MoveMapLevelDown();

@@ -37,6 +37,7 @@ namespace RogueSharpTutorial.Model
             this.roomMaxSize    = roomMaxSize;
             this.roomMinSize    = roomMinSize;
             this.game           = game;
+            level               = mapLevel;
             map                 = new DungeonMap(game);
             equipmentGenerator  = new EquipmentGenerator(game, level);
         }
@@ -91,28 +92,13 @@ namespace RogueSharpTutorial.Model
             }
 
             CreateStairs();
-            PlacePlayer(game);
+            PlacePlayer();
             PlaceMonsters();
             PlaceEquipment();
+            PlaceItems();
+            PlaceAbility();
 
             return map;
-        }
-
-        /// <summary>
-        /// Find the center of the first room that we created and place the Player there.
-        /// </summary>
-        private void PlacePlayer(Game game)
-        {
-            Player player = game.Player;
-            if (player == null)
-            {
-                player = new Player(game);
-            }
-
-            player.X = map.Rooms[0].Center.X;
-            player.Y = map.Rooms[0].Center.Y;
-
-            map.AddPlayer(player);
         }
 
         /// <summary>
@@ -248,6 +234,20 @@ namespace RogueSharpTutorial.Model
             }
         }
 
+
+        /// <summary>
+        /// Find the center of the first room that we created and place the Player there.
+        /// </summary>
+        private void PlacePlayer()
+        {
+            Player player = ActorGenerator.CreatePlayer(game);
+
+            player.X = map.Rooms[0].Center.X;
+            player.Y = map.Rooms[0].Center.Y;
+
+            map.AddPlayer(player);
+        }
+
         /// <summary>
         /// Make a chance to place 1 to 4 monsters in every room except the starting room with the player.
         /// </summary>
@@ -256,19 +256,17 @@ namespace RogueSharpTutorial.Model
             for (int j = 1; j < map.Rooms.Count; j++)                                       // Not starting at zero. Player is in room zero.
             {             
                 if (Dice.Roll("1D10") < 7)                                                  // Each room has a 60% chance of having monsters
-                {                  
-                    var numberOfMonsters = Dice.Roll("1D4");                                // Generate between 1 and 4 monsters
-
-                    for (int i = 0; i < numberOfMonsters; i++)                              
-                    {                       
-                        Point randomRoomLocation = map.GetRandomWalkableLocationInRoom(map.Rooms[j]);// Find a random walkable location in the room to place the monster                       
-                        
-                        if (randomRoomLocation != Point.Zero)                               // It's possible that the room doesn't have space to place a monster
-                        {                                                                   // In that case skip creating the monster                           
-                            var monster = Kobold.Create(1, game);                           // Temporarily hard code this monster to be created at level 1
-                            monster.X = randomRoomLocation.X;
-                            monster.Y = randomRoomLocation.Y;
-                            map.AddMonster(monster);
+                {
+                    var numberOfMonsters = Dice.Roll("1D4");
+                    for (int i = 0; i < numberOfMonsters; i++)
+                    {
+                        if (map.DoesRoomHaveWalkableSpace(map.Rooms[j]))
+                        {
+                            Point randomRoomLocation = map.GetRandomLocationInRoom(map.Rooms[j]);
+                            if (randomRoomLocation != null)
+                            {
+                                map.AddMonster(ActorGenerator.CreateMonster(game, level, map.GetRandomLocationInRoom(map.Rooms[j])));
+                            }
                         }
                     }
                 }
@@ -303,6 +301,43 @@ namespace RogueSharpTutorial.Model
                             map.AddTreasure(location.X, location.Y, equipment);
                         }
                     }
+                }
+            }
+        }
+
+        private void PlaceItems()
+        {
+            foreach (var room in map.Rooms)
+            {
+                if (Dice.Roll("1D10") < 3)
+                {
+                    if (map.DoesRoomHaveWalkableSpace(room))
+                    {
+                        Point randomRoomLocation = map.GetRandomLocationInRoom(room);
+                        if (randomRoomLocation != null)
+                        {
+                            Item item = ItemGenerator.CreateItem(game);
+                            Point location = map.GetRandomLocationInRoom(room);
+                            map.AddTreasure(location.X, location.Y, item);
+                        }
+                    }
+                }
+            }
+        }
+
+        private void PlaceAbility()
+        {
+            if (level == 1 || level % 3 == 0)
+            {
+                try
+                {
+                    var ability = AbilityGenerator.CreateAbility(game);
+                    int roomIndex = Game.Random.Next(0, map.Rooms.Count - 1);
+                    Point location = map.GetRandomLocationInRoom(map.Rooms[roomIndex]);
+                    map.AddTreasure(location.X, location.Y, ability);
+                }
+                catch (InvalidOperationException)
+                {
                 }
             }
         }
