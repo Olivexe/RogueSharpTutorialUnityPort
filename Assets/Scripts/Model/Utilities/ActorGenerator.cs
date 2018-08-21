@@ -22,9 +22,10 @@ namespace RogueSharpTutorial.Utilities
             return monster;
         }
 
-
         public static Player CreatePlayer(Game game)
         {
+            _player = game.Player;
+
             if (_player == null)
             {
                 _player = new Player(game)
@@ -36,11 +37,26 @@ namespace RogueSharpTutorial.Utilities
                     Defense = 2,
                     DefenseChance = 40,
                     Gold = 0,
-                    Health = 100,
-                    MaxHealth = 100,
+                    Health = 50,
+                    MaxHealth = 50,
                     Name = "Rogue",
                     Speed = 10,
-                    Symbol = '@'
+                    Symbol = '@',
+
+                    QAbility = new DoNothing(game),
+                    WAbility = new DoNothing(game),
+                    EAbility = new DoNothing(game),
+                    RAbility = new DoNothing(game),
+
+                    Item1 = new NoItem(game),
+                    Item2 = new NoItem(game),
+                    Item3 = new NoItem(game),
+                    Item4 = new NoItem(game),
+
+                    Head = HeadEquipment.None(game),
+                    Body = BodyEquipment.None(game),
+                    Hand = HandEquipment.None(game),
+                    Feet = FeetEquipment.None(game)
                 };
             }
 

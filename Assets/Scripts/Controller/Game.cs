@@ -19,6 +19,7 @@ namespace RogueSharpTutorial.Controller
         private bool                    renderRequired      = true;
 
         public  Player                  Player              { get; set; }
+        public  bool                    PlayerDied          { get; private set; }
         public  MessageLog              MessageLog          { get; private set; }
         public  DungeonMap              World               { get; private set; }
         public  SchedulingSystem        SchedulingSystem    { get; private set; }
@@ -26,6 +27,7 @@ namespace RogueSharpTutorial.Controller
         public  CommandSystem           CommandSystem       { get; private set; }
 
         public int                      mapLevel            = 1;
+
 
         public Game(UI_Main console)
         {
@@ -39,8 +41,8 @@ namespace RogueSharpTutorial.Controller
             rootConsole = console;
             rootConsole.UpdateView  += OnUpdate;                         // Set up a handler for graphic engine Update event
 
-            MessageLog.Add("The rogue arrives on level "+ mapLevel);
-            MessageLog.Add("Level created with seed '" + seed + "'");
+            MessageLog.Add("The rogue arrives on level " + mapLevel + ".");
+            MessageLog.Add("Level created with seed '" + seed + "'.");
 
             GenerateMap();
             rootConsole.SetPlayer(Player);
@@ -89,7 +91,11 @@ namespace RogueSharpTutorial.Controller
 
         public void ResolvePlayerDeath()
         {
-
+            int finalScore = Player.Score + (Player.Gold / 4) + (mapLevel / 3);         //Will adjust later
+            MessageLog.Add("You killed " + Player.Score + " monsters and made it down to level " + mapLevel + ". Your final score is " + finalScore);
+            MessageLog.Add("Press the ENTER key to start over.");
+            PlayerDied = true;
+            MessageLog.Draw();
         }
 
         private void OnUpdate(object sender, UpdateEventArgs e)
@@ -140,7 +146,14 @@ namespace RogueSharpTutorial.Controller
 
             InputCommands command = rootConsole.GetUserCommand();
 
-            if (CommandSystem.IsPlayerTurn)
+            if(PlayerDied)
+            {
+                if (command == InputCommands.EnterKey)
+                {
+                    StartOver();
+                }
+            }
+            else if (CommandSystem.IsPlayerTurn)
             {
                 switch (command)
                 {
@@ -222,6 +235,28 @@ namespace RogueSharpTutorial.Controller
             Draw();
             MessageLog = new MessageLog(this);
             CommandSystem = new CommandSystem(this);
+        }
+
+        private void StartOver()
+        {
+            PlayerDied = false;
+            Player = null;
+            mapLevel = 1;
+            rootConsole.ClearMap();
+
+            int seed = (int)DateTime.UtcNow.Ticks;
+
+            MessageLog.Add("The rogue arrives on level " + mapLevel + ".");
+            MessageLog.Add("Level created with seed '" + seed + "'.");
+
+            GenerateMap();
+            rootConsole.SetPlayer(Player);
+            World.UpdatePlayerFieldOfView(Player);
+
+            Player.Item1 = new RevealMapScroll(this);
+            Player.Item2 = new RevealMapScroll(this);
+
+            Draw();
         }
     }
 }

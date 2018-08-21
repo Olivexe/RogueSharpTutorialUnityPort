@@ -110,6 +110,11 @@ namespace RogueSharpTutorial.Controller
             }
             else
             {
+                if (game.PlayerDied)                                                 // If player was killed by a monster, stop moving monsters.
+                {
+                    return;
+                }
+
                 Monster monster = scheduleable as Monster;
 
                 if (monster != null)
@@ -259,10 +264,9 @@ namespace RogueSharpTutorial.Controller
         {
             if (defender is Player)
             {
-                game.MessageLog.Add(attacker.Name + " killed you, GAME OVER MAN!");
+                game.MessageLog.Add("The " + attacker.Name + " killed you, GAME OVER MAN!");
 
                 game.ResolvePlayerDeath();
-                return;
             }
             else if (defender is Monster)
             {
@@ -282,6 +286,9 @@ namespace RogueSharpTutorial.Controller
                 {
                     game.World.AddTreasure(defender.X, defender.Y, defender.Feet);
                 }
+
+                game.Player.Score++;
+
                 game.World.AddGold(defender.X, defender.Y, defender.Gold);
                 game.World.RemoveMonster((Monster)defender);
 

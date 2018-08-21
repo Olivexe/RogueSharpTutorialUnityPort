@@ -24,6 +24,7 @@ namespace RogueSharpTutorial.Model
             WAbility = new DoNothing(game);
             EAbility = new DoNothing(game);
             RAbility = new DoNothing(game);
+
             Item1 = new NoItem(game);
             Item2 = new NoItem(game);
             Item3 = new NoItem(game);
