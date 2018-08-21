@@ -91,8 +91,7 @@ namespace RogueSharpTutorial.Controller
 
         public void ResolvePlayerDeath()
         {
-            int finalScore = Player.Score + (Player.Gold / 4) + (mapLevel / 3);         //Will adjust later
-            MessageLog.Add("You killed " + Player.Score + " monsters and made it down to level " + mapLevel + ". Your final score is " + finalScore);
+            MessageLog.Add("Your final score is " + Player.TotalScore);
             MessageLog.Add("Press the ENTER key to start over.");
             PlayerDied = true;
             MessageLog.Draw();
@@ -206,8 +205,11 @@ namespace RogueSharpTutorial.Controller
                         didPlayerAct = CommandSystem.UseItem(4, this);
                         break;
                     case InputCommands.StairsDown:
-                        MoveMapLevelDown();
-                        didPlayerAct = true;
+                        if (World.CanMoveDownToNextLevel())
+                        {
+                            MoveMapLevelDown();
+                            didPlayerAct = true;
+                        }
                         break;
                     case InputCommands.CloseGame:
                         rootConsole.CloseApplication();

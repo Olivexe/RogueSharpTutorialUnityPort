@@ -16,7 +16,10 @@ namespace RogueSharpTutorial.Model
         public IItem    Item3       { get; set; }
         public IItem    Item4       { get; set; }
 
-        public int      Score       { get; set; }
+        public int      MonsterScore{ get; set; }
+        public int      LevelScore  { get { return game.mapLevel / 3; } }
+        public int      GoldScore   { get { return Gold / 4; } }
+        public int      TotalScore  { get { return MonsterScore + GoldScore + LevelScore; } }
 
         public Player(Game game) : base(game)
         {

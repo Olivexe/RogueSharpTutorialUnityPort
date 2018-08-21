@@ -96,6 +96,7 @@ namespace RogueSharpTutorial.Controller
 
         public void EndPlayerTurn()
         {
+            game.Player.Tick();
             IsPlayerTurn = false;
         }
 
@@ -287,7 +288,7 @@ namespace RogueSharpTutorial.Controller
                     game.World.AddTreasure(defender.X, defender.Y, defender.Feet);
                 }
 
-                game.Player.Score++;
+                game.Player.MonsterScore++;
 
                 game.World.AddGold(defender.X, defender.Y, defender.Gold);
                 game.World.RemoveMonster((Monster)defender);

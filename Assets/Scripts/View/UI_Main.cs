@@ -98,7 +98,7 @@ namespace RogueSharpTutorial.View
                 tile = null;
             }
 
-            if (!IsInView(new Vector3(x, y, 0)))
+            if (!IsInView(new Vector3(x, y, 0)) || !isExplored)
             {
                 if (tile != null)
                 {
