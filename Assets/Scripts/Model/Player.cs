@@ -16,6 +16,8 @@ namespace RogueSharpTutorial.Model
         public IItem    Item3       { get; set; }
         public IItem    Item4       { get; set; }
 
+        public int      Score       { get; set; }
+
         public Player(Game game) : base(game)
         {
             QAbility = new DoNothing(game);

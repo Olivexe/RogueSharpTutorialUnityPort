@@ -87,6 +87,11 @@ namespace RogueSharpTutorial.Controller
             rootConsole.ClearMonsterStats();
         }
 
+        public void ResolvePlayerDeath()
+        {
+
+        }
+
         private void OnUpdate(object sender, UpdateEventArgs e)
         {
             if (TargetingSystem.IsPlayerTargeting)

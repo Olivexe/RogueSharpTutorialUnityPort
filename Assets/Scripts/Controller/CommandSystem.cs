@@ -135,22 +135,11 @@ namespace RogueSharpTutorial.Controller
 
         public void Attack(Actor attacker, Actor defender)
         {
-            StringBuilder attackMessage = new StringBuilder();
-            StringBuilder defenseMessage = new StringBuilder();
+            int hits = ResolveAttack(attacker, defender);
 
-            int hits = ResolveAttack(attacker, defender, attackMessage);
+            int blocks = ResolveDefense(defender, hits);
 
-            int blocks = ResolveDefense(defender, hits, attackMessage, defenseMessage);
-
-            game.MessageLog.Add(attackMessage.ToString());
-            if (!string.IsNullOrEmpty(defenseMessage.ToString()))
-            {
-                game.MessageLog.Add(defenseMessage.ToString());
-            }
-
-            int damage = hits - blocks;
-
-            ResolveDamage(defender, damage);
+            ResolveDamage(attacker, defender, hits, blocks);
         }
 
         /// <summary>
@@ -160,22 +149,16 @@ namespace RogueSharpTutorial.Controller
         /// <param name="defender"></param>
         /// <param name="attackMessage"></param>
         /// <returns></returns>
-        private int ResolveAttack(Actor attacker, Actor defender, StringBuilder attackMessage)
+        private int ResolveAttack(Actor attacker, Actor defender)
         {
             int hits = 0;
 
-            attackMessage.AppendFormat("{0} attacks {1} and rolls: ", attacker.Name, defender.Name);
-
-            // Roll a number of 100-sided dice equal to the Attack value of the attacking actor
-            DiceExpression attackDice = new DiceExpression().Dice(attacker.Attack, 100);
+            DiceExpression attackDice = new DiceExpression().Dice(attacker.Attack, 100);        // Roll a number of 100-sided dice equal to the Attack value of the attacking actor
             DiceResult attackResult = attackDice.Roll();
 
-            // Look at the face value of each single die that was rolled
-            foreach (TermResult termResult in attackResult.Results)
+            foreach (TermResult termResult in attackResult.Results)                             // Look at the face value of each single die that was rolled
             {
-                attackMessage.Append(termResult.Value + ", ");
-                // Compare the value to 100 minus the attack chance and add a hit if it's greater
-                if (termResult.Value >= 100 - attacker.AttackChance)
+                if (termResult.Value >= 100 - attacker.AttackChance)                            // Compare the value to 100 minus the attack chance and add a hit if it's greater
                 {
                     hits++;
                 }
@@ -185,65 +168,101 @@ namespace RogueSharpTutorial.Controller
         }
 
         // The defender rolls based on his stats to see if he blocks any of the hits from the attacker
-        private int ResolveDefense(Actor defender, int hits, StringBuilder attackMessage, StringBuilder defenseMessage)
+        private int ResolveDefense(Actor defender, int hits)
         {
             int blocks = 0;
 
             if (hits > 0)
             {
-                attackMessage.AppendFormat("scoring {0} hits.", hits);
-                defenseMessage.AppendFormat("  {0} defends and rolls: ", defender.Name);
-
-                // Roll a number of 100-sided dice equal to the Defense value of the defendering actor
-                DiceExpression defenseDice = new DiceExpression().Dice(defender.Defense, 100);
+                DiceExpression defenseDice = new DiceExpression().Dice(defender.Defense, 100);  // Roll a number of 100-sided dice equal to the Defense value of the defendering actor
                 DiceResult defenseRoll = defenseDice.Roll();
 
-                // Look at the face value of each single die that was rolled
-                foreach (TermResult termResult in defenseRoll.Results)
+                foreach (TermResult termResult in defenseRoll.Results)                          // Look at the face value of each single die that was rolled
                 {
-                    defenseMessage.Append(termResult.Value + ", ");
-                    // Compare the value to 100 minus the defense chance and add a block if it's greater
-                    if (termResult.Value >= 100 - defender.DefenseChance)
+                    if (termResult.Value >= 100 - defender.DefenseChance)                       // Compare the value to 100 minus the defense chance and add a block if it's greater
                     {
                         blocks++;
                     }
                 }
-                defenseMessage.AppendFormat("resulting in {0} blocks.", blocks);
             }
-            else
-            {
-                attackMessage.Append("and misses completely.");
-            }
-
+ 
             return blocks;
         }
 
         // Apply any damage that wasn't blocked to the defender
-        private void ResolveDamage(Actor defender, int damage)
+        private void ResolveDamage(Actor attacker, Actor defender, int hits, int blocks)
         {
-            if (damage > 0)
+            StringBuilder attackMessage = new StringBuilder();
+
+            if (attacker is Player)
             {
-                defender.Health = defender.Health - damage;
-
-                game.MessageLog.Add(defender.Name + " was hit for " + damage + " damage.");
-
-                if (defender.Health <= 0)
-                {
-                    ResolveDeath(defender);
-                }
+                attackMessage.AppendFormat("You attack the {1}", attacker.Name, defender.Name);
+            }
+            else if (defender is Player)
+            {
+                attackMessage.AppendFormat("The {0} attacks you", attacker.Name, defender.Name);
             }
             else
             {
-                game.MessageLog.Add(defender.Name + " blocked all damage.");
+                attackMessage.AppendFormat("The {0} attacks {1} ", attacker.Name, defender.Name);
+            }
+
+            int damage = hits - blocks;
+
+            if (hits < 1)
+            {
+                if(attacker is Player)
+                {
+                    attackMessage.Append(" and miss completely.");
+                }
+                else if (defender is Player)
+                {
+                    attackMessage.Append(" and misses completely.");
+                }
+                else
+                {
+                    attackMessage.Append(" and misses completely.");
+                }
+            }
+            else if (damage > 0)
+            {
+                defender.Health = defender.Health - damage;
+
+                attackMessage.Append(" for " + damage + " damage.");
+            }
+            else
+            {
+                if (attacker is Player)
+                {
+                    attackMessage.AppendFormat(" and the {0} blocked all damage.", defender.Name);
+                }
+                else if (defender is Player)
+                {
+                    attackMessage.AppendFormat(" and you blocked all damage.");
+                }
+                else
+                {
+                    attackMessage.AppendFormat(" and the {0} blocked all damage.", defender.Name);
+                }
+            }
+
+            game.MessageLog.Add(attackMessage.ToString());
+
+            if (defender.Health <= 0)
+            {
+                ResolveDeath(attacker, defender);
             }
         }
 
         // Remove the defender from the map and add some messages upon death.
-        private void ResolveDeath(Actor defender)
+        private void ResolveDeath(Actor attacker, Actor defender)
         {
             if (defender is Player)
             {
-                game.MessageLog.Add(defender.Name + " was killed, GAME OVER MAN!");
+                game.MessageLog.Add(attacker.Name + " killed you, GAME OVER MAN!");
+
+                game.ResolvePlayerDeath();
+                return;
             }
             else if (defender is Monster)
             {
@@ -266,7 +285,7 @@ namespace RogueSharpTutorial.Controller
                 game.World.AddGold(defender.X, defender.Y, defender.Gold);
                 game.World.RemoveMonster((Monster)defender);
 
-                game.MessageLog.Add($"  {defender.Name} died and dropped {defender.Gold} gold");
+                game.MessageLog.Add($"The {defender.Name} died and dropped {defender.Gold} gold");
             }
         }
         
