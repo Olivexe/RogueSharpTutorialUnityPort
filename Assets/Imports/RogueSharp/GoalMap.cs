@@ -550,23 +550,11 @@ namespace RogueSharp
 
       private class WeightedPoint : IEquatable<WeightedPoint>
       {
-            private Point _point = new Point();
+         private Point _point = new Point();
 
          public int Weight
          {
             get; set;
-         }
-
-         public Point Point
-         {
-            get
-            {
-               return _point;
-            }
-            set
-            {
-               _point = value;
-            }
          }
 
          public int X

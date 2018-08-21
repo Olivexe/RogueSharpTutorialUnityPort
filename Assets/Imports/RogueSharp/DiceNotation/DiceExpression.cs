@@ -137,16 +137,7 @@ namespace RogueSharp.DiceNotation
       /// <returns>A string representing this DiceExpression</returns>
       public override string ToString()
       {
-         string combined = string.Empty;
-         for ( int i = 0; i < _terms.Count; i++ )
-         {
-            combined = combined + _terms[i];
-            if ( i < _terms.Count - 1 )
-            {
-               combined = combined + " + ";
-            }
-         }
-         return combined;
+         return string.Join( " + ", _terms );
       }
    }
 }

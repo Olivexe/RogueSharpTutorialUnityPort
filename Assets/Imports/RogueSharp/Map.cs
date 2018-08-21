@@ -496,38 +496,40 @@ namespace RogueSharp
          int x = 0;
          int y = radius;
 
+         ICell centerCell = GetCell( xCenter, yCenter );
+
          do
          {
             ICell cell;
-            if ( AddToHashSet( discovered, ClampX( xCenter + x ), ClampY( yCenter + y ), out cell ) )
+            if ( AddToHashSet( discovered, ClampX( xCenter + x ), ClampY( yCenter + y ), centerCell, out cell ) )
             {
                yield return cell;
             }
-            if ( AddToHashSet( discovered, ClampX( xCenter + x ), ClampY( yCenter - y ), out cell ) )
+            if ( AddToHashSet( discovered, ClampX( xCenter + x ), ClampY( yCenter - y ), centerCell, out cell ) )
             {
                yield return cell;
             }
-            if ( AddToHashSet( discovered, ClampX( xCenter - x ), ClampY( yCenter + y ), out cell ) )
+            if ( AddToHashSet( discovered, ClampX( xCenter - x ), ClampY( yCenter + y ), centerCell, out cell ) )
             {
                yield return cell;
             }
-            if ( AddToHashSet( discovered, ClampX( xCenter - x ), ClampY( yCenter - y ), out cell ) )
+            if ( AddToHashSet( discovered, ClampX( xCenter - x ), ClampY( yCenter - y ), centerCell, out cell ) )
             {
                yield return cell;
             }
-            if ( AddToHashSet( discovered, ClampX( xCenter + y ), ClampY( yCenter + x ), out cell ) )
+            if ( AddToHashSet( discovered, ClampX( xCenter + y ), ClampY( yCenter + x ), centerCell, out cell ) )
             {
                yield return cell;
             }
-            if ( AddToHashSet( discovered, ClampX( xCenter + y ), ClampY( yCenter - x ), out cell ) )
+            if ( AddToHashSet( discovered, ClampX( xCenter + y ), ClampY( yCenter - x ), centerCell, out cell ) )
             {
                yield return cell;
             }
-            if ( AddToHashSet( discovered, ClampX( xCenter - y ), ClampY( yCenter + x ), out cell ) )
+            if ( AddToHashSet( discovered, ClampX( xCenter - y ), ClampY( yCenter + x ), centerCell, out cell ) )
             {
                yield return cell;
             }
-            if ( AddToHashSet( discovered, ClampX( xCenter - y ), ClampY( yCenter - x ), out cell ) )
+            if ( AddToHashSet( discovered, ClampX( xCenter - y ), ClampY( yCenter - x ), centerCell, out cell ) )
             {
                yield return cell;
             }
@@ -561,30 +563,31 @@ namespace RogueSharp
          int yMin = Math.Max( 0, yCenter - distance );
          int yMax = Math.Min( Height - 1, yCenter + distance );
 
+         ICell centerCell = GetCell( xCenter, yCenter ); 
          ICell cell;
-         if ( AddToHashSet( discovered, xCenter, yMin, out cell ) )
+         if ( AddToHashSet( discovered, xCenter, yMin, centerCell, out cell ) )
          {
             yield return cell;
          }
-         if ( AddToHashSet( discovered, xCenter, yMax, out cell ) )
+         if ( AddToHashSet( discovered, xCenter, yMax, centerCell, out cell ) )
          {
             yield return cell;
          }
          for ( int i = 1; i <= distance; i++ )
          {
-            if ( AddToHashSet( discovered, Math.Max( xMin, xCenter - i ), Math.Min( yMax, yCenter + distance - i ), out cell ) )
+            if ( AddToHashSet( discovered, Math.Max( xMin, xCenter - i ), Math.Min( yMax, yCenter + distance - i ), centerCell, out cell ) )
             {
                yield return cell;
             }
-            if ( AddToHashSet( discovered, Math.Max( xMin, xCenter - i ), Math.Max( yMin, yCenter - distance + i ), out cell ) )
+            if ( AddToHashSet( discovered, Math.Max( xMin, xCenter - i ), Math.Max( yMin, yCenter - distance + i ), centerCell, out cell ) )
             {
                yield return cell;
             }
-            if ( AddToHashSet( discovered, Math.Min( xMax, xCenter + i ), Math.Min( yMax, yCenter + distance - i ), out cell ) )
+            if ( AddToHashSet( discovered, Math.Min( xMax, xCenter + i ), Math.Min( yMax, yCenter + distance - i ), centerCell, out cell ) )
             {
                yield return cell;
             }
-            if ( AddToHashSet( discovered, Math.Min( xMax, xCenter + i ), Math.Max( yMin, yCenter - distance + i ), out cell ) )
+            if ( AddToHashSet( discovered, Math.Min( xMax, xCenter + i ), Math.Max( yMin, yCenter - distance + i ), centerCell, out cell ) )
             {
                yield return cell;
             }
@@ -604,17 +607,23 @@ namespace RogueSharp
          int xMax = Math.Min( Width - 1, xCenter + distance );
          int yMin = Math.Max( 0, yCenter - distance );
          int yMax = Math.Min( Height - 1, yCenter + distance );
+         List<ICell> borderCells = new List<ICell>();
 
          for ( int x = xMin; x <= xMax; x++ )
          {
-            yield return GetCell( x, yMin );
-            yield return GetCell( x, yMax );
+            borderCells.Add( GetCell( x, yMin ) );
+            borderCells.Add( GetCell( x, yMax ) );
          }
          for ( int y = yMin + 1; y <= yMax - 1; y++ )
          {
-            yield return GetCell( xMin, y );
-            yield return GetCell( xMax, y );
+            borderCells.Add( GetCell( xMin, y ) );
+            borderCells.Add( GetCell( xMax, y ) );
          }
+
+         ICell centerCell = GetCell( xCenter, yCenter );
+         borderCells.Remove( centerCell );
+
+         return borderCells;
       }
 
       /// <summary>
@@ -736,12 +745,12 @@ namespace RogueSharp
          foreach ( ICell cell in GetAllCells() )
          {
             MapState.CellProperties cellProperties = state.Cells[cell.Y * Width + cell.X];
-            if ( cellProperties.IsFlagSet( MapState.CellProperties.Visible ) )
+            if ( cellProperties.HasFlag( MapState.CellProperties.Visible ) )
             {
                inFov.Add( IndexFor( cell.X, cell.Y ) );
             }
-            _isTransparent[cell.X, cell.Y] = cellProperties.IsFlagSet( MapState.CellProperties.Transparent );
-            _isWalkable[cell.X, cell.Y] = cellProperties.IsFlagSet( MapState.CellProperties.Walkable );
+            _isTransparent[cell.X, cell.Y] = cellProperties.HasFlag( MapState.CellProperties.Transparent );
+            _isWalkable[cell.X, cell.Y] = cellProperties.HasFlag( MapState.CellProperties.Walkable );
          }
 
          _fieldOfView = new FieldOfView( this, inFov );
@@ -813,6 +822,13 @@ namespace RogueSharp
          return hashSet.Add( IndexFor( cell ) );
       }
 
+      private bool AddToHashSet( HashSet<int> hashSet, int x, int y, ICell centerCell, out ICell cell )
+      {
+         cell = GetCell( x, y );
+         if ( cell.Equals( centerCell ) ) return false;
+         return hashSet.Add( IndexFor( cell ) );
+      }
+
       private bool AddToHashSet( HashSet<int> hashSet, ICell cell )
       {
          return hashSet.Add( IndexFor( cell ) );
@@ -832,25 +848,6 @@ namespace RogueSharp
       public override string ToString()
       {
          return ToString( false );
-      }
-   }
-
-   public static class EnumExtensions
-   {
-      private static void CheckIsEnum<T>( bool withFlags )
-      {
-         if ( !typeof( T ).IsEnum )
-            throw new ArgumentException( string.Format( "Type '{0}' is not an enum", typeof( T ).FullName ) );
-         if ( withFlags && !Attribute.IsDefined( typeof( T ), typeof( FlagsAttribute ) ) )
-            throw new ArgumentException( string.Format( "Type '{0}' doesn't have the 'Flags' attribute", typeof( T ).FullName ) );
-      }
-
-      public static bool IsFlagSet<T>( this T value, T flag ) where T : struct
-      {
-         CheckIsEnum<T>( true );
-         long lValue = Convert.ToInt64( value );
-         long lFlag = Convert.ToInt64( flag );
-         return ( lValue & lFlag ) != 0;
       }
    }
 }
