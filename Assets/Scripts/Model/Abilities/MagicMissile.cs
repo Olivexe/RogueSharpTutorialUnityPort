@@ -20,8 +20,7 @@ namespace RogueSharpTutorial.Model
 
         protected override bool PerformAbility()
         {
-            return false;
-            //return Game.TargetingSystem.SelectMonster(this);
+            return game.TargetingSystem.SelectMonster(this);
         }
 
         public void SelectTarget(Point target)
@@ -39,7 +38,7 @@ namespace RogueSharpTutorial.Model
                     AttackChance= attackChance,
                     Name        = Name
                 };
-                game.commandSystem.Attack(magicMissleActor, monster);
+                game.CommandSystem.Attack(magicMissleActor, monster);
             }
         }
     }

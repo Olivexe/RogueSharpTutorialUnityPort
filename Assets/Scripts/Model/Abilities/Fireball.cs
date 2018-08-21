@@ -22,8 +22,7 @@ namespace RogueSharpTutorial.Model
 
         protected override bool PerformAbility()
         {
-            return false;
-            //return game.TargetingSystem.SelectArea(this, _area);
+            return game.TargetingSystem.SelectArea(this, area);
         }
 
         public void SelectTarget(Point target)
@@ -45,7 +44,7 @@ namespace RogueSharpTutorial.Model
                 Monster monster = map.GetMonsterAt(cell.X, cell.Y);
                 if (monster != null)
                 {
-                    game.commandSystem.Attack(fireballActor, monster);
+                    game.CommandSystem.Attack(fireballActor, monster);
                 }
             }
         }

@@ -14,8 +14,8 @@ namespace RogueSharpTutorial.Model
 
         protected override bool UseItem()
         {
-            DungeonMap map = game.World;
-            Player player = game.Player;
+            DungeonMap map  = game.World;
+            Player player   = game.Player;
             Point edgePoint = GetRandomEdgePoint(map);
 
             game.MessageLog.Add($"{player.Name} uses a {Name} and chaotically unleashes a void beam");
@@ -40,7 +40,7 @@ namespace RogueSharpTutorial.Model
 
                 if (monster != null)
                 {
-                    game.commandSystem.Attack(voidAttackActor, monster);
+                    game.CommandSystem.Attack(voidAttackActor, monster);
                 }
                 else
                 {

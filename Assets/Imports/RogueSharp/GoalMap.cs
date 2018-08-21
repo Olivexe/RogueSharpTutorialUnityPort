@@ -548,9 +548,9 @@ namespace RogueSharp
          return mapRepresentation.ToString().TrimEnd( '\r', '\n' );
       }
 
-      private struct WeightedPoint : IEquatable<WeightedPoint>
+      private class WeightedPoint : IEquatable<WeightedPoint>
       {
-         private Point _point;
+            private Point _point = new Point();
 
          public int Weight
          {

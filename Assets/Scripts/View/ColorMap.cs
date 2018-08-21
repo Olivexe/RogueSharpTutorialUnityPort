@@ -30,9 +30,9 @@ namespace RogueSharpTutorial.View
             { Colors.Text,              Palette.DbLight },
             { Colors.Gold,              Palette.DbSun },
 
-            { Colors.KoboldColor,       Palette.DbBrightWood },
-            { Colors.GoblinColor,       new Color(255, 165, 0) },
-            { Colors.OozeColor,         new Color(102, 205, 170) },
+            { Colors.KoboldColor,       new Color32(255, 165, 0, 255) },
+            { Colors.GoblinColor,       Color.green },
+            { Colors.OozeColor,         new Color32(110, 110, 255, 255) },
 
             { Colors.DoorBackground,    Palette.ComplimentDarkest },
             { Colors.Door,              Palette.ComplimentLighter },
@@ -40,7 +40,8 @@ namespace RogueSharpTutorial.View
             { Colors.DoorFov,           Palette.ComplimentLightest },
 
             { Colors.DbOldStone,        Palette.DbOldStone },
-            { Colors.DbLight,           Palette.DbLight }
-    };
+            { Colors.DbLight,           Palette.DbLight },
+            { Colors.DbSun,             Palette.DbSun }
+        };
     }
 }

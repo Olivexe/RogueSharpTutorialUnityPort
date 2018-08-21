@@ -124,6 +124,14 @@ namespace RogueSharpTutorial.View
             }
         }
 
+        public void UpdateBackgroundCell(int x, int y, Colors backColor)
+        {
+            if (x >= 0 && x < mapObjects.GetLength(0) && y >= 0 && y < mapObjects.GetLength(1) && mapObjects[x, y] != null )
+            {
+                mapObjects[x, y].BackgroundColor = ColorMap.UnityColors[backColor];
+            }
+        }
+
         public void PostMessageLog(Queue<string> messages, Colors color)
         {
             uiMessages.PostMessageLog(messages, ColorMap.UnityColors[color]);

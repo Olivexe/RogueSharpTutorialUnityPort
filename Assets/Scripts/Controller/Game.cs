@@ -4,7 +4,6 @@ using RogueSharpTutorial.View;
 using RogueSharpTutorial.Model;
 using RogueSharpTutorial.Utilities;
 using RogueSharp.Random;
-//using UnityEngine;
 
 namespace RogueSharpTutorial.Controller
 {
@@ -15,15 +14,16 @@ namespace RogueSharpTutorial.Controller
         private UI_Main                 rootConsole;
         private InputKeyboard           inputControl;
 
-        public  CommandSystem           commandSystem;
         private static readonly int     mapWidth            = 80;
         private static readonly int     mapHeight           = 48;
         private bool                    renderRequired      = true;
 
-        public  MessageLog              MessageLog          { get; set; }
-        public  DungeonMap              World               { get; private set; }
         public  Player                  Player              { get; set; }
+        public  MessageLog              MessageLog          { get; private set; }
+        public  DungeonMap              World               { get; private set; }
         public  SchedulingSystem        SchedulingSystem    { get; private set; }
+        public  TargetingSystem         TargetingSystem     { get; private set; }
+        public  CommandSystem           CommandSystem       { get; private set; }
 
         public int                      mapLevel            = 1;
 
@@ -31,11 +31,12 @@ namespace RogueSharpTutorial.Controller
         {
             int seed                = (int)DateTime.UtcNow.Ticks;
             Random                  = new DotNetRandom(seed);
-            commandSystem           = new CommandSystem(this);
+            CommandSystem           = new CommandSystem(this);
             MessageLog              = new MessageLog(this);
-            SchedulingSystem        = new SchedulingSystem();
+            SchedulingSystem        = new SchedulingSystem(this);
+            TargetingSystem         = new TargetingSystem(this);
 
-            rootConsole             = console;
+            rootConsole = console;
             rootConsole.UpdateView  += OnUpdate;                         // Set up a handler for graphic engine Update event
 
             MessageLog.Add("The rogue arrives on level "+ mapLevel);
@@ -54,6 +55,11 @@ namespace RogueSharpTutorial.Controller
         public void SetMapCell(int x,int y, Colors foreColor, Colors backColor, char symbol, bool isExplored)
         {
             rootConsole.UpdateMapCell(x, y, foreColor, backColor, symbol, isExplored);
+        }
+
+        public void SetMapCellBackground(int x, int y, Colors backColor)
+        {
+            rootConsole.UpdateBackgroundCell(x, y, backColor);
         }
 
         public void PostMessageLog(Queue<string> messages, Colors color)
@@ -83,7 +89,22 @@ namespace RogueSharpTutorial.Controller
 
         private void OnUpdate(object sender, UpdateEventArgs e)
         {
-            CheckKeyboard();
+            if (TargetingSystem.IsPlayerTargeting)
+            {
+                InputCommands command = rootConsole.GetUserCommand();
+                TargetingSystem.HandleKey(command);
+                renderRequired = true;
+            }
+            else if (CommandSystem.IsPlayerTurn)
+            {
+                CheckKeyboard();
+            }
+            else
+            {
+                CommandSystem.ActivateMonsters();
+                renderRequired = true;
+            }
+
             MessageLog.Draw();
 
             if (renderRequired)
@@ -104,6 +125,7 @@ namespace RogueSharpTutorial.Controller
         {
             World.Draw();
             Player.Draw(World);
+            TargetingSystem.Draw();
             Player.DrawStats();
         }
 
@@ -113,33 +135,33 @@ namespace RogueSharpTutorial.Controller
 
             InputCommands command = rootConsole.GetUserCommand();
 
-            if (commandSystem.IsPlayerTurn)
+            if (CommandSystem.IsPlayerTurn)
             {
                 switch (command)
                 {
                     case InputCommands.UpLeft:
-                        didPlayerAct = commandSystem.MovePlayer(Direction.UpLeft);
+                        didPlayerAct = CommandSystem.MovePlayer(Direction.UpLeft);
                         break;
                     case InputCommands.Up:
-                        didPlayerAct = commandSystem.MovePlayer(Direction.Up);
+                        didPlayerAct = CommandSystem.MovePlayer(Direction.Up);
                         break;
                     case InputCommands.UpRight:
-                        didPlayerAct = commandSystem.MovePlayer(Direction.UpRight);
+                        didPlayerAct = CommandSystem.MovePlayer(Direction.UpRight);
                         break;
                     case InputCommands.Left:
-                        didPlayerAct = commandSystem.MovePlayer(Direction.Left);
+                        didPlayerAct = CommandSystem.MovePlayer(Direction.Left);
                         break;
                     case InputCommands.Right:
-                        didPlayerAct = commandSystem.MovePlayer(Direction.Right);
+                        didPlayerAct = CommandSystem.MovePlayer(Direction.Right);
                         break;
                     case InputCommands.DownLeft:
-                        didPlayerAct = commandSystem.MovePlayer(Direction.DownLeft);
+                        didPlayerAct = CommandSystem.MovePlayer(Direction.DownLeft);
                         break;
                     case InputCommands.Down:
-                        didPlayerAct = commandSystem.MovePlayer(Direction.Down);
+                        didPlayerAct = CommandSystem.MovePlayer(Direction.Down);
                         break;
                     case InputCommands.DownRight:
-                        didPlayerAct = commandSystem.MovePlayer(Direction.DownRight);
+                        didPlayerAct = CommandSystem.MovePlayer(Direction.DownRight);
                         break;
                     case InputCommands.QAbility:
                         didPlayerAct = Player.QAbility.Perform();
@@ -179,13 +201,8 @@ namespace RogueSharpTutorial.Controller
                 if (didPlayerAct)
                 {
                     renderRequired = true;
-                    commandSystem.EndPlayerTurn();
+                    CommandSystem.EndPlayerTurn();
                 }
-            }
-            else
-            {
-                commandSystem.ActivateMonsters();
-                renderRequired = true;
             }
         }
 
@@ -199,7 +216,7 @@ namespace RogueSharpTutorial.Controller
             World.UpdatePlayerFieldOfView(Player);
             Draw();
             MessageLog = new MessageLog(this);
-            commandSystem = new CommandSystem(this);
+            CommandSystem = new CommandSystem(this);
         }
     }
 }

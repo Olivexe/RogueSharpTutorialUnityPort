@@ -2,14 +2,15 @@
 using System.Collections.Generic;
 using RogueSharpTutorial.Model.Interfaces;
 
-namespace RogueSharpTutorial.Model
+namespace RogueSharpTutorial.Controller
 {
     public class SchedulingSystem
     {
         private int time;
         private readonly SortedDictionary<int, List<IScheduleable>> scheduleables;
+        private Game game;
 
-        public SchedulingSystem()
+        public SchedulingSystem(Game game)
         {
             time = 0;
             scheduleables = new SortedDictionary<int, List<IScheduleable>>();

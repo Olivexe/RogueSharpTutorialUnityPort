@@ -34,6 +34,7 @@
         DoorFov,
         
         DbOldStone,
-        DbLight
+        DbLight,
+        DbSun
     }
 }

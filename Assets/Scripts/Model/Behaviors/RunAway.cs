@@ -16,6 +16,7 @@ namespace RogueSharpTutorial.Model
             dungeonMap.SetIsWalkable(player.X, player.Y, true);
 
             GoalMap goalMap = new GoalMap(dungeonMap);
+
             goalMap.AddGoal(player.X, player.Y, 0);
 
             Path path = null;

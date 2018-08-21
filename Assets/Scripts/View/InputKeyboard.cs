@@ -102,7 +102,10 @@ namespace RogueSharpTutorial.View
             {
                 return InputCommands.CloseGame;
             }
-
+            else if (Input.GetKeyUp(KeyCode.KeypadEnter) || Input.GetKeyUp(KeyCode.Return))
+            {
+                return InputCommands.EnterKey;
+            }
             return InputCommands.None;
         }
     }

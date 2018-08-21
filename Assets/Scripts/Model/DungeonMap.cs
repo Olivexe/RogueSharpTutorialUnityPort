@@ -259,6 +259,16 @@ namespace RogueSharpTutorial.Model
         }
 
         /// <summary>
+        /// Returns a List of Points of all monsters in the player's field of view.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<Point> GetMonsterLocationsInFieldOfView()
+        {
+            return monsters.Where(monster => IsInFov(monster.X, monster.Y))
+               .Select(m => new Point { X = m.X, Y = m.Y });
+        }
+
+        /// <summary>
         /// Grt random walkable location in any room on the map.
         /// </summary>
         /// <returns></returns>

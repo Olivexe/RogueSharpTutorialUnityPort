@@ -48,7 +48,7 @@ namespace RogueSharpTutorial.View
                 symbolText.text = sym;
             }
 
-            nameText.color = ColorMap.UnityColors[Colors.White];
+            nameText.color = ColorMap.UnityColors[Colors.Black];
             symbolText.color = color;
             fillImage.color = color;
         }

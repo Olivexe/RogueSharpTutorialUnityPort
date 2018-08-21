@@ -20,8 +20,7 @@ namespace RogueSharpTutorial.Model
 
         protected override bool PerformAbility()
         {
-            return false;
-            //return game.TargetingSystem.SelectLine(this);
+            return game.TargetingSystem.SelectLine(this);
         }
 
         public void SelectTarget(Point target)
@@ -52,7 +51,7 @@ namespace RogueSharpTutorial.Model
                 Monster monster = map.GetMonsterAt(cell.X, cell.Y);
                 if (monster != null)
                 {
-                    game.commandSystem.Attack(lightningBoltActor, monster);
+                    game.CommandSystem.Attack(lightningBoltActor, monster);
                 }
                 else
                 {
