@@ -15,7 +15,7 @@ namespace RogueSharpTutorial.Utilities
 
                 abilityPool.Add(new Heal(game, 10), 10);
                 abilityPool.Add(new MagicMissile(game, 2, 80), 10);
-                abilityPool.Add(new RevealMap(game, 15), 10);
+                abilityPool.Add(new RevealMap(game, 20), 10);
                 abilityPool.Add(new Whirlwind(game), 10);
                 abilityPool.Add(new Fireball(game, 4, 60, 2), 10);
                 abilityPool.Add(new LightningBolt(game, 6, 40), 10);
