@@ -9,17 +9,17 @@ namespace RogueSharpTutorial.Model
 
         public static Ooze Create(Game game, int level)
         {
-            int health = Dice.Roll("4D5");
+            int health = Dice.Roll("4D5") + (level * 2);
 
             return new Ooze (game)
             {
-                Attack          = Dice.Roll("1D2") + level / 3,
-                AttackChance    = Dice.Roll("10D5"),
+                Attack          = Dice.Roll("1D2") + (level / 2),
+                AttackChance    = Dice.Roll("10D5") + (level / 2),
                 Awareness       = 10,
                 Color           = Colors.OozeColor,
-                Defense         = Dice.Roll("1D2") + level / 3,
+                Defense         = Dice.Roll("1D2") + (level / 2),
                 DefenseChance   = Dice.Roll("10D4"),
-                Gold            = Dice.Roll("1D20"),
+                Gold            = Dice.Roll("1D20") + (level * 2),
                 Health          = health,
                 MaxHealth       = health,
                 Name            = "Ooze",

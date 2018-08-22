@@ -12,17 +12,17 @@ namespace RogueSharpTutorial.Model
 
         public static Goblin Create(Game game, int level)
         {
-            int health = Dice.Roll("1D5");
+            int health = Dice.Roll((level / 3 + 1).ToString() + "D4");
 
             return new Goblin (game)
             {
-                Attack          = Dice.Roll("1D2") + level / 3,
-                AttackChance    = Dice.Roll("10D5"),
+                Attack          = Dice.Roll("1D2") + (level / 3),
+                AttackChance    = Dice.Roll("10D5") + (level / 3),
                 Awareness       = 10,
                 Color           = Colors.GoblinColor,
-                Defense         = Dice.Roll("1D2") + level / 3,
-                DefenseChance   = Dice.Roll("10D4"),
-                Gold            = Dice.Roll("1D20"),
+                Defense         = Dice.Roll("1D2") + (level / 3),
+                DefenseChance   = Dice.Roll("10D4") + (level / 3),
+                Gold            = Dice.Roll("1D20") + (level * 2),
                 Health          = health,
                 MaxHealth       = health,
                 Name            = "Goblin",
