@@ -27,10 +27,10 @@ namespace RogueSharpTutorial.View
         /// <param name="player"></param>
         public void InitCamera(Player player)
         {
-            this.player = player;
-            xPos = player.X;
-            yPos = player.Y;
-            transform.position = new Vector3(player.X, player.Y, -10);
+            this.player         = player;
+            xPos                = player.X;
+            yPos                = player.Y;
+            transform.position  = new Vector3(player.X, player.Y, -10);
         }
     }
 }

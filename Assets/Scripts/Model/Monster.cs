@@ -18,7 +18,7 @@ namespace RogueSharpTutorial.Model
                 Color           = anotherMonster.Color,
                 Defense         = anotherMonster.Defense,
                 DefenseChance   = anotherMonster.DefenseChance,
-                Gold            = anotherMonster.Gold,
+                Gold            = 0,
                 Health          = anotherMonster.Health,
                 MaxHealth       = anotherMonster.MaxHealth,
                 Name            = anotherMonster.Name,

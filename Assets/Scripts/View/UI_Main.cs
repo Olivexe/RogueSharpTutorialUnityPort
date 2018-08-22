@@ -16,7 +16,8 @@ namespace RogueSharpTutorial.View
         [SerializeField] private UI_Messages    uiMessages;
         [SerializeField] private UI_Inventory   uiInventory;
         [SerializeField] private InputKeyboard  inputKeyboard;
-        [SerializeField] private PlayerCamera   playerCamera;
+        [SerializeField] private PlayerCamera   playerCameraScript;
+        [SerializeField] private Camera         playerCamera;
         [SerializeField] private TileUnity      tilePrefab;
 
         private                 Game            game;
@@ -44,7 +45,7 @@ namespace RogueSharpTutorial.View
 
         private bool IsInView(Vector3 position)
         {
-            Vector3 pointOnScreen = Camera.main.WorldToScreenPoint(position);
+            Vector3 pointOnScreen = playerCamera.WorldToScreenPoint(position);
 
             //Is in FOV
             if ((pointOnScreen.x < 0) || (pointOnScreen.x > Screen.width) || (pointOnScreen.y < 0) || (pointOnScreen.y > Screen.height))
@@ -159,7 +160,7 @@ namespace RogueSharpTutorial.View
 
         public void SetPlayer(Player player)
         {
-            playerCamera.InitCamera(player);
+            playerCameraScript.InitCamera(player);
         }
 
         public void CloseApplication()

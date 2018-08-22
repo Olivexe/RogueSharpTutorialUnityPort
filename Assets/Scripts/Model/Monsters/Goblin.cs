@@ -42,7 +42,7 @@ namespace RogueSharpTutorial.Model
                 fullyHealBehavior.Act(this, commandSystem, game);
                 turnsSpentRunning = null;
             }
-            else if (Health < MaxHealth)
+            else if (Health < (MaxHealth / 2))
             {
                 runAwayBehavior.Act(this, commandSystem, game);
 
