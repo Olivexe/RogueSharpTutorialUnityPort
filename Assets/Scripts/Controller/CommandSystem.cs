@@ -96,6 +96,7 @@ namespace RogueSharpTutorial.Controller
 
         public void EndPlayerTurn()
         {
+            game.Player.Tick();
             IsPlayerTurn = false;
         }
 

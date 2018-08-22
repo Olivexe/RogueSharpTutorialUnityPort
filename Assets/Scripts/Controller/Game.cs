@@ -188,8 +188,11 @@ namespace RogueSharpTutorial.Controller
                         didPlayerAct = CommandSystem.UseItem(4, this);
                         break;
                     case InputCommands.StairsDown:
-                        MoveMapLevelDown();
-                        didPlayerAct = true;
+                        if (World.CanMoveDownToNextLevel())
+                        {
+                            MoveMapLevelDown();
+                            didPlayerAct = true;
+                        }
                         break;
                     case InputCommands.CloseGame:
                         rootConsole.CloseApplication();
