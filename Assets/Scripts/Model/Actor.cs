@@ -66,5 +66,11 @@ namespace RogueSharpTutorial.Model
                 game.SetMapCell(X, Y, Colors.Floor, Colors.FloorBackground, '.', map.GetCell(X, Y).IsExplored);
             }
         }
+
+        public virtual bool PerformAction(InputCommands command)
+        {
+            var     behavior = new StandardMoveAndAttack();
+            return  behavior.Act(this, game);
+        }
     }
 }

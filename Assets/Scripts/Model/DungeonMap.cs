@@ -77,6 +77,22 @@ namespace RogueSharpTutorial.Model
         }
 
         /// <summary>
+        /// Test to see if the Player is at a position and return the player if so.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public Player GetPlayerAt(int x, int y)
+        {
+            if (game.Player.X == x && game.Player.Y == y)
+            {
+                return game.Player;
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Return the door at the x,y position or null if one is not found.
         /// </summary>
         /// <param name="x"></param>

@@ -28,14 +28,16 @@ namespace RogueSharpTutorial.Model
             };
         }
 
-        public override void PerformAction(CommandSystem commandSystem)
+        public override bool PerformAction(InputCommands command)
         {
             var splitOozeBehavior = new SplitOoze();
 
-            if (!splitOozeBehavior.Act(this, commandSystem, game))
+            if (!splitOozeBehavior.Act(this, game))
             {
-                base.PerformAction(commandSystem);
+                base.PerformAction(command);
             }
+
+            return true;
         }
     }
 }

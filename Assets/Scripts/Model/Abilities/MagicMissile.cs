@@ -38,7 +38,7 @@ namespace RogueSharpTutorial.Model
                     AttackChance= attackChance,
                     Name        = Name
                 };
-                game.CommandSystem.Attack(magicMissleActor, monster);
+                Command.Attack(magicMissleActor, monster);
             }
         }
     }

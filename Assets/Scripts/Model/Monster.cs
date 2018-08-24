@@ -31,11 +31,5 @@ namespace RogueSharpTutorial.Model
         {
             game.DrawMonsterStats(this, position);
         }
-
-        public virtual void PerformAction(CommandSystem commandSystem)
-        {
-            var behavior = new StandardMoveAndAttack();
-            behavior.Act(this, commandSystem, game);
-        }
     }
 }

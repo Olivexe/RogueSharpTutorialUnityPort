@@ -31,7 +31,7 @@ namespace RogueSharpTutorial.Model
             };
         }
 
-        public override void PerformAction(CommandSystem commandSystem)
+        public override bool PerformAction(InputCommands command)
         {
             var fullyHealBehavior       = new FullyHeal();
             var runAwayBehavior         = new RunAway();
@@ -39,12 +39,12 @@ namespace RogueSharpTutorial.Model
 
             if (turnsSpentRunning.HasValue && turnsSpentRunning.Value > 15)
             {
-                fullyHealBehavior.Act(this, commandSystem, game);
+                fullyHealBehavior.Act(this, game);
                 turnsSpentRunning = null;
             }
             else if (Health < (MaxHealth / 2))
             {
-                runAwayBehavior.Act(this, commandSystem, game);
+                runAwayBehavior.Act(this, game);
 
                 if (turnsSpentRunning.HasValue)
                 {
@@ -57,13 +57,15 @@ namespace RogueSharpTutorial.Model
 
                 if (!shoutedForHelp)
                 {
-                    shoutedForHelp = shoutForHelpBehavior.Act(this, commandSystem, game);
+                    shoutedForHelp = shoutForHelpBehavior.Act(this, game);
                 }
             }
             else
             {
-                base.PerformAction(commandSystem);
+                base.PerformAction(command);
             }
+
+            return true;
         }
     }
 }

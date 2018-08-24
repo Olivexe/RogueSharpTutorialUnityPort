@@ -44,7 +44,7 @@ namespace RogueSharpTutorial.Model
                 Monster monster = map.GetMonsterAt(cell.X, cell.Y);
                 if (monster != null)
                 {
-                    game.CommandSystem.Attack(fireballActor, monster);
+                    Command.Attack(fireballActor, monster);
                 }
             }
         }

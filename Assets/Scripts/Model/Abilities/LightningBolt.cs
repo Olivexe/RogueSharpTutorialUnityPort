@@ -51,7 +51,7 @@ namespace RogueSharpTutorial.Model
                 Monster monster = map.GetMonsterAt(cell.X, cell.Y);
                 if (monster != null)
                 {
-                    game.CommandSystem.Attack(lightningBoltActor, monster);
+                    Command.Attack(lightningBoltActor, monster);
                 }
                 else
                 {

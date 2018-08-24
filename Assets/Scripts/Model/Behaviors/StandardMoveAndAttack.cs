@@ -6,12 +6,13 @@ namespace RogueSharpTutorial.Model
 {
     public class StandardMoveAndAttack : IBehavior
     {
-        public bool Act(Monster monster, CommandSystem commandSystem, Game game)
+        public bool Act(Actor actor, Game game)
         {
-            DungeonMap dungeonMap = game.World;
-            Player player = game.Player;
-            FieldOfView monsterFov = new FieldOfView(dungeonMap);
+            DungeonMap dungeonMap   = game.World;
+            Player player           = game.Player;
+            FieldOfView monsterFov  = new FieldOfView(dungeonMap);
 
+            Monster monster = actor as Monster;
             // If the monster has not been alerted, compute a field-of-view 
             // Use the monster's Awareness value for the distance in the FoV check
             // If the player is in the monster's FoV then alert it
@@ -58,13 +59,11 @@ namespace RogueSharpTutorial.Model
                 {
                     try
                     {
-                        // TODO: This should be path.StepForward() but there is a bug in RogueSharp V3
-                        // The bug is that a Path returned from a PathFinder does not include the source Cell
-                        commandSystem.MoveMonster(monster, path.StepForward() as Cell);
+                        Command.Move(monster, path.StepForward());
                     }
                     catch (NoMoreStepsException)
                     {
-                        game.MessageLog.Add(monster.Name + " growls in frustration.");
+                        game.MessageLog.Add($"{monster.Name} waits for a turn");
                     }
                 }
 

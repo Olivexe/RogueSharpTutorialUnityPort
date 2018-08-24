@@ -6,7 +6,7 @@ namespace RogueSharpTutorial.Model
 {
     public class RunAway : IBehavior
     {
-        public bool Act(Monster monster, CommandSystem commandSystem, Game game)
+        public bool Act(Actor monster, Game game)
         {
             DungeonMap dungeonMap = game.World;
             Player player = game.Player;
@@ -39,7 +39,7 @@ namespace RogueSharpTutorial.Model
             {
                 try
                 {
-                    commandSystem.MoveMonster(monster, (Cell)path.StepForward());
+                    Command.Move(monster, path.StepForward().X, path.StepForward().Y);
                 }
                 catch (NoMoreStepsException)
                 {

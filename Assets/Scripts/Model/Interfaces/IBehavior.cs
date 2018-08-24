@@ -4,6 +4,6 @@ namespace RogueSharpTutorial.Model.Interfaces
 {
     public interface IBehavior
     {
-        bool Act(Monster monster, CommandSystem commandSystem, Game game);
+        bool Act(Actor monster, Game game);
     }
 }

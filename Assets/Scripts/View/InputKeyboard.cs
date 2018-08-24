@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using RogueSharpTutorial.Controller;
 
 namespace RogueSharpTutorial.View
 {

@@ -1,4 +1,4 @@
-﻿namespace RogueSharpTutorial.View
+﻿namespace RogueSharpTutorial.Controller
 { 
     public enum InputCommands
     {

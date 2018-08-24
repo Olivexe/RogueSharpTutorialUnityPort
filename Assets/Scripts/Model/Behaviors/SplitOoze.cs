@@ -6,24 +6,24 @@ namespace RogueSharpTutorial.Model
 {
     public class SplitOoze : IBehavior
     {
-        public bool Act(Monster monster, CommandSystem commandSystem, Game game)
+        public bool Act(Actor actor, Game game)
         {
             DungeonMap map = game.World;
 
             // Ooze only splits when wounded
-            if (monster.Health >= monster.MaxHealth)
+            if (actor.Health >= actor.MaxHealth)
             {
                 return false;
             }
 
-            int halfHealth = monster.MaxHealth / 2;
+            int halfHealth = actor.MaxHealth / 2;
             if (halfHealth <= 0)
             {
                 // Health would be too low so bail out
                 return false;
             }
 
-            Cell cell = FindClosestUnoccupiedCell(map, monster.X, monster.Y);
+            Cell cell = FindClosestUnoccupiedCell(map, actor.X, actor.Y);
 
             if (cell == null)
             {
@@ -32,7 +32,7 @@ namespace RogueSharpTutorial.Model
             }
 
             // Make a new ooze with half the health of the old one
-            Ooze newOoze = Monster.Clone(game, monster) as Ooze;
+            Ooze newOoze = Monster.Clone(game, actor as Monster) as Ooze;
 
             if (newOoze != null)
             {
@@ -42,7 +42,7 @@ namespace RogueSharpTutorial.Model
                 newOoze.MaxHealth = halfHealth;
                 newOoze.Health = halfHealth;
                 map.AddMonster(newOoze);
-                game.MessageLog.Add($"{monster.Name} splits itself in two");
+                game.MessageLog.Add($"{actor.Name} splits itself in two");
             }
             else
             {
@@ -51,8 +51,8 @@ namespace RogueSharpTutorial.Model
             }
 
             // Halve the original ooze's health too
-            monster.MaxHealth = halfHealth;
-            monster.Health = halfHealth;
+            actor.MaxHealth = halfHealth;
+            actor.Health = halfHealth;
 
             return true;
         }

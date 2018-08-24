@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using RogueSharpTutorial.View;
 using RogueSharpTutorial.Model;
 using RogueSharpTutorial.Utilities;
+using RogueSharpTutorial.Model.Interfaces;
 using RogueSharp.Random;
 
 namespace RogueSharpTutorial.Controller
@@ -24,16 +25,14 @@ namespace RogueSharpTutorial.Controller
         public  DungeonMap              World               { get; private set; }
         public  SchedulingSystem        SchedulingSystem    { get; private set; }
         public  TargetingSystem         TargetingSystem     { get; private set; }
-        public  CommandSystem           CommandSystem       { get; private set; }
+        public  bool                    IsPlayerTurn        { get; private set; }
 
         public int                      mapLevel            = 1;
-
 
         public Game(UI_Main console)
         {
             int seed                = (int)DateTime.UtcNow.Ticks;
             Random                  = new DotNetRandom(seed);
-            CommandSystem           = new CommandSystem(this);
             MessageLog              = new MessageLog(this);
             SchedulingSystem        = new SchedulingSystem(this);
             TargetingSystem         = new TargetingSystem(this);
@@ -47,6 +46,7 @@ namespace RogueSharpTutorial.Controller
             GenerateMap();
             rootConsole.SetPlayer(Player);
             World.UpdatePlayerFieldOfView(Player);
+            Command.SetGame(this);
 
             Player.Item1 = new RevealMapScroll(this);
             Player.Item2 = new RevealMapScroll(this);
@@ -97,6 +97,38 @@ namespace RogueSharpTutorial.Controller
             MessageLog.Draw();
         }
 
+        public void EndPlayerTurn()
+        {
+            Player.Tick();
+            IsPlayerTurn = false;
+        }
+
+        public void ActivateMonsters()
+        {
+            IScheduleable scheduleable = SchedulingSystem.Get();
+
+            if (scheduleable is Player)
+            {
+                IsPlayerTurn = true;
+                SchedulingSystem.Add(Player);
+            }
+            else
+            {
+                if (PlayerDied)                                                 // If player was killed by a monster, stop moving monsters.
+                {
+                    return;
+                }
+
+                if (scheduleable is Monster)
+                {
+                    ((Monster)scheduleable).PerformAction(InputCommands.None);      // Use 'None' as the action of the monster as the behabior is determined in its behavior scripts
+                    SchedulingSystem.Add(scheduleable);
+                }
+
+                ActivateMonsters();
+            }
+        }
+
         private void OnUpdate(object sender, UpdateEventArgs e)
         {
             if (TargetingSystem.IsPlayerTargeting)
@@ -105,13 +137,13 @@ namespace RogueSharpTutorial.Controller
                 TargetingSystem.HandleKey(command);
                 renderRequired = true;
             }
-            else if (CommandSystem.IsPlayerTurn)
+            else if (IsPlayerTurn)
             {
                 CheckKeyboard();
             }
             else
             {
-                CommandSystem.ActivateMonsters();
+                ActivateMonsters();
                 renderRequired = true;
             }
 
@@ -141,8 +173,6 @@ namespace RogueSharpTutorial.Controller
 
         private void CheckKeyboard()
         {
-            bool didPlayerAct = false;
-
             InputCommands command = rootConsole.GetUserCommand();
 
             if(PlayerDied)
@@ -152,76 +182,23 @@ namespace RogueSharpTutorial.Controller
                     StartOver();
                 }
             }
-            else if (CommandSystem.IsPlayerTurn)
+            else
             {
-                switch (command)
+                if (command == InputCommands.CloseGame)
                 {
-                    case InputCommands.UpLeft:
-                        didPlayerAct = CommandSystem.MovePlayer(Direction.UpLeft);
-                        break;
-                    case InputCommands.Up:
-                        didPlayerAct = CommandSystem.MovePlayer(Direction.Up);
-                        break;
-                    case InputCommands.UpRight:
-                        didPlayerAct = CommandSystem.MovePlayer(Direction.UpRight);
-                        break;
-                    case InputCommands.Left:
-                        didPlayerAct = CommandSystem.MovePlayer(Direction.Left);
-                        break;
-                    case InputCommands.Right:
-                        didPlayerAct = CommandSystem.MovePlayer(Direction.Right);
-                        break;
-                    case InputCommands.DownLeft:
-                        didPlayerAct = CommandSystem.MovePlayer(Direction.DownLeft);
-                        break;
-                    case InputCommands.Down:
-                        didPlayerAct = CommandSystem.MovePlayer(Direction.Down);
-                        break;
-                    case InputCommands.DownRight:
-                        didPlayerAct = CommandSystem.MovePlayer(Direction.DownRight);
-                        break;
-                    case InputCommands.QAbility:
-                        didPlayerAct = Player.QAbility.Perform();
-                        break;
-                    case InputCommands.WAbility:
-                        didPlayerAct = Player.WAbility.Perform();
-                        break;
-                    case InputCommands.EAbility:
-                        didPlayerAct = Player.EAbility.Perform();
-                        break;
-                    case InputCommands.RAbility:
-                        didPlayerAct = Player.RAbility.Perform();
-                        break;
-                    case InputCommands.Item1:
-                        didPlayerAct = CommandSystem.UseItem(1, this);
-                        break;
-                    case InputCommands.Item2:
-                        didPlayerAct = CommandSystem.UseItem(2, this);
-                        break;
-                    case InputCommands.Item3:
-                        didPlayerAct = CommandSystem.UseItem(3, this);
-                        break;
-                    case InputCommands.Item4:
-                        didPlayerAct = CommandSystem.UseItem(4, this);
-                        break;
-                    case InputCommands.StairsDown:
-                        if (World.CanMoveDownToNextLevel())
-                        {
-                            MoveMapLevelDown();
-                            didPlayerAct = true;
-                        }
-                        break;
-                    case InputCommands.CloseGame:
-                        rootConsole.CloseApplication();
-                        break;
-                    default:
-                        break;
+                    rootConsole.CloseApplication();
+                    return;
                 }
-                          
-                if (didPlayerAct)
+                else if(command == InputCommands.StairsDown && World.CanMoveDownToNextLevel())      // Separated command from CommandSystem because want to 
+                {                                                                                   // keep MoveMapLevelDown() private
+                    MoveMapLevelDown();
+                    renderRequired = true;
+                    EndPlayerTurn();
+                }
+                else if(Player.PerformAction(command))
                 {
                     renderRequired = true;
-                    CommandSystem.EndPlayerTurn();
+                    EndPlayerTurn();
                 }
             }
         }
@@ -234,9 +211,9 @@ namespace RogueSharpTutorial.Controller
             rootConsole.GenerateMap(World);
             rootConsole.SetPlayer(Player);
             World.UpdatePlayerFieldOfView(Player);
+            Command.SetGame(this);
             Draw();
             MessageLog = new MessageLog(this);
-            CommandSystem = new CommandSystem(this);
         }
 
         private void StartOver()

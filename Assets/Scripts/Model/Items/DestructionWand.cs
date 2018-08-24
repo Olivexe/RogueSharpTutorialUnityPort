@@ -40,7 +40,7 @@ namespace RogueSharpTutorial.Model
 
                 if (monster != null)
                 {
-                    game.CommandSystem.Attack(voidAttackActor, monster);
+                    Command.Attack(voidAttackActor, monster);
                 }
                 else
                 {
