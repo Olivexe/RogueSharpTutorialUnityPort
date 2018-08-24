@@ -7,6 +7,16 @@
         HandEquipment Hand  { get; set; }
         FeetEquipment Feet  { get; set; }
 
+        IAbility QAbility   { get; set; }
+        IAbility WAbility   { get; set; }
+        IAbility EAbility   { get; set; }
+        IAbility RAbility   { get; set; }
+
+        IItem Item1         { get; set; }
+        IItem Item2         { get; set; }
+        IItem Item3         { get; set; }
+        IItem Item4         { get; set; }
+
         int Attack          { get; set; }
         int AttackChance    { get; set; }
         int Awareness       { get; set; }

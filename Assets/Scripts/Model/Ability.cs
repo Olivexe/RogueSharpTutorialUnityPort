@@ -9,6 +9,7 @@ namespace RogueSharpTutorial.Model
         public string   Name                { get; protected set; }
         public int      TurnsToRefresh      { get; protected set; }
         public int      TurnsUntilRefreshed { get; protected set; }
+        public Actor    Actor               { get; protected set; }
 
         public          Colors Color        { get; set; }
         public char     Symbol              { get; set; }
@@ -54,13 +55,14 @@ namespace RogueSharpTutorial.Model
 
         public bool PickUp(IActor actor)
         {
-            Player player = actor as Player;
-
-            if (player != null)
+            if (actor != null)
             {
-                if (player.AddAbility(this))
+                if (((Actor)actor).AddAbility(this))
                 {
-                    game.MessageLog.Add($"{actor.Name} learned the {Name} ability");
+                    if (actor is Player)
+                    {
+                        game.MessageLog.Add($"{actor.Name} learned the {Name} ability");
+                    }
                     return true;
                 }
             }

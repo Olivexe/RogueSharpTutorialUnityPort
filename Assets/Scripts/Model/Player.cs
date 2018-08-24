@@ -6,16 +6,6 @@ namespace RogueSharpTutorial.Model
 {
     public class Player : Actor
     { 
-        public IAbility QAbility    { get; set; }
-        public IAbility WAbility    { get; set; }
-        public IAbility EAbility    { get; set; }
-        public IAbility RAbility    { get; set; }
-
-        public IItem    Item1       { get; set; }
-        public IItem    Item2       { get; set; }
-        public IItem    Item3       { get; set; }
-        public IItem    Item4       { get; set; }
-
         public int      MonsterScore{ get; set; }
         public int      LevelScore  { get { return game.mapLevel * 2; } }
         public int      GoldScore   { get { return Gold / 5; } }
@@ -75,115 +65,6 @@ namespace RogueSharpTutorial.Model
             }
 
             return false;
-        }
-
-        private bool UseItem(int itemNum, Game game)
-        {
-            bool didUseItem = false;
-
-            if (itemNum == 1)
-            {
-                didUseItem = Item1.Use();
-            }
-            else if (itemNum == 2)
-            {
-                didUseItem = Item2.Use();
-            }
-            else if (itemNum == 3)
-            {
-                didUseItem = Item3.Use();
-            }
-            else if (itemNum == 4)
-            {
-                didUseItem = Item4.Use();
-            }
-
-            if (didUseItem)
-            {
-                RemoveItemsWithNoRemainingUses(game);
-            }
-
-            return didUseItem;
-        }
-
-        private void RemoveItemsWithNoRemainingUses(Game game)
-        {
-            if (Item1.RemainingUses <= 0)
-            {
-                Item1 = new NoItem(game);
-            }
-            if (Item2.RemainingUses <= 0)
-            {
-                Item2 = new NoItem(game);
-            }
-            if (Item3.RemainingUses <= 0)
-            {
-                Item3 = new NoItem(game);
-            }
-            if (Item4.RemainingUses <= 0)
-            {
-                Item4 = new NoItem(game);
-            }
-        }
-
-        public bool AddAbility(IAbility ability)
-        {
-            if (QAbility is DoNothing)
-            {
-                QAbility = ability;
-            }
-            else if (WAbility is DoNothing)
-            {
-                WAbility = ability;
-            }
-            else if (EAbility is DoNothing)
-            {
-                EAbility = ability;
-            }
-            else if (RAbility is DoNothing)
-            {
-                RAbility = ability;
-            }
-            else
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        public bool AddItem(IItem item)
-        {
-            if (Item1 is NoItem)
-            {
-                Item1 = item;
-            }
-            else if (Item2 is NoItem)
-            {
-                Item2 = item;
-            }
-            else if (Item3 is NoItem)
-            {
-                Item3 = item;
-            }
-            else if (Item4 is NoItem)
-            {
-                Item4 = item;
-            }
-            else
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        public void Tick()
-        {
-            QAbility?.Tick();
-            WAbility?.Tick();
-            EAbility?.Tick();
-            RAbility?.Tick();
         }
 
         public void DrawStats()
