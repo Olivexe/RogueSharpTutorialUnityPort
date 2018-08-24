@@ -9,8 +9,7 @@ namespace RogueSharpTutorial.Model
         public string   Name                { get; protected set; }
         public int      TurnsToRefresh      { get; protected set; }
         public int      TurnsUntilRefreshed { get; protected set; }
-        public Actor    Actor               { get; protected set; }
-
+        public Actor    Owner               { get; set; }
         public          Colors Color        { get; set; }
         public char     Symbol              { get; set; }
         public int      X                   { get; set; }
@@ -18,12 +17,13 @@ namespace RogueSharpTutorial.Model
 
         protected Game  game;
 
-        public Ability(Game game)
+        public Ability(Game game, Actor abilityOwner)
         {
             Symbol = '*';
             Color = Colors.Yellow;
 
             this.game = game;
+            Owner = abilityOwner;
         }
 
         public bool Perform()
@@ -53,11 +53,11 @@ namespace RogueSharpTutorial.Model
             }
         }
 
-        public bool PickUp(IActor actor)
+        public bool PickUp(Actor actor)
         {
             if (actor != null)
             {
-                if (((Actor)actor).AddAbility(this))
+                if (actor.AddAbility(this))
                 {
                     if (actor is Player)
                     {

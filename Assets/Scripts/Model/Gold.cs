@@ -22,7 +22,7 @@ namespace RogueSharpTutorial.Model
             this.game   = game;
         }
 
-        public bool PickUp(IActor actor)
+        public bool PickUp(Actor actor)
         {
             actor.Gold += Amount;
             game.MessageLog.Add(actor.Name + " picked up " + Amount + " gold");

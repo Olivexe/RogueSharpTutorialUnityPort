@@ -4,7 +4,7 @@ namespace RogueSharpTutorial.Model
 {
     public class DoNothing : Ability
     {
-        public DoNothing(Game game) : base (game)
+        public DoNothing(Game game, Actor parent) : base (game, parent)
         {
             Name = "None";
             TurnsToRefresh = 0;

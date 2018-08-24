@@ -62,6 +62,17 @@ namespace RogueSharpTutorial.Model
             Body = BodyEquipment.None(game);
             Hand = HandEquipment.None(game);
             Feet = FeetEquipment.None(game);
+
+            QAbility = new DoNothing(game, this);
+            WAbility = new DoNothing(game, this);
+            EAbility = new DoNothing(game, this);
+            RAbility = new DoNothing(game, this);
+
+            Item1 = new NoItem(game);
+            Item2 = new NoItem(game);
+            Item3 = new NoItem(game);
+            Item4 = new NoItem(game);
+
         }
 
         public void Draw(IMap map)
@@ -82,18 +93,22 @@ namespace RogueSharpTutorial.Model
         {
             if (QAbility is DoNothing)
             {
+                ability.Owner = this;
                 QAbility = ability;
             }
             else if (WAbility is DoNothing)
             {
+                ability.Owner = this;
                 WAbility = ability;
             }
             else if (EAbility is DoNothing)
             {
+                ability.Owner = this;
                 EAbility = ability;
             }
             else if (RAbility is DoNothing)
             {
+                ability.Owner = this;
                 RAbility = ability;
             }
             else
@@ -108,18 +123,22 @@ namespace RogueSharpTutorial.Model
         {
             if (Item1 is NoItem)
             {
+                item.Owner = this;
                 Item1 = item;
             }
             else if (Item2 is NoItem)
             {
+                item.Owner = this;
                 Item2 = item;
             }
             else if (Item3 is NoItem)
             {
+                item.Owner = this;
                 Item3 = item;
             }
             else if (Item4 is NoItem)
             {
+                item.Owner = this;
                 Item4 = item;
             }
             else

@@ -4,6 +4,7 @@
     {
         string  Name            { get; }
         int     RemainingUses   { get; }
+        Actor   Owner           { get; set; }
 
         bool Use();
     }

@@ -10,7 +10,7 @@ namespace RogueSharpTutorial.Model
         private readonly int attackChance;
         private readonly int area;
 
-        public Fireball(Game game, int attack, int attackChance, int area) : base (game)
+        public Fireball(Game game, Actor parent, int attack, int attackChance, int area) : base (game, parent)
         {
             Name = "Fireball";
             TurnsToRefresh = 40;
@@ -28,9 +28,8 @@ namespace RogueSharpTutorial.Model
         public void SelectTarget(Point target)
         {
             DungeonMap map  = game.World;
-            Player player   = game.Player;
 
-            game.MessageLog.Add($"{player.Name} casts a {Name}");
+            game.MessageLog.Add($"{Owner.Name} casts a {Name}.");
 
             Actor fireballActor = new Actor (game)
             {

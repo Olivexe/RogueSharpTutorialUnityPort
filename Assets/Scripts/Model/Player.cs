@@ -11,18 +11,7 @@ namespace RogueSharpTutorial.Model
         public int      GoldScore   { get { return Gold / 5; } }
         public int      TotalScore  { get { return MonsterScore + GoldScore + LevelScore; } }
 
-        public Player(Game game) : base(game)
-        {
-            QAbility = new DoNothing(game);
-            WAbility = new DoNothing(game);
-            EAbility = new DoNothing(game);
-            RAbility = new DoNothing(game);
-
-            Item1 = new NoItem(game);
-            Item2 = new NoItem(game);
-            Item3 = new NoItem(game);
-            Item4 = new NoItem(game);
-        }
+        public Player(Game game) : base(game){ }
 
         public override bool PerformAction(InputCommands command)
         {

@@ -9,7 +9,7 @@ namespace RogueSharpTutorial.Model
         private readonly int attack;
         private readonly int attackChance;
 
-        public LightningBolt(Game game, int attack, int attackChance) : base (game)
+        public LightningBolt(Game game, Actor parent, int attack, int attackChance) : base (game, parent)
         {
             Name                = "Lightning Bolt";
             TurnsToRefresh      = 40;
@@ -26,8 +26,7 @@ namespace RogueSharpTutorial.Model
         public void SelectTarget(Point target)
         {
             DungeonMap map = game.World;
-            Player player = game.Player;
-            game.MessageLog.Add($"{player.Name} casts a {Name}");
+            game.MessageLog.Add($"{Owner.Name} casts a {Name}");
 
             Actor lightningBoltActor = new Actor(game)
             {
@@ -36,14 +35,14 @@ namespace RogueSharpTutorial.Model
                 Name        = Name
             };
 
-            foreach (Cell cell in map.GetCellsAlongLine(player.X, player.Y, target.X, target.Y))
+            foreach (Cell cell in map.GetCellsAlongLine(Owner.X, Owner.Y, target.X, target.Y))
             {
                 if (cell.IsWalkable)
                 {
                     continue;
                 }
 
-                if (cell.X == player.X && cell.Y == player.Y)
+                if (cell.X == Owner.X && cell.Y == Owner.Y)
                 {
                     continue;
                 }

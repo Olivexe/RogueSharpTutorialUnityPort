@@ -43,10 +43,10 @@ namespace RogueSharpTutorial.Utilities
                     Speed = 10,
                     Symbol = '@',
 
-                    QAbility = new DoNothing(game),
-                    WAbility = new DoNothing(game),
-                    EAbility = new DoNothing(game),
-                    RAbility = new DoNothing(game),
+                    QAbility = new DoNothing(game, _player),
+                    WAbility = new DoNothing(game, _player),
+                    EAbility = new DoNothing(game, _player),
+                    RAbility = new DoNothing(game, _player),
 
                     Item1 = new NoItem(game),
                     Item2 = new NoItem(game),

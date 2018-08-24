@@ -7,7 +7,7 @@ namespace RogueSharpTutorial.Model
 {
     public class Whirlwind : Ability
     {
-        public Whirlwind(Game game) : base(game)
+        public Whirlwind(Game game, Actor abilityOwner) : base(game, abilityOwner)
         {
             Name = "Whirlwind";
             TurnsToRefresh = 20;

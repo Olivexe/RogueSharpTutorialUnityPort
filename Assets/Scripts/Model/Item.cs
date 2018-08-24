@@ -11,6 +11,7 @@ namespace RogueSharpTutorial.Model
         public  char    Symbol          { get; set; }
         public  int     X               { get; set; }
         public  int     Y               { get; set; }
+        public  Actor   Owner           { get; set; }
         public  string  Name            { get; protected set; }
         public  int     RemainingUses   { get; protected set; }
         
@@ -23,6 +24,14 @@ namespace RogueSharpTutorial.Model
             this.game   = game;
         }
 
+        public Item(Game game, Actor owner)
+        {
+            Symbol = '!';
+            Color = Colors.Yellow;
+            this.game = game;
+            Owner = owner;
+        }
+
         public bool Use()
         {
             return UseItem();
@@ -33,15 +42,13 @@ namespace RogueSharpTutorial.Model
             return false;
         }
 
-        public bool PickUp(IActor actor)
+        public bool PickUp(Actor actor)
         {
-            Player player = actor as Player;
-
-            if (player != null)
+            if (actor != null)
             {
-                if (player.AddItem(this))
+                if (actor.AddItem(this))
                 {
-                    game.MessageLog.Add($"{actor.Name} picked up {Name}");
+                    game.MessageLog.Add($"{actor.Name} picked up {Name}.");
                     return true;
                 }
             }

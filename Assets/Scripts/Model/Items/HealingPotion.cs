@@ -15,7 +15,7 @@ namespace RogueSharpTutorial.Model
             int healAmount = 15;
             game.MessageLog.Add($"{game.Player.Name} consumes a {Name} and recovers {healAmount} health");
 
-            Heal heal = new Heal(game, healAmount);
+            Heal heal = new Heal(game, Owner, healAmount);
 
             RemainingUses--;
 

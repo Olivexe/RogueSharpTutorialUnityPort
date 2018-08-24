@@ -9,7 +9,7 @@ namespace RogueSharpTutorial.Model
     {
         private readonly int revealDistance;
 
-        public RevealMap(Game game, int revealDistance) : base (game)
+        public RevealMap(Game game, Actor abilityOwner, int revealDistance) : base (game, abilityOwner)
         {
             Name                = "Reveal Map";
             TurnsToRefresh      = 100;

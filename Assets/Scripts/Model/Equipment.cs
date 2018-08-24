@@ -93,7 +93,7 @@ namespace RogueSharpTutorial.Model
             return !Equals(left, right);
         }
 
-        public bool PickUp(IActor actor)
+        public bool PickUp(Actor actor)
         {
             if (this is HeadEquipment)
             {

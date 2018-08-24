@@ -7,7 +7,7 @@ namespace RogueSharpTutorial.Model
     {
         private readonly int amountToHeal;
 
-        public Heal(Game game, int amountToHeal) : base (game)
+        public Heal(Game game, Actor parent, int amountToHeal) : base (game, parent)
         {
             Name = "Heal Self";
             TurnsToRefresh = 60;

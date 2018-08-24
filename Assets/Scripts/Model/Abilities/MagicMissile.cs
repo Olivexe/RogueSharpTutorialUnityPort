@@ -9,7 +9,7 @@ namespace RogueSharpTutorial.Model
         private readonly int attack;
         private readonly int attackChance;
 
-        public MagicMissile(Game game, int attack, int attackChance) : base(game)
+        public MagicMissile(Game game, Actor parent, int attack, int attackChance) : base(game, parent)
         {
             Name                = "Magic Missile";
             TurnsToRefresh      = 10;

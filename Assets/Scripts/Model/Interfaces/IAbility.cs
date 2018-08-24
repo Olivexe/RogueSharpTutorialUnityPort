@@ -5,7 +5,7 @@
         string  Name                { get; }
         int     TurnsToRefresh      { get; }
         int     TurnsUntilRefreshed { get; }
-        Actor   Actor               { get; }
+        Actor   Owner               { get; set; }
 
         bool Perform();
         void Tick();
