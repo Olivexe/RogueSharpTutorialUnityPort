@@ -8,6 +8,12 @@ namespace RogueSharpTutorial.Model
         private int? turnsSpentRunning  = null;
         private bool shoutedForHelp     = false;
 
+        // Behaviors
+        private FullyHeal               fullyHeal;
+        private RunAway                 runAway;
+        private ShoutForHelp            shoutForHelp;
+        private StandardMoveAndAttack   standardMoveAndAttack;
+
         public Goblin(Game game) : base(game) { }
 
         public static Goblin Create(Game game, int level)
@@ -25,26 +31,40 @@ namespace RogueSharpTutorial.Model
                 Gold            = Dice.Roll("1D20") + (level * 2),
                 Health          = health,
                 MaxHealth       = health,
-                Name            = "Goblin",
+                Name            = "goblin",
                 Speed           = 12,
-                Symbol          = 'g'
+                Symbol          = 'g',
+                IsAggressive    = true,
+                fullyHeal       = new FullyHeal(),
+                runAway         = new RunAway(),
+                shoutForHelp    = new ShoutForHelp(),
+                standardMoveAndAttack = new StandardMoveAndAttack(),
             };
+        }
+
+        public override void SetBehavior()
+        {
+            fullyHeal.SetBehavior(Game, this);
+            runAway.SetBehavior(Game, this);
+            shoutForHelp.SetBehavior(Game, this);
+            standardMoveAndAttack.SetBehavior(Game, this);
         }
 
         public override bool PerformAction(InputCommands command)
         {
-            var fullyHealBehavior       = new FullyHeal();
-            var runAwayBehavior         = new RunAway();
-            var shoutForHelpBehavior    = new ShoutForHelp();
+            FieldOfView.ComputeFov(X, Y, Awareness, true);
+            bool isPlayerInView = FieldOfView.IsInFov(Game.Player.X, Game.Player.Y);
+
+            CommonActions.UpdateAlertStatus(this, isPlayerInView);
 
             if (turnsSpentRunning.HasValue && turnsSpentRunning.Value > 15)
             {
-                fullyHealBehavior.Act(this, game);
+                fullyHeal.Act();
                 turnsSpentRunning = null;
             }
-            else if (Health < (MaxHealth / 2))
+            else if (Health < (MaxHealth * .67))
             {
-                runAwayBehavior.Act(this, game);
+                runAway.Act();
 
                 if (turnsSpentRunning.HasValue)
                 {
@@ -57,12 +77,12 @@ namespace RogueSharpTutorial.Model
 
                 if (!shoutedForHelp)
                 {
-                    shoutedForHelp = shoutForHelpBehavior.Act(this, game);
+                    shoutedForHelp = shoutForHelp.Act();
                 }
             }
-            else
+            else if (TurnsAlerted.HasValue)
             {
-                base.PerformAction(command);
+                standardMoveAndAttack.Act();
             }
 
             return true;

@@ -6,19 +6,26 @@ namespace RogueSharpTutorial.Model
 {
     public class ShoutForHelp : IBehavior
     {
-        public bool Act(Actor actor, Game game)
+        public Actor        Parent  { get; private set; }
+        public Game         Game    { get; private set; }
+        public DungeonMap   World   { get; private set; }
+
+        public void SetBehavior(Game game, Actor parent)
+        {
+            Game = game;
+            Parent = parent;
+            World = game.World;
+        }
+
+        public bool Act()
         {
             bool didShoutForHelp = false;
-            DungeonMap dungeonMap = game.World;
-            FieldOfView monsterFov = new FieldOfView(dungeonMap);
 
-            monsterFov.ComputeFov(actor.X, actor.Y, actor.Awareness, true);
-
-            foreach (var monsterLocation in dungeonMap.GetMonsterLocations())
+            foreach (var monsterLocation in World.GetMonsterLocations())
             {
-                if (monsterFov.IsInFov(monsterLocation.X, monsterLocation.Y))
+                if (Parent.FieldOfView.IsInFov(monsterLocation.X, monsterLocation.Y))
                 {
-                    Monster alertedMonster = dungeonMap.GetMonsterAt(monsterLocation.X, monsterLocation.Y);
+                    Monster alertedMonster = World.GetMonsterAt(monsterLocation.X, monsterLocation.Y);
                     if (!alertedMonster.TurnsAlerted.HasValue)
                     {
                         alertedMonster.TurnsAlerted = 1;
@@ -29,7 +36,7 @@ namespace RogueSharpTutorial.Model
 
             if (didShoutForHelp)
             {
-                game.MessageLog.Add($"{actor.Name} shouts for help!");
+                Game.MessageLog.Add($"{Parent.Name} shouts for help!");
             }
 
             return didShoutForHelp;

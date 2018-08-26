@@ -19,6 +19,8 @@ namespace RogueSharpTutorial.Model
         private readonly List<Monster>          monsters;
         private readonly List<TreasurePile>     treasurePiles;
 
+        public  bool                            stairsBlocked   { get; private set; }
+
         public DungeonMap (Game game)
         {
             this.game       = game;
@@ -43,6 +45,19 @@ namespace RogueSharpTutorial.Model
         }
 
         /// <summary>
+        /// Set all the monsters links to the dungeon map and field of view. Have to do it this way as the monsters are created 
+        /// before the map is fully created and returned to the Game. And therefore field of view is initialized properly.
+        /// </summary>
+        public void SetMonsters()
+        {
+            foreach(Monster actor in monsters)
+            {
+                actor.SetMapAwareness();
+                actor.SetBehavior();
+            }
+        }
+
+        /// <summary>
         /// Add a monster to the map and add to list of Monsters.
         /// </summary>
         /// <param name="monster"></param>
@@ -51,6 +66,12 @@ namespace RogueSharpTutorial.Model
             monsters.Add(monster);
             
             SetIsWalkable(monster.X, monster.Y, false);                                         // After adding the monster to the map make sure to make the cell not walkable
+
+            if(monster.IsBoss)
+            {
+                stairsBlocked = true;
+            }
+
             game.SchedulingSystem.Add(monster);
         }
 
@@ -60,6 +81,10 @@ namespace RogueSharpTutorial.Model
         /// <param name="monster"></param>
         public void RemoveMonster(Monster monster)
         {
+            if(monster.IsBoss)
+            {
+                stairsBlocked = false;
+            }
             monsters.Remove(monster);            
             SetIsWalkable(monster.X, monster.Y, true);                                          // After removing the monster from the map, make sure the cell is walkable again
             game.SchedulingSystem.Remove(monster);
@@ -74,6 +99,23 @@ namespace RogueSharpTutorial.Model
         public Monster GetMonsterAt(int x, int y)
         {
             return monsters.FirstOrDefault(m => m.X == x && m.Y == y);
+        }
+
+        /// <summary>
+        /// Get who is the boss monster of the level if there is one.
+        /// </summary>
+        /// <returns></returns>
+        public Monster WhoIsBoss()
+        {
+            foreach(Monster monster in monsters)
+            {
+                if (monster.IsBoss)
+                {
+                    return monster;
+                }
+            }
+
+            return null;
         }
 
         /// <summary>

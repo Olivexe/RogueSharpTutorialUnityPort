@@ -6,16 +6,26 @@ namespace RogueSharpTutorial.Model
 {
     public class RunAway : IBehavior
     {
-        public bool Act(Actor monster, Game game)
+        public Actor        Parent  { get; private set; }
+        public Game         Game    { get; private set; }
+        public DungeonMap   World   { get; private set; }
+
+        public void SetBehavior(Game game, Actor parent)
         {
-            DungeonMap dungeonMap = game.World;
-            Player player = game.Player;
+            Game = game;
+            Parent = parent;
+            World = game.World;
+        }
+
+        public bool Act()
+        {
+            Player player = Game.Player;
 
             // Set the cells the monster and player are on to walkable so the pathfinder doesn't bail early
-            dungeonMap.SetIsWalkable(monster.X, monster.Y, true);
-            dungeonMap.SetIsWalkable(player.X, player.Y, true);
+            World.SetIsWalkable(Parent.X, Parent.Y, true);
+            World.SetIsWalkable(player.X, player.Y, true);
 
-            GoalMap goalMap = new GoalMap(dungeonMap);
+            GoalMap goalMap = new GoalMap(World);
 
             goalMap.AddGoal(player.X, player.Y, 0);
 
@@ -23,27 +33,27 @@ namespace RogueSharpTutorial.Model
 
             try
             {
-                path = goalMap.FindPathAvoidingGoals(monster.X, monster.Y);
+                path = goalMap.FindPathAvoidingGoals(Parent.X, Parent.Y);
             }
             catch (PathNotFoundException)
             {
-                game.MessageLog.Add($"{monster.Name} cowers in fear");
+                Game.MessageLog.Add($"{Parent.Name} cowers in fear");
             }
 
 
             // Reset the cell the monster and player are on  back to not walkable
-            dungeonMap.SetIsWalkable(monster.X, monster.Y, false);
-            dungeonMap.SetIsWalkable(player.X, player.Y, false);
+            World.SetIsWalkable(Parent.X, Parent.Y, false);
+            World.SetIsWalkable(player.X, player.Y, false);
 
             if (path != null)
             {
                 try
                 {
-                    Command.Move(monster, path.StepForward().X, path.StepForward().Y);
+                    Command.Move(Parent, path.StepForward().X, path.StepForward().Y);
                 }
                 catch (NoMoreStepsException)
                 {
-                    game.MessageLog.Add($"{monster.Name} cowers in fear");
+                    Game.MessageLog.Add($"{Parent.Name} cowers in fear");
                 }
             }
 

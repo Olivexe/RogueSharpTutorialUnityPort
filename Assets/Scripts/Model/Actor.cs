@@ -8,24 +8,24 @@ namespace RogueSharpTutorial.Model
     public class Actor : IActor, IDrawable, IScheduleable
     {
         // IActor
-        public string   Name            { get; set; }
-        public int      Gold            { get; set; }
-        public int      Health          { get; set; }
+        public string   Name                { get; set; }
+        public int      Gold                { get; set; }
+        public int      Health              { get; set; }
 
         private int     attack;
-        public  int     Attack          { get { return attack + Head.Attack + Body.Attack + Hand.Attack + Feet.Attack; } set { attack = value; } }
+        public  int     Attack              { get { return attack + Head.Attack + Body.Attack + Hand.Attack + Feet.Attack; }                set { attack = value; } }
         private int     attackChance;
-        public  int     AttackChance    { get { return attackChance + Head.AttackChance + Body.AttackChance + Hand.AttackChance + Feet.AttackChance; } set { attackChance = value; } }
+        public  int     AttackChance        { get { return attackChance + Head.AttackChance + Body.AttackChance + Hand.AttackChance + Feet.AttackChance; } set { attackChance = value; } }
         private int     defense;
-        public  int     Defense         { get { return defense + Head.Defense + Body.Defense + Hand.Defense + Feet.Defense; } set { defense = value; } }
+        public  int     Defense             { get { return defense + Head.Defense + Body.Defense + Hand.Defense + Feet.Defense; }           set { defense = value; } }
         private int     defenseChance;
-        public  int     DefenseChance   { get { return defenseChance + Head.DefenseChance + Body.DefenseChance + Hand.DefenseChance + Feet.DefenseChance; } set { defenseChance = value; } }
+        public  int     DefenseChance       { get { return defenseChance + Head.DefenseChance + Body.DefenseChance + Hand.DefenseChance + Feet.DefenseChance; } set { defenseChance = value; } }
         private int     maxHealth;
-        public  int     MaxHealth       { get { return maxHealth + Head.MaxHealth + Body.MaxHealth + Hand.MaxHealth + Feet.MaxHealth; } set { maxHealth = value; } }
+        public  int     MaxHealth           { get { return maxHealth + Head.MaxHealth + Body.MaxHealth + Hand.MaxHealth + Feet.MaxHealth; } set { maxHealth = value; } }
         private int     speed;
-        public  int     Speed           { get { return speed + Head.Speed + Body.Speed + Hand.Speed + Feet.Speed; } set { speed = value; } }
+        public  int     Speed               { get { return speed + Head.Speed + Body.Speed + Hand.Speed + Feet.Speed; }                     set { speed = value; } }
         private int     awareness;
-        public  int     Awareness       { get { return awareness + Head.Awareness + Body.Awareness + Hand.Awareness + Feet.Awareness; } set { awareness = value; } }
+        public  int     Awareness           { get { return awareness + Head.Awareness + Body.Awareness + Hand.Awareness + Feet.Awareness; } set { awareness = value; } }
 
         public  HeadEquipment   Head        { get; set; }
         public  BodyEquipment   Body        { get; set; }
@@ -42,37 +42,43 @@ namespace RogueSharpTutorial.Model
         public IItem            Item3       { get; set; }
         public IItem            Item4       { get; set; }
 
-
         // IDrawable
-        public  Colors  Color           { get; set; }
-        public  char    Symbol          { get; set; }
-        public  int     X               { get; set; }
-        public  int     Y               { get; set; }
+        public  Colors          Color       { get; set; }
+        public  char            Symbol      { get; set; }
+        public  int             X           { get; set; }
+        public  int             Y           { get; set; }
 
         // Ischeduleable
-        public  int     Time            { get {return Speed;} }
+        public  int             Time        { get {return Speed;} }
 
-        protected Game  game;
+        public Game          Game           { get; protected set; }
+        public DungeonMap    world          { get; protected set; }
+        public FieldOfView   FieldOfView    { get; protected set; }
 
         public Actor(Game game)
         {
-            this.game = game;
+            Game = game;
 
-            Head = HeadEquipment.None(game);
-            Body = BodyEquipment.None(game);
-            Hand = HandEquipment.None(game);
-            Feet = FeetEquipment.None(game);
+            Head        = HeadEquipment.None(game);
+            Body        = BodyEquipment.None(game);
+            Hand        = HandEquipment.None(game);
+            Feet        = FeetEquipment.None(game);
 
-            QAbility = new DoNothing(game, this);
-            WAbility = new DoNothing(game, this);
-            EAbility = new DoNothing(game, this);
-            RAbility = new DoNothing(game, this);
+            QAbility    = new DoNothing(game, this);
+            WAbility    = new DoNothing(game, this);
+            EAbility    = new DoNothing(game, this);
+            RAbility    = new DoNothing(game, this);
 
-            Item1 = new NoItem(game);
-            Item2 = new NoItem(game);
-            Item3 = new NoItem(game);
-            Item4 = new NoItem(game);
+            Item1       = new NoItem(game);
+            Item2       = new NoItem(game);
+            Item3       = new NoItem(game);
+            Item4       = new NoItem(game);
+        }
 
+        public void SetMapAwareness()
+        {
+            world = Game.World;
+            FieldOfView = new FieldOfView(world);
         }
 
         public void Draw(IMap map)
@@ -80,12 +86,12 @@ namespace RogueSharpTutorial.Model
             // Only draw the actor with the color and symbol when they are in field-of-view
             if (map.IsInFov(X, Y))
             {
-                game.SetMapCell(X, Y, Color, Colors.FloorBackgroundFov, Symbol, map.GetCell(X, Y).IsExplored);
+                Game.SetMapCell(X, Y, Color, Colors.FloorBackgroundFov, Symbol, map.GetCell(X, Y).IsExplored);
             }
             else
             {
                 // When not in field-of-view just draw a normal floor
-                game.SetMapCell(X, Y, Colors.Floor, Colors.FloorBackground, '.', map.GetCell(X, Y).IsExplored);
+                Game.SetMapCell(X, Y, Colors.Floor, Colors.FloorBackground, '.', map.GetCell(X, Y).IsExplored);
             }
         }
 
@@ -149,52 +155,56 @@ namespace RogueSharpTutorial.Model
             return true;
         }
 
-        protected bool UseItem(int itemNum, Game game)
+        protected bool UseItem(int itemNum)
         {
             bool didUseItem = false;
 
             if (itemNum == 1)
             {
+                if (Item1.Owner == null) Item1.Owner = this;
                 didUseItem = Item1.Use();
             }
             else if (itemNum == 2)
             {
+                if (Item2.Owner == null) Item2.Owner = this;
                 didUseItem = Item2.Use();
             }
             else if (itemNum == 3)
             {
+                if (Item3.Owner == null) Item3.Owner = this;
                 didUseItem = Item3.Use();
             }
             else if (itemNum == 4)
             {
+                if (Item4.Owner == null) Item4.Owner = this;
                 didUseItem = Item4.Use();
             }
 
             if (didUseItem)
             {
-                RemoveItemsWithNoRemainingUses(game);
+                RemoveItemsWithNoRemainingUses();
             }
 
             return didUseItem;
         }
 
-        private void RemoveItemsWithNoRemainingUses(Game game)
+        public void RemoveItemsWithNoRemainingUses()
         {
             if (Item1.RemainingUses <= 0)
             {
-                Item1 = new NoItem(game);
+                Item1 = new NoItem(Game);
             }
             if (Item2.RemainingUses <= 0)
             {
-                Item2 = new NoItem(game);
+                Item2 = new NoItem(Game);
             }
             if (Item3.RemainingUses <= 0)
             {
-                Item3 = new NoItem(game);
+                Item3 = new NoItem(Game);
             }
             if (Item4.RemainingUses <= 0)
             {
-                Item4 = new NoItem(game);
+                Item4 = new NoItem(Game);
             }
         }
 
@@ -208,8 +218,7 @@ namespace RogueSharpTutorial.Model
 
         public virtual bool PerformAction(InputCommands command)
         {
-            var     behavior = new StandardMoveAndAttack();
-            return  behavior.Act(this, game);
+            return false;
         }
     }
 }

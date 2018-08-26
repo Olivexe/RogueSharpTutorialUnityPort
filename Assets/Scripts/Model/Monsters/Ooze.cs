@@ -5,6 +5,9 @@ namespace RogueSharpTutorial.Model
 {
     public class Ooze : Monster
     {
+        private SplitOoze               splitOoze;
+        private StandardMoveAndAttack   standardMoveAndAttack;
+
         public Ooze(Game game) : base(game) { }
 
         public static Ooze Create(Game game, int level)
@@ -22,19 +25,34 @@ namespace RogueSharpTutorial.Model
                 Gold            = Dice.Roll("1D20") + (level * 2),
                 Health          = health,
                 MaxHealth       = health,
-                Name            = "Ooze",
+                Name            = "ooze",
                 Speed           = 14,
-                Symbol          = 'o'
+                Symbol          = 'o',
+                IsAggressive    = true,
+                splitOoze       = new SplitOoze(),
+                standardMoveAndAttack = new StandardMoveAndAttack()
             };
+        }
+
+        public override void SetBehavior()
+        {
+            splitOoze.SetBehavior(Game, this);
+            standardMoveAndAttack.SetBehavior(Game, this);
         }
 
         public override bool PerformAction(InputCommands command)
         {
-            var splitOozeBehavior = new SplitOoze();
+            FieldOfView.ComputeFov(X, Y, Awareness, true);
+            bool isPlayerInView = FieldOfView.IsInFov(Game.Player.X, Game.Player.Y);
 
-            if (!splitOozeBehavior.Act(this, game))
+            CommonActions.UpdateAlertStatus(this, isPlayerInView);
+
+            if (!splitOoze.Act())
             {
-                base.PerformAction(command);
+                if (TurnsAlerted.HasValue)
+                {
+                    standardMoveAndAttack.Act();
+                }
             }
 
             return true;

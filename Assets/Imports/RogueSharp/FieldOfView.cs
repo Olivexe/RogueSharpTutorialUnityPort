@@ -10,7 +10,7 @@ namespace RogueSharp
    /// <seealso href="https://sites.google.com/site/jicenospam/visibilitydetermination">Based on the visibility determination algorithm described here</seealso>
    public class FieldOfView
    {
-      private readonly IMap _map;
+      public readonly IMap _map;
       private readonly HashSet<int> _inFov;
 
       /// <summary>

@@ -6,33 +6,38 @@ namespace RogueSharpTutorial.Model
 {
     public class SplitOoze : IBehavior
     {
-        public bool Act(Actor actor, Game game)
-        {
-            DungeonMap map = game.World;
+        public Actor Parent { get; private set; }
+        public Game Game { get; private set; }
+        public DungeonMap World { get; private set; }
 
-            // Ooze only splits when wounded
-            if (actor.Health >= actor.MaxHealth)
+        public void SetBehavior(Game game, Actor parent)
+        {
+            Game = game;
+            Parent = parent;
+            World = game.World;
+        }
+
+        public bool Act()
+        {
+            if (Parent.Health >= Parent.MaxHealth)                          // Ooze only splits when wounded
             {
                 return false;
             }
 
-            int halfHealth = actor.MaxHealth / 2;
+            int halfHealth = Parent.MaxHealth / 2;
             if (halfHealth <= 0)
             {
-                // Health would be too low so bail out
-                return false;
+                return false;                                               // Health would be too low so bail out
             }
 
-            Cell cell = FindClosestUnoccupiedCell(map, actor.X, actor.Y);
+            Cell cell = FindClosestUnoccupiedCell(World, Parent.X, Parent.Y);
 
             if (cell == null)
             {
-                // No empty cells so bail out
-                return false;
+                return false;                                               // No empty cells so bail out
             }
 
-            // Make a new ooze with half the health of the old one
-            Ooze newOoze = Monster.Clone(game, actor as Monster) as Ooze;
+            Ooze newOoze = Monster.Clone(Game, Parent as Monster) as Ooze;  // Make a new ooze with half the health of the old one
 
             if (newOoze != null)
             {
@@ -41,18 +46,16 @@ namespace RogueSharpTutorial.Model
                 newOoze.Y = cell.Y;
                 newOoze.MaxHealth = halfHealth;
                 newOoze.Health = halfHealth;
-                map.AddMonster(newOoze);
-                game.MessageLog.Add($"{actor.Name} splits itself in two");
+                World.AddMonster(newOoze);
+                Game.MessageLog.Add($"{Parent.Name} splits itself in two");
             }
             else
             {
-                // Not an ooze so bail out
-                return false;
+                return false;                                               // Not an ooze so bail out
             }
 
-            // Halve the original ooze's health too
-            actor.MaxHealth = halfHealth;
-            actor.Health = halfHealth;
+            Parent.MaxHealth = halfHealth;                                  // Halve the original ooze's health too       
+            Parent.Health = halfHealth;
 
             return true;
         }

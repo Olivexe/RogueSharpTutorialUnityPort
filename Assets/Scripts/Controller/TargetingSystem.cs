@@ -11,10 +11,10 @@ namespace RogueSharpTutorial.Controller
     {
         private enum SelectionType
         {
-            None = 0,
-            Target = 1,
-            Area = 2,
-            Line = 3
+            None    = 0,
+            Target  = 1,
+            Area    = 2,
+            Line    = 3
         }
 
         public  bool            IsPlayerTargeting   { get; private set; }
@@ -46,7 +46,6 @@ namespace RogueSharpTutorial.Controller
                 StopTargeting();
                 return false;
             }
-            UnityEngine.Debug.Log("Found targets");
             IsPlayerTargeting = true;
             return true;
         }

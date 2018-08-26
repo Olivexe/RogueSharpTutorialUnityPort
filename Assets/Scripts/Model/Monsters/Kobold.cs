@@ -5,6 +5,8 @@ namespace RogueSharpTutorial.Model
 {
     public class Kobold : Monster
     {
+        private StandardMoveAndAttack standardMoveAndAttack;
+
         public Kobold(Game game) : base(game) { }
 
         public static Kobold Create(Game game, int level)
@@ -22,10 +24,33 @@ namespace RogueSharpTutorial.Model
                 Gold            = Dice.Roll("5D5") + (level * 2),
                 Health          = health,
                 MaxHealth       = health,
-                Name            = "Kobold",
+                Name            = "kobold",
                 Speed           = 14,
-                Symbol          = 'k'
+                Symbol          = 'k',
+                IsAggressive    = true,
+                standardMoveAndAttack = new StandardMoveAndAttack()
+
             };
+        }
+
+        public override void SetBehavior()
+        {
+            standardMoveAndAttack.SetBehavior(Game, this);
+        }
+
+        public override bool PerformAction(InputCommands command)
+        {
+            FieldOfView.ComputeFov(X, Y, Awareness, true);
+            bool isPlayerInView = FieldOfView.IsInFov(Game.Player.X, Game.Player.Y);
+
+            CommonActions.UpdateAlertStatus(this, isPlayerInView);
+
+            if (TurnsAlerted.HasValue)
+            {
+                standardMoveAndAttack.Act();
+            }
+
+            return true;
         }
     }
 }

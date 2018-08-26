@@ -7,7 +7,7 @@ namespace RogueSharpTutorial.Model
     public class Player : Actor
     { 
         public int      MonsterScore{ get; set; }
-        public int      LevelScore  { get { return game.mapLevel * 2; } }
+        public int      LevelScore  { get { return Game.mapLevel * 2; } }
         public int      GoldScore   { get { return Gold / 5; } }
         public int      TotalScore  { get { return MonsterScore + GoldScore + LevelScore; } }
 
@@ -42,13 +42,13 @@ namespace RogueSharpTutorial.Model
                 case InputCommands.RAbility:
                     return RAbility.Perform();
                 case InputCommands.Item1:
-                    return UseItem(1, game);
+                    return UseItem(1);
                 case InputCommands.Item2:
-                    return UseItem(2, game);
+                    return UseItem(2);
                 case InputCommands.Item3:
-                    return UseItem(3, game);
+                    return UseItem(3);
                 case InputCommands.Item4:
-                    return UseItem(4, game);
+                    return UseItem(4);
                 default:
                     break;
             }
@@ -58,8 +58,8 @@ namespace RogueSharpTutorial.Model
 
         public void DrawStats()
         {
-            game.DrawPlayerStats();
-            game.DrawPlayerInventory();
+            Game.DrawPlayerStats();
+            Game.DrawPlayerInventory();
         }
     }
 }

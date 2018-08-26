@@ -254,8 +254,12 @@ namespace RogueSharpTutorial.Model
         private void PlaceMonsters()
         {
             for (int j = 1; j < map.Rooms.Count; j++)                                       // Not starting at zero. Player is in room zero.
-            {             
-                if (Dice.Roll("1D10") < 7)                                                  // Each room has a 60% chance of having monsters
+            {
+                if (level == 5 && j == map.Rooms.Count - 1)                             // Add special boss Barbarian monster
+                {
+                    map.AddMonster(ActorGenerator.CreateBarbarian(game, level, map.GetRandomLocationInRoom(map.Rooms[j])));
+                }
+                else if (Dice.Roll("1D10") < 7)                                                  // Each room has a 60% chance of having monsters
                 {
                     var numberOfMonsters = Dice.Roll("1D4");
                     for (int i = 0; i < numberOfMonsters; i++)

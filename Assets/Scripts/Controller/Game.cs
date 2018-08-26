@@ -46,6 +46,7 @@ namespace RogueSharpTutorial.Controller
             GenerateMap();
             rootConsole.SetPlayer(Player);
             World.UpdatePlayerFieldOfView(Player);
+            World.SetMonsters();
             Command.SetGame(this);
 
             Player.Item1 = new RevealMapScroll(this);
@@ -191,9 +192,23 @@ namespace RogueSharpTutorial.Controller
                 }
                 else if(command == InputCommands.StairsDown && World.CanMoveDownToNextLevel())      // Separated command from CommandSystem because want to 
                 {                                                                                   // keep MoveMapLevelDown() private
-                    MoveMapLevelDown();
-                    renderRequired = true;
-                    EndPlayerTurn();
+                    if (World.stairsBlocked)
+                    {
+                        if (World.WhoIsBoss() != null)
+                        {
+                            MessageLog.Add($"The {World.WhoIsBoss().Name} is blocking the stairs down.");
+                        }
+                        else
+                        {
+                            MessageLog.Add($"Something is blocking the stairs down.");
+                        }
+                    }
+                    else
+                    {
+                        MoveMapLevelDown();
+                        renderRequired = true;
+                        EndPlayerTurn();
+                    }
                 }
                 else if(Player.PerformAction(command))
                 {
@@ -211,6 +226,7 @@ namespace RogueSharpTutorial.Controller
             rootConsole.GenerateMap(World);
             rootConsole.SetPlayer(Player);
             World.UpdatePlayerFieldOfView(Player);
+            World.SetMonsters();
             Command.SetGame(this);
             Draw();
             MessageLog = new MessageLog(this);

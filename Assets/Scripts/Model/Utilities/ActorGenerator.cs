@@ -22,6 +22,43 @@ namespace RogueSharpTutorial.Utilities
             return monster;
         }
 
+        public static Monster CreateMonster(MonsterList monsterName, Game game, int level, Point location)
+        {
+            Monster monster;
+
+            switch(monsterName)
+            {
+                case MonsterList.goblin:
+                    monster = Goblin.Create(game, level);
+                    break;
+                case MonsterList.kobold:
+                    monster = Kobold.Create(game, level);
+                    break;
+                case MonsterList.ooze:
+                    monster = Ooze.Create(game, level);
+                    break;
+                default:
+                    monster = null;
+                    break;
+            }
+            if(monster != null)
+            {
+                monster.X = location.X;
+                monster.Y = location.Y;
+            }
+
+            return monster;
+        }
+
+        public static Monster CreateBarbarian(Game game, int level, Point location)
+        {
+            Monster barbarian = Barbarian.Create(game, level);
+            barbarian.X = location.X;
+            barbarian.Y = location.Y;
+
+            return barbarian;
+        }
+
         public static Player CreatePlayer(Game game)
         {
             _player = game.Player;
