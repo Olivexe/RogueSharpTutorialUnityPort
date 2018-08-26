@@ -57,7 +57,7 @@ namespace RogueSharpTutorial.Model
 
         public Actor(Game game)
         {
-            Game = game;
+            Game        = game;
 
             Head        = HeadEquipment.None(game);
             Body        = BodyEquipment.None(game);

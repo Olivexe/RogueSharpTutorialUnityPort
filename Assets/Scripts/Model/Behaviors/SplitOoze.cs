@@ -1,4 +1,5 @@
 ﻿using RogueSharp;
+using RogueSharpTutorial.Utilities;
 using RogueSharpTutorial.Model.Interfaces;
 using RogueSharpTutorial.Controller;
 
@@ -6,9 +7,9 @@ namespace RogueSharpTutorial.Model
 {
     public class SplitOoze : IBehavior
     {
-        public Actor Parent { get; private set; }
-        public Game Game { get; private set; }
-        public DungeonMap World { get; private set; }
+        public Actor        Parent  { get; private set; }
+        public Game         Game    { get; private set; }
+        public DungeonMap   World   { get; private set; }
 
         public void SetBehavior(Game game, Actor parent)
         {
@@ -37,16 +38,17 @@ namespace RogueSharpTutorial.Model
                 return false;                                               // No empty cells so bail out
             }
 
-            Ooze newOoze = Monster.Clone(Game, Parent as Monster) as Ooze;  // Make a new ooze with half the health of the old one
+            Monster newOoze = ActorGenerator.CreateMonster(MonsterList.ooze, Game, Game.mapLevel, new Point(cell.X, cell.Y));
 
             if (newOoze != null)
             {
+                //newOoze.Game = Game;
                 newOoze.TurnsAlerted = 1;
-                newOoze.X = cell.X;
-                newOoze.Y = cell.Y;
                 newOoze.MaxHealth = halfHealth;
                 newOoze.Health = halfHealth;
                 World.AddMonster(newOoze);
+                newOoze.SetMapAwareness();
+                newOoze.SetBehavior();
                 Game.MessageLog.Add($"{Parent.Name} splits itself in two");
             }
             else

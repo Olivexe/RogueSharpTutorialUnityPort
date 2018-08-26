@@ -41,6 +41,8 @@ namespace RogueSharpTutorial.Model
 
                 // Make a new ooze with half the health of the old one
                 Monster monster = ActorGenerator.CreateMonster(monsterToSummon, Game, Game.mapLevel, new Point(cell.X, cell.Y));
+                monster.SetMapAwareness();
+                monster.SetBehavior();
 
                 if (monster != null)
                 {

@@ -14,6 +14,7 @@ namespace RogueSharpTutorial.Model
         {
             return new Ooze(game)
             {
+                Game            = game,
                 Attack          = anotherMonster.Attack,
                 AttackChance    = anotherMonster.AttackChance,
                 Awareness       = anotherMonster.Awareness,
