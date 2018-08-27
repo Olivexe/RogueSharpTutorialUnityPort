@@ -22,7 +22,7 @@ namespace RogueSharpTutorial.Model
             {
                 Attack              = 3,
                 AttackChance        = 65,
-                Awareness           = 10,
+                Awareness           = 8,
                 Color               = Colors.GoblinColor,
                 Defense             = 3,
                 DefenseChance       = 55,

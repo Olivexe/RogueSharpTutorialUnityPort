@@ -69,7 +69,7 @@ namespace RogueSharpTutorial.Utilities
                 {
                     Attack = 2,
                     AttackChance = 50,
-                    Awareness = 15,
+                    Awareness = 7,
                     Color = Colors.Player,
                     Defense = 2,
                     DefenseChance = 40,

@@ -42,7 +42,6 @@ namespace RogueSharpTutorial.Model
 
             if (newOoze != null)
             {
-                //newOoze.Game = Game;
                 newOoze.TurnsAlerted = 1;
                 newOoze.MaxHealth = halfHealth;
                 newOoze.Health = halfHealth;

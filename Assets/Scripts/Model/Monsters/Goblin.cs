@@ -24,7 +24,7 @@ namespace RogueSharpTutorial.Model
             {
                 Attack          = Dice.Roll("1D2") + (level / 3),
                 AttackChance    = Dice.Roll("10D5") + (level / 3),
-                Awareness       = 10,
+                Awareness       = 6,
                 Color           = Colors.GoblinColor,
                 Defense         = Dice.Roll("1D2") + (level / 3),
                 DefenseChance   = Dice.Roll("10D4") + (level / 3),

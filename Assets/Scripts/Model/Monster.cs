@@ -10,27 +10,6 @@ namespace RogueSharpTutorial.Model
 
         public Monster(Game game) : base(game) { }
 
-        public static Monster Clone(Game game, Monster anotherMonster)
-        {
-            return new Ooze(game)
-            {
-                Game            = game,
-                Attack          = anotherMonster.Attack,
-                AttackChance    = anotherMonster.AttackChance,
-                Awareness       = anotherMonster.Awareness,
-                Color           = anotherMonster.Color,
-                Defense         = anotherMonster.Defense,
-                DefenseChance   = anotherMonster.DefenseChance,
-                Gold            = 0,
-                Health          = anotherMonster.Health,
-                MaxHealth       = anotherMonster.MaxHealth,
-                Name            = anotherMonster.Name,
-                Speed           = anotherMonster.Speed,
-                Symbol          = anotherMonster.Symbol,
-                IsAggressive    = anotherMonster.IsAggressive
-            };
-        }
-
         public void DrawStats(int position)
         {
             Game.DrawMonsterStats(this, position);
