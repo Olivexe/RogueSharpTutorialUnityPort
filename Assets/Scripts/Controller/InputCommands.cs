@@ -22,6 +22,16 @@
         Item2,
         Item3,
         Item4,
-        EnterKey
+        EnterKey,
+        ForgetAbility,
+        ForgetQAbility,
+        ForgetWAbility,
+        ForgetEAbility,
+        ForgetRAbility,
+        DropItem,
+        UseItem,
+        EquipItem,
+        GrabItem,
+        GrabAllItems,
     }
 }

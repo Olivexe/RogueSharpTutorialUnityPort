@@ -176,7 +176,12 @@ namespace RogueSharpTutorial.Controller
         {
             InputCommands command = rootConsole.GetUserCommand();
 
-            if(PlayerDied)
+            if (command == InputCommands.CloseGame)     //Always check to close game first
+            {
+                rootConsole.CloseApplication();
+                return;
+            }
+            else if (PlayerDied)
             {
                 if (command == InputCommands.EnterKey)
                 {
@@ -185,13 +190,41 @@ namespace RogueSharpTutorial.Controller
             }
             else
             {
-                if (command == InputCommands.CloseGame)
+                if(command == InputCommands.ForgetAbility)
                 {
-                    rootConsole.CloseApplication();
-                    return;
+                    if(Player.HaveAnyAbility())
+                    {
+                        rootConsole.OpenModalWindow(ModalWindowTypes.AbilityForget);
+                        //InputLocked = true;
+                    }
+                    else
+                    {
+                        MessageLog.Add("You have no abilities to forget!");
+                    }
                 }
-                else if(command == InputCommands.StairsDown && World.CanMoveDownToNextLevel())      // Separated command from CommandSystem because want to 
-                {                                                                                   // keep MoveMapLevelDown() private
+                else if (command == InputCommands.DropItem)
+                {
+
+                }
+                else if (command == InputCommands.UseItem)
+                {
+
+                }
+                else if (command == InputCommands.EquipItem)
+                {
+
+                }
+                else if (command == InputCommands.GrabItem)
+                {
+
+                }
+                else if (command == InputCommands.GrabAllItems)
+                {
+
+                }
+
+                else if (command == InputCommands.StairsDown && World.CanMoveDownToNextLevel())
+                {
                     if (World.stairsBlocked)
                     {
                         if (World.WhoIsBoss() != null)
@@ -247,6 +280,8 @@ namespace RogueSharpTutorial.Controller
             GenerateMap();
             rootConsole.SetPlayer(Player);
             World.UpdatePlayerFieldOfView(Player);
+            World.SetMonsters();
+            Command.SetGame(this);
 
             Player.Item1 = new RevealMapScroll(this);
             Player.Item2 = new RevealMapScroll(this);

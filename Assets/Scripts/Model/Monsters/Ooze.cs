@@ -26,7 +26,7 @@ namespace RogueSharpTutorial.Model
                 Health          = health,
                 MaxHealth       = health,
                 Name            = "ooze",
-                Speed           = 14,
+                Speed           = 16,
                 Symbol          = 'o',
                 IsAggressive    = true,
                 splitOoze       = new SplitOoze(),

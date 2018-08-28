@@ -44,13 +44,22 @@ namespace RogueSharpTutorial.Controller
             return false;
         }
 
-        public static void Attack(Actor attacker, Actor defender)
+        //public static void Attack(Actor attacker, Actor defender)
+        //{
+        //    int hits = ResolveAttack(attacker, defender);
+
+        //    int blocks = ResolveDefense(defender, hits);
+
+        //    ResolveDamage(attacker, defender, hits, blocks);
+        //}
+
+        public static bool Attack(Actor attacker, Actor defender)
         {
             int hits = ResolveAttack(attacker, defender);
 
             int blocks = ResolveDefense(defender, hits);
 
-            ResolveDamage(attacker, defender, hits, blocks);
+            return ResolveDamage(attacker, defender, hits, blocks);
         }
 
         private static int ResolveAttack(Actor attacker, Actor defender)
@@ -92,8 +101,10 @@ namespace RogueSharpTutorial.Controller
             return blocks;
         }
 
-        private static void ResolveDamage(Actor attacker, Actor defender, int hits, int blocks)
+        private static bool ResolveDamage(Actor attacker, Actor defender, int hits, int blocks)
         {
+            bool causedDamage = false;
+
             StringBuilder attackMessage = new StringBuilder();
 
             if (attacker is Player)
@@ -129,8 +140,8 @@ namespace RogueSharpTutorial.Controller
             else if (damage > 0)
             {
                 defender.Health = defender.Health - damage;
-
                 attackMessage.Append(" for " + damage + " damage.");
+                causedDamage = true;
             }
             else
             {
@@ -153,7 +164,10 @@ namespace RogueSharpTutorial.Controller
             if (defender.Health <= 0)
             {
                 ResolveDeath(attacker, defender);
+                causedDamage = false;
             }
+
+            return causedDamage;
         }
 
         private static void ResolveDeath(Actor attacker, Actor defender)

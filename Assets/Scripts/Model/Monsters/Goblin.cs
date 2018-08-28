@@ -32,7 +32,7 @@ namespace RogueSharpTutorial.Model
                 Health          = health,
                 MaxHealth       = health,
                 Name            = "goblin",
-                Speed           = 12,
+                Speed           = 10,
                 Symbol          = 'g',
                 IsAggressive    = true,
                 fullyHeal       = new FullyHeal(),

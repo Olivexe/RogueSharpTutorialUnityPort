@@ -30,6 +30,14 @@ namespace RogueSharpTutorial.View
         [SerializeField] private Text item3UsesText;
         [SerializeField] private Text item4UsesText;
 
+        [SerializeField] private Text effect1Text;
+        [SerializeField] private Text effect2Text;
+        [SerializeField] private Text effect3Text;
+        [SerializeField] private Text effect4Text;
+        [SerializeField] private Text effect1DurationText;
+        [SerializeField] private Text effect2DurationText;
+        [SerializeField] private Text effect3DurationText;
+        [SerializeField] private Text effect4DurationText;
 
         [SerializeField] private Text scoreMonstersKilledText;
         [SerializeField] private Text scoreGoldText;
@@ -47,21 +55,18 @@ namespace RogueSharpTutorial.View
                 return;
             }
 
+            DrawyEquipment(game);
+            DrawAbilities(game);
+            DrawItems(game);
+            DrawEffects(game);
+        }
+
+        private void DrawyEquipment(Game game)
+        {
             inventoryHeadText.text = game.Player.Head.Name;
             inventoryHandsText.text = game.Player.Hand.Name;
             inventoryBodyText.text = game.Player.Body.Name;
             inventoryFeetText.text = game.Player.Feet.Name;
-
-            abilityQText.text = game.Player.QAbility.Name;
-            abilityWText.text = game.Player.WAbility.Name;
-            abilityEText.text = game.Player.EAbility.Name;
-            abilityRText.text = game.Player.RAbility.Name;
-
-            item1Text.text = game.Player.Item1.Name;
-            item2Text.text = game.Player.Item2.Name;
-            item3Text.text = game.Player.Item3.Name;
-            item4Text.text = game.Player.Item4.Name;
-
 
             if (game.Player.Head == HeadEquipment.None(game))
             {
@@ -98,15 +103,23 @@ namespace RogueSharpTutorial.View
             {
                 inventoryFeetText.color = ColorMap.UnityColors[Colors.DbLight];
             }
+        }
+
+        private void DrawAbilities(Game game)
+        {
+            abilityQText.text = game.Player.QAbility.Name;
+            abilityWText.text = game.Player.WAbility.Name;
+            abilityEText.text = game.Player.EAbility.Name;
+            abilityRText.text = game.Player.RAbility.Name;
 
             if (game.Player.QAbility is DoNothing)
             {
-                abilityQText.color      = ColorMap.UnityColors[Colors.DbOldStone];
-                abilityQReuseText.text  = "";
+                abilityQText.color = ColorMap.UnityColors[Colors.DbOldStone];
+                abilityQReuseText.text = "";
             }
             else
             {
-                abilityQText.color      = ColorMap.UnityColors[Colors.DbLight];
+                abilityQText.color = ColorMap.UnityColors[Colors.DbLight];
                 abilityQReuseText.color = ColorMap.UnityColors[Colors.DbLight];
 
                 if (game.Player.QAbility.TurnsUntilRefreshed > 0)
@@ -121,12 +134,12 @@ namespace RogueSharpTutorial.View
 
             if (game.Player.WAbility is DoNothing)
             {
-                abilityWText.color      = ColorMap.UnityColors[Colors.DbOldStone];
-                abilityWReuseText.text  = "";
+                abilityWText.color = ColorMap.UnityColors[Colors.DbOldStone];
+                abilityWReuseText.text = "";
             }
             else
             {
-                abilityWText.color      = ColorMap.UnityColors[Colors.DbLight];
+                abilityWText.color = ColorMap.UnityColors[Colors.DbLight];
                 abilityWReuseText.color = ColorMap.UnityColors[Colors.DbLight];
 
                 if (game.Player.WAbility.TurnsUntilRefreshed > 0)
@@ -141,12 +154,12 @@ namespace RogueSharpTutorial.View
 
             if (game.Player.EAbility is DoNothing)
             {
-                abilityEText.color      = ColorMap.UnityColors[Colors.DbOldStone];
-                abilityEReuseText.text  = "";
+                abilityEText.color = ColorMap.UnityColors[Colors.DbOldStone];
+                abilityEReuseText.text = "";
             }
             else
             {
-                abilityEText.color      = ColorMap.UnityColors[Colors.DbLight];
+                abilityEText.color = ColorMap.UnityColors[Colors.DbLight];
                 abilityEReuseText.color = ColorMap.UnityColors[Colors.DbLight];
 
                 if (game.Player.EAbility.TurnsUntilRefreshed > 0)
@@ -161,12 +174,12 @@ namespace RogueSharpTutorial.View
 
             if (game.Player.RAbility is DoNothing)
             {
-                abilityRText.color      = ColorMap.UnityColors[Colors.DbOldStone];
-                abilityRReuseText.text  = "";
+                abilityRText.color = ColorMap.UnityColors[Colors.DbOldStone];
+                abilityRReuseText.text = "";
             }
             else
             {
-                abilityRText.color      = ColorMap.UnityColors[Colors.DbLight];
+                abilityRText.color = ColorMap.UnityColors[Colors.DbLight];
                 abilityRReuseText.color = ColorMap.UnityColors[Colors.DbLight];
 
                 if (game.Player.RAbility.TurnsUntilRefreshed > 0)
@@ -178,6 +191,14 @@ namespace RogueSharpTutorial.View
                     abilityRReuseText.text = "Ready";
                 }
             }
+        }
+
+        private void DrawItems(Game game)
+        {
+            item1Text.text = game.Player.Item1.Name;
+            item2Text.text = game.Player.Item2.Name;
+            item3Text.text = game.Player.Item3.Name;
+            item4Text.text = game.Player.Item4.Name;
 
             if (game.Player.Item1 is NoItem)
             {
@@ -231,6 +252,46 @@ namespace RogueSharpTutorial.View
             scoreGoldText.text              = game.Player.GoldScore.ToString();
             scoreLevelText.text             = game.Player.LevelScore.ToString();
             scoreTotalScore.text            = game.Player.TotalScore.ToString();
+        }
+
+        private void DrawEffects(Game game)
+        {
+            effect1Text.text = "";
+            effect2Text.text = "";
+            effect3Text.text = "";
+            effect4Text.text = "";
+            effect1DurationText.text = "";
+            effect2DurationText.text = "";
+            effect3DurationText.text = "";
+            effect4DurationText.text = "";
+
+            if (game.Player.Effects != null || game.Player.Effects.Count > 0)
+            {
+                for (int i = 0; i < game.Player.Effects.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        effect1Text.text = game.Player.Effects[i].Name;
+                        effect1DurationText.text = game.Player.Effects[i].Duration.ToString();
+                    }
+                    else if(i == 1)
+                    {
+                        effect2Text.text = game.Player.Effects[i].Name;
+                        effect2DurationText.text = game.Player.Effects[i].Duration.ToString();
+                    }
+                    else if (i == 2)
+                    {
+                        effect3Text.text = game.Player.Effects[i].Name;
+                        effect3DurationText.text = game.Player.Effects[i].Duration.ToString();
+                    }
+                    else if (i == 3)
+                    {
+                        effect4Text.text = game.Player.Effects[i].Name;
+                        effect4DurationText.text = game.Player.Effects[i].Duration.ToString();
+                    }
+
+                }
+            }
         }
     }
 }

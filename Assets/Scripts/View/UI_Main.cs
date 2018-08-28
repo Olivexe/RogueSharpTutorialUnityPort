@@ -15,12 +15,16 @@ namespace RogueSharpTutorial.View
         [SerializeField] private UI_Stats       uiStats;
         [SerializeField] private UI_Messages    uiMessages;
         [SerializeField] private UI_Inventory   uiInventory;
+        [SerializeField] private UI_Abilities   uiAbilities;
+
         [SerializeField] private InputKeyboard  inputKeyboard;
         [SerializeField] private PlayerCamera   playerCameraScript;
         [SerializeField] private Camera         playerCamera;
         [SerializeField] private TileUnity      tilePrefab;
 
-        private                 Game            game;
+        [SerializeField] private GameObject     windowAbilities;
+
+        public Game                             Game                { get; private set; }
         private                 TileUnity[,]    mapObjects;
 
         private void Start()
@@ -29,8 +33,9 @@ namespace RogueSharpTutorial.View
             uiMessages      = GetComponent<UI_Messages>();
             inputKeyboard   = GetComponent<InputKeyboard>();
             uiInventory     = GetComponent<UI_Inventory>();
+            uiAbilities     = GetComponent<UI_Abilities>();
 
-            game            = new Game(this);
+            Game = new Game(this);
         }
 
         private void Update()
@@ -54,6 +59,11 @@ namespace RogueSharpTutorial.View
             }
 
             return true;
+        }
+
+        public void SetPlayer(Player player)
+        {
+            playerCameraScript.InitCamera(player);
         }
 
         /// <summary>
@@ -140,12 +150,12 @@ namespace RogueSharpTutorial.View
 
         public void DrawPlayerStats()
         {
-            uiStats.DrawPlayerStats(game);
+            uiStats.DrawPlayerStats(Game);
         }
 
         public void DrawPlayerInventory()
         {
-            uiInventory.DrawPlayerInventory(game);
+            uiInventory.DrawPlayerInventory(Game);
         }
 
         public void DrawMonsterStats(Monster monster, int position)
@@ -158,9 +168,28 @@ namespace RogueSharpTutorial.View
             uiStats.ClearMonsterStats();
         }
 
-        public void SetPlayer(Player player)
+        public void OpenModalWindow(ModalWindowTypes task)
         {
-            playerCameraScript.InitCamera(player);
+            inputKeyboard.CurrentWindow = task;
+
+            switch(task)
+            {
+                case ModalWindowTypes.AbilityForget:
+                    windowAbilities.SetActive(true);
+                    uiAbilities.SetWindowType(UI_Abilities.Window.Forget);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public void CloseAllModalWindows()
+        {
+            if(windowAbilities.activeSelf)
+            {
+                windowAbilities.SetActive(false);
+                inputKeyboard.CurrentWindow = ModalWindowTypes.Primary;
+            }
         }
 
         public void CloseApplication()

@@ -253,9 +253,9 @@ namespace RogueSharpTutorial.Model
         /// </summary>
         private void PlaceMonsters()
         {
-            for (int j = 1; j < map.Rooms.Count; j++)                                       // Not starting at zero. Player is in room zero.
+            for (int j = 1; j < map.Rooms.Count; j++)                                           // Not starting at zero. Player is in room zero.
             {
-                if (level == 5 && j == map.Rooms.Count - 1)                             // Add special boss Barbarian monster
+                if (level == 5 && j == map.Rooms.Count - 1)                                     // Add special boss Barbarian monster
                 {
                     map.AddMonster(ActorGenerator.CreateBarbarian(game, level, map.GetRandomLocationInRoom(map.Rooms[j])));
                 }

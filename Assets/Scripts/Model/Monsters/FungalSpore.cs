@@ -3,33 +3,32 @@ using RogueSharpTutorial.Controller;
 
 namespace RogueSharpTutorial.Model
 {
-    public class Kobold : Monster
+    public class FungalSpore : Monster
     {
         private StandardMoveAndAttack standardMoveAndAttack;
 
-        public Kobold(Game game) : base(game) { }
+        public FungalSpore(Game game) : base(game) { }
 
-        public static Kobold Create(Game game, int level)
+        public static FungalSpore Create(Game game, int level)
         {
-            int health = Dice.Roll((level / 3 + 1).ToString() + "D5");
+            int health = Dice.Roll((level / 3 + 1).ToString() + "D3");
 
-            return new Kobold (game)
+            return new FungalSpore(game)
             {
-                Attack          = Dice.Roll("1D3") + (level / 2),
-                AttackChance    = Dice.Roll("25D3") + (level / 2),
+                Attack          = Dice.Roll("1D2"),
+                AttackChance    = Dice.Roll("20D3") + (level / 2),
                 Awareness       = 7,
-                Color           = Colors.KoboldColor,
-                Defense         = Dice.Roll("1D3") + (level / 2),
-                DefenseChance   = Dice.Roll("10D4") + (level / 2),
-                Gold            = Dice.Roll("5D5") + (level * 2),
+                Color           = Colors.GoblinColor,
+                Defense         = Dice.Roll("1D2"),
+                DefenseChance   = Dice.Roll("10D4"),
+                Gold            = 0,
                 Health          = health,
                 MaxHealth       = health,
-                Name            = "kobold",
-                Speed           = 8,
-                Symbol          = 'k',
+                Name            = "fungal spore",
+                Speed           = 6,
+                Symbol          = 's',
                 IsAggressive    = true,
                 standardMoveAndAttack = new StandardMoveAndAttack()
-
             };
         }
 

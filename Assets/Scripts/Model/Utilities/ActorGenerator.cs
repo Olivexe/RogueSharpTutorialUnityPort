@@ -14,6 +14,7 @@ namespace RogueSharpTutorial.Utilities
             monsterPool.Add(Kobold.Create(game, level), 25);
             monsterPool.Add(Ooze.Create(game, level), 25);
             monsterPool.Add(Goblin.Create(game, level), 50);
+            if(level > 5) monsterPool.Add(FungalTower.Create(game, level), 5);
 
             Monster monster = monsterPool.Get();
             monster.X = location.X;
@@ -36,6 +37,12 @@ namespace RogueSharpTutorial.Utilities
                     break;
                 case MonsterList.ooze:
                     monster = Ooze.Create(game, level);
+                    break;
+                case MonsterList.fungalSpore:
+                    monster = FungalSpore.Create(game, level);
+                    break;
+                case MonsterList.fungalTower:
+                    monster = FungalTower.Create(game, level);
                     break;
                 default:
                     monster = null;
@@ -77,7 +84,7 @@ namespace RogueSharpTutorial.Utilities
                     Health = 50,
                     MaxHealth = 50,
                     Name = "Rogue",
-                    Speed = 10,
+                    Speed = 8,
                     Symbol = '@',
 
                     QAbility = new DoNothing(game, _player),

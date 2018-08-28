@@ -5,7 +5,12 @@ namespace RogueSharpTutorial.View
 {
     public class InputKeyboard : MonoBehaviour
     {
-        private InputCommands   input;
+        [SerializeField] private    UI_Main         rootConsole;
+        [SerializeField] private    UI_Abilities    ui_Abilities;
+
+        private InputCommands                       input;
+        
+        public  ModalWindowTypes                    CurrentWindow       { get; set; }
 
         /// <summary>
         /// Will return the last keyboard up pressed. Will then clear the input to None.
@@ -26,6 +31,19 @@ namespace RogueSharpTutorial.View
         }
 
         private InputCommands GetKeyboardValue()
+        {
+            switch(CurrentWindow)
+            {
+                case ModalWindowTypes.Primary:
+                    return GetPrimaryWindowKey();
+                case ModalWindowTypes.AbilityForget:
+                    return ui_Abilities.GetInput();
+                default:
+                    return InputCommands.None;
+            }
+        }
+
+        private InputCommands GetPrimaryWindowKey()
         {
             if (Input.GetKeyUp(KeyCode.Keypad7))
             {
@@ -107,6 +125,31 @@ namespace RogueSharpTutorial.View
             {
                 return InputCommands.EnterKey;
             }
+            else if (Input.GetKeyUp(KeyCode.Y))
+            {
+                return InputCommands.ForgetAbility;
+            }
+            else if (Input.GetKeyUp(KeyCode.U))
+            {
+                return InputCommands.UseItem;
+            }
+            else if (Input.GetKeyUp(KeyCode.I))
+            {
+                return InputCommands.DropItem;
+            }
+            else if (Input.GetKeyUp(KeyCode.O))
+            {
+                return InputCommands.EquipItem;
+            }
+            else if (Input.GetKeyUp(KeyCode.G))
+            {
+                return InputCommands.GrabItem;
+            }
+            else if (Input.GetKeyUp(KeyCode.A))
+            {
+                return InputCommands.GrabAllItems;
+            }
+
             return InputCommands.None;
         }
     }

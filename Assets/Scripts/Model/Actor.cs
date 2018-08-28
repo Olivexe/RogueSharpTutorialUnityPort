@@ -1,4 +1,5 @@
-﻿using RogueSharpTutorial.View;
+﻿using System.Collections.Generic;
+using RogueSharpTutorial.View;
 using RogueSharpTutorial.Controller;
 using RogueSharpTutorial.Model.Interfaces;
 using RogueSharp;
@@ -27,10 +28,10 @@ namespace RogueSharpTutorial.Model
         private int     awareness;
         public  int     Awareness           { get { return awareness + Head.Awareness + Body.Awareness + Hand.Awareness + Feet.Awareness; } set { awareness = value; } }
 
-        public  HeadEquipment   Head        { get; set; }
-        public  BodyEquipment   Body        { get; set; }
-        public  HandEquipment   Hand        { get; set; }
-        public  FeetEquipment   Feet        { get; set; }
+        public HeadEquipment    Head        { get; set; }
+        public BodyEquipment    Body        { get; set; }
+        public HandEquipment    Hand        { get; set; }
+        public FeetEquipment    Feet        { get; set; }
 
         public IAbility         QAbility    { get; set; }
         public IAbility         WAbility    { get; set; }
@@ -42,11 +43,14 @@ namespace RogueSharpTutorial.Model
         public IItem            Item3       { get; set; }
         public IItem            Item4       { get; set; }
 
+        public List<IEffect>    Effects     { get; set; }
+        public int              MaxEffects  { get; set; }
+
         // IDrawable
-        public  Colors          Color       { get; set; }
-        public  char            Symbol      { get; set; }
-        public  int             X           { get; set; }
-        public  int             Y           { get; set; }
+        public Colors           Color       { get; set; }
+        public char             Symbol      { get; set; }
+        public int              X           { get; set; }
+        public int              Y           { get; set; }
 
         // Ischeduleable
         public  int             Time        { get {return Speed;} }
@@ -73,6 +77,9 @@ namespace RogueSharpTutorial.Model
             Item2       = new NoItem(game);
             Item3       = new NoItem(game);
             Item4       = new NoItem(game);
+                
+            Effects     = new List<IEffect>();
+            MaxEffects  = 4;                            //Should not be hardcoded in the future
         }
 
         public void SetMapAwareness()
@@ -118,6 +125,16 @@ namespace RogueSharpTutorial.Model
                 RAbility = ability;
             }
             else
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool HaveAnyAbility()
+        {
+            if(QAbility is DoNothing && WAbility is DoNothing && EAbility is DoNothing && RAbility is DoNothing)
             {
                 return false;
             }
@@ -208,12 +225,49 @@ namespace RogueSharpTutorial.Model
             }
         }
 
+        public bool RemoveEffect(IEffect effect)
+        {
+            Effects.Remove(effect);
+            return true;
+        }
+
+        public bool AddEffect(IEffect effect)
+        {
+            foreach(IEffect currentEffect in Effects)
+            {
+                if(effect == currentEffect)
+                {
+                    currentEffect.Duration += effect.Duration;
+                    return true;
+                }
+            }
+
+            if(Effects.Count < MaxEffects)
+            {
+                Effects.Add(effect);
+            }
+
+            return true;
+        }
+
         public void Tick()
         {
             QAbility?.Tick();
             WAbility?.Tick();
             EAbility?.Tick();
             RAbility?.Tick();
+
+            for (int i = 0; i < Effects.Count; i++)
+            {
+                ((Effect)Effects[i])?.Perform();
+                Effects[i]?.Tick();
+
+                if(Effects[i].Duration == 0)
+                {
+                    RemoveEffect(Effects[i]);
+                    i--;
+                }
+            }
         }
 
         public virtual bool PerformAction(InputCommands command)

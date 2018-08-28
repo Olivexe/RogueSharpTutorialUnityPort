@@ -49,6 +49,18 @@ namespace RogueSharpTutorial.Model
                     return UseItem(3);
                 case InputCommands.Item4:
                     return UseItem(4);
+                case InputCommands.ForgetQAbility:
+                    QAbility = new DoNothing(Game, this);
+                    return true;
+                case InputCommands.ForgetWAbility:
+                    WAbility = new DoNothing(Game, this);
+                    return true;
+                case InputCommands.ForgetEAbility:
+                    EAbility = new DoNothing(Game, this);
+                    return true;
+                case InputCommands.ForgetRAbility:
+                    RAbility = new DoNothing(Game, this);
+                    return true;
                 default:
                     break;
             }

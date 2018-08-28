@@ -2,10 +2,12 @@
 {
     public enum MonsterList
     {
-        None = 0,
-        goblin = 1,
-        kobold = 2,
-        ooze = 3,
-        Barbarian = 4
+        None        = 0,
+        goblin      = 1,
+        kobold      = 2,
+        ooze        = 3,
+        Barbarian   = 4,
+        fungalSpore = 5,
+        fungalTower = 6
     }
 }
