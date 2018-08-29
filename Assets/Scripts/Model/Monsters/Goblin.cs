@@ -31,6 +31,7 @@ namespace RogueSharpTutorial.Model
                 Gold            = Dice.Roll("1D20") + (level * 2),
                 Health          = health,
                 MaxHealth       = health,
+                CanGrabTreasure = true,
                 Name            = "goblin",
                 Speed           = 10,
                 Symbol          = 'g',

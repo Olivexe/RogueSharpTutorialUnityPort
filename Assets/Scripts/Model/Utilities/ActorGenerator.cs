@@ -83,6 +83,7 @@ namespace RogueSharpTutorial.Utilities
                     Gold = 0,
                     Health = 50,
                     MaxHealth = 50,
+                    CanGrabTreasure = true,
                     Name = "Rogue",
                     Speed = 8,
                     Symbol = '@',

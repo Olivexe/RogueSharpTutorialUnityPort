@@ -31,6 +31,7 @@ namespace RogueSharpTutorial.Model
                 Gold                = Dice.Roll("3d10") + 5,
                 Health              = 60,
                 MaxHealth           = 60,
+                CanGrabTreasure     = false,
                 Name                = "fungal tower",
                 Speed               = 8,
                 Symbol              = 'f',

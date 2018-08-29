@@ -46,14 +46,16 @@ namespace RogueSharpTutorial.Model
         public List<IEffect>    Effects     { get; set; }
         public int              MaxEffects  { get; set; }
 
+        public bool             CanGrabTreasure { get; set; }
+
         // IDrawable
-        public Colors           Color       { get; set; }
-        public char             Symbol      { get; set; }
-        public int              X           { get; set; }
-        public int              Y           { get; set; }
+        public Colors       Color           { get; set; }
+        public char         Symbol          { get; set; }
+        public int          X               { get; set; }
+        public int          Y               { get; set; }
 
         // Ischeduleable
-        public  int             Time        { get {return Speed;} }
+        public  int         Time            { get {return Speed;} }
 
         public Game          Game           { get; protected set; }
         public DungeonMap    world          { get; protected set; }

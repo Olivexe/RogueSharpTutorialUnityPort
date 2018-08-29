@@ -29,6 +29,7 @@ namespace RogueSharpTutorial.Model
                 Gold                = Dice.Roll("5D20") + 50,
                 Health              = 40,
                 MaxHealth           = 40,
+                CanGrabTreasure     = true,
                 Name                = "Barbarian",
                 Speed               = 8,
                 Symbol              = 'B',

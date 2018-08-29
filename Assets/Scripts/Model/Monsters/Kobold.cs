@@ -24,6 +24,7 @@ namespace RogueSharpTutorial.Model
                 Gold            = Dice.Roll("5D5") + (level * 2),
                 Health          = health,
                 MaxHealth       = health,
+                CanGrabTreasure = true,
                 Name            = "kobold",
                 Speed           = 8,
                 Symbol          = 'k',

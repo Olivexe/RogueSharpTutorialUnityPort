@@ -1,4 +1,6 @@
-﻿namespace RogueSharpTutorial.Model.Interfaces
+﻿using System.Collections.Generic;
+
+namespace RogueSharpTutorial.Model.Interfaces
 {
     public interface IActor
     {
@@ -17,6 +19,9 @@
         IItem Item3         { get; set; }
         IItem Item4         { get; set; }
 
+        List<IEffect> Effects{ get; set; }
+        int MaxEffects      { get; set; }
+
         int Attack          { get; set; }
         int AttackChance    { get; set; }
         int Awareness       { get; set; }
@@ -27,5 +32,6 @@
         int MaxHealth       { get; set; }
         string Name         { get; set; }
         int Speed           { get; set; }
+        bool CanGrabTreasure{ get; set; }
     }
 }

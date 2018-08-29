@@ -203,7 +203,7 @@ namespace RogueSharpTutorial.Model
 
             foreach (TreasurePile treasurePile in treasureAtLocation)
             {
-                if (treasurePile.Treasure.PickUp(actor))
+                if (actor.CanGrabTreasure && treasurePile.Treasure.PickUp(actor))
                 {
                     treasurePiles.Remove(treasurePile);
                 }

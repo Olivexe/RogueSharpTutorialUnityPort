@@ -2,6 +2,7 @@
 using RogueSharp;
 using RogueSharp.DiceNotation;
 using RogueSharpTutorial.Model;
+using RogueSharpTutorial.Model.Interfaces;
 
 namespace RogueSharpTutorial.Controller
 {
@@ -195,6 +196,23 @@ namespace RogueSharpTutorial.Controller
                 if (defender.Feet != null && defender.Feet != FeetEquipment.None(Game))
                 {
                     World.AddTreasure(defender.X, defender.Y, defender.Feet);
+                }
+
+                if(defender.Item1 != null && !(defender.Item1 is NoItem))
+                {
+                    World.AddTreasure(defender.X, defender.Y, defender.Item1 as ITreasure);
+                }
+                if (defender.Item2 != null && !(defender.Item2 is NoItem))
+                {
+                    World.AddTreasure(defender.X, defender.Y, defender.Item2 as ITreasure);
+                }
+                if (defender.Item3 != null && !(defender.Item3 is NoItem))
+                {
+                    World.AddTreasure(defender.X, defender.Y, defender.Item3 as ITreasure);
+                }
+                if (defender.Item4 != null && !(defender.Item4 is NoItem))
+                {
+                    World.AddTreasure(defender.X, defender.Y, defender.Item4 as ITreasure);
                 }
 
                 Game.Player.MonsterScore++;

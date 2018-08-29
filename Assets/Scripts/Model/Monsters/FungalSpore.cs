@@ -24,6 +24,7 @@ namespace RogueSharpTutorial.Model
                 Gold            = 0,
                 Health          = health,
                 MaxHealth       = health,
+                CanGrabTreasure = false,
                 Name            = "fungal spore",
                 Speed           = 6,
                 Symbol          = 's',
