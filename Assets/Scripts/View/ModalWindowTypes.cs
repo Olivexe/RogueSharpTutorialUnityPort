@@ -3,6 +3,6 @@
     public enum ModalWindowTypes
     {
         Primary,
-        AbilityForget
+        Abilities
     }
 }

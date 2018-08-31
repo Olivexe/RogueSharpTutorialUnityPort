@@ -61,6 +61,16 @@ namespace RogueSharpTutorial.Model
                 case InputCommands.ForgetRAbility:
                     RAbility = new DoNothing(Game, this);
                     return true;
+                case InputCommands.GrabItemZ:
+                    return Command.PlayerPickUp(0);
+                case InputCommands.GrabItemX:
+                    return Command.PlayerPickUp(1);
+                case InputCommands.GrabItemC:
+                    return Command.PlayerPickUp(2);
+                case InputCommands.GrabItemV:
+                    return Command.PlayerPickUp(3);
+                case InputCommands.GrabAllItems:
+                    return Command.PlayerPickUp(-1);
                 default:
                     break;
             }

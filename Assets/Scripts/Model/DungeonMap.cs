@@ -15,9 +15,9 @@ namespace RogueSharpTutorial.Model
         public  List<Door>                      Doors           { get; set; }
         public  Stairs                          StairsUp        { get; set; }
         public  Stairs                          StairsDown      { get; set; }
+        public  List<TreasurePile>              TreasurePiles   { get; set; }
 
         private readonly List<Monster>          monsters;
-        private readonly List<TreasurePile>     treasurePiles;
 
         public  bool                            stairsBlocked   { get; private set; }
 
@@ -29,7 +29,7 @@ namespace RogueSharpTutorial.Model
 
             Rooms           = new List<Rectangle>();
             monsters        = new List<Monster>();
-            treasurePiles   = new List<TreasurePile>();
+            TreasurePiles   = new List<TreasurePile>();
             Doors           = new List<Door>();
         }
 
@@ -135,6 +135,17 @@ namespace RogueSharpTutorial.Model
         }
 
         /// <summary>
+        /// Return a new List of all Treasure Piles at a location.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        public List<TreasurePile> GetAllTreasurePilesAt(int x, int y)
+        {
+            return TreasurePiles.Where(g => g.X == x && g.Y == y).ToList();
+        }
+
+        /// <summary>
         /// Return the door at the x,y position or null if one is not found.
         /// </summary>
         /// <param name="x"></param>
@@ -181,14 +192,39 @@ namespace RogueSharpTutorial.Model
         }
 
         /// <summary>
-        /// 
+        /// Add a treasure to the Dungeon Map.
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="treasure"></param>
         public void AddTreasure(int x, int y, ITreasure treasure)
         {
-            treasurePiles.Add(new TreasurePile(x, y, treasure));
+            if (treasure is Gold)
+            {
+                List<TreasurePile> treasures = GetAllTreasurePilesAt(x, y);
+
+                foreach(TreasurePile t in treasures)
+                {
+                    if(t.Treasure is Gold)
+                    {
+                        ((Gold)t.Treasure).Amount += ((Gold)treasure).Amount;
+                        return;
+                    }
+                }
+            }
+
+            TreasurePiles.Add(new TreasurePile(x, y, treasure));
+        }
+
+        /// <summary>
+        /// Remove a treasure from the Dungeon Map.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="treasure"></param>
+        public void RemoveTreasure(TreasurePile treasure)
+        {
+            TreasurePiles.Remove(treasure);
         }
 
         /// <summary>
@@ -199,13 +235,25 @@ namespace RogueSharpTutorial.Model
         /// <param name="y"></param>
         private void PickUpTreasure(Actor actor, int x, int y)
         {
-            List<TreasurePile> treasureAtLocation = treasurePiles.Where(g => g.X == x && g.Y == y).ToList();
+            List<TreasurePile> treasureAtLocation = TreasurePiles.Where(g => g.X == x && g.Y == y).ToList();
 
             foreach (TreasurePile treasurePile in treasureAtLocation)
             {
-                if (actor.CanGrabTreasure && treasurePile.Treasure.PickUp(actor))
+                if (treasurePile.Treasure is Gold)
                 {
-                    treasurePiles.Remove(treasurePile);
+                    treasurePile.Treasure.PickUp(actor);
+                    TreasurePiles.Remove(treasurePile);
+                }
+                else
+                {
+                    if (actor is Player)
+                    {
+                        continue;
+                    }
+                    else if (actor.CanGrabTreasure && treasurePile.Treasure.PickUp(actor))
+                    {
+                        TreasurePiles.Remove(treasurePile);
+                    }
                 }
             }
         }
@@ -229,7 +277,7 @@ namespace RogueSharpTutorial.Model
             StairsUp.Draw(this);
             StairsDown.Draw(this);
 
-            foreach (TreasurePile treasurePile in treasurePiles)
+            foreach (TreasurePile treasurePile in TreasurePiles)
             {
                 IDrawable drawableTreasure = treasurePile.Treasure as IDrawable;
                 drawableTreasure?.Draw(this);

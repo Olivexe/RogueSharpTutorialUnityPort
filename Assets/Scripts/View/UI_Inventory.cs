@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 using RogueSharpTutorial.Model;
+using RogueSharpTutorial.Model.Interfaces;
 using RogueSharpTutorial.Controller;
 
 namespace RogueSharpTutorial.View
@@ -39,6 +41,22 @@ namespace RogueSharpTutorial.View
         [SerializeField] private Text effect3DurationText;
         [SerializeField] private Text effect4DurationText;
 
+        [SerializeField] private Text item1OngroundText;
+        [SerializeField] private Text item2OngroundText;
+        [SerializeField] private Text item3OngroundText;
+        [SerializeField] private Text item4OngroundText;
+        [SerializeField] private GameObject item1OnGroundComGO;
+        [SerializeField] private GameObject item2OnGroundComGO;
+        [SerializeField] private GameObject item3OnGroundComGO;
+        [SerializeField] private GameObject item4OnGroundComGO;
+        [SerializeField] private GameObject grabAllText;
+        [SerializeField] private GameObject grabAllCommand;
+        [SerializeField] private GameObject moreItemsText;
+        public bool Isitem1Onground { get; private set; }
+        public bool Isitem2Onground { get; private set; }
+        public bool Isitem3Onground { get; private set; }
+        public bool Isitem4Onground { get; private set; }
+
         [SerializeField] private Text scoreMonstersKilledText;
         [SerializeField] private Text scoreGoldText;
         [SerializeField] private Text scoreLevelText;
@@ -59,6 +77,7 @@ namespace RogueSharpTutorial.View
             DrawAbilities(game);
             DrawItems(game);
             DrawEffects(game);
+            DrawItemsOnGround(game);
         }
 
         private void DrawyEquipment(Game game)
@@ -291,6 +310,63 @@ namespace RogueSharpTutorial.View
                     }
 
                 }
+            }
+        }
+
+        private void DrawItemsOnGround(Game game)
+        {
+            grabAllCommand.SetActive(false);
+            grabAllText.SetActive(false);
+            moreItemsText.SetActive(false);
+            item1OnGroundComGO.SetActive(false);
+            item2OnGroundComGO.SetActive(false);
+            item3OnGroundComGO.SetActive(false);
+            item4OnGroundComGO.SetActive(false);
+            item1OngroundText.text = "";
+            item2OngroundText.text = "";
+            item3OngroundText.text = "";
+            item4OngroundText.text = "";
+            Isitem1Onground = false;
+            Isitem2Onground = false;
+            Isitem3Onground = false;
+            Isitem4Onground = false;
+
+            List<TreasurePile> treasures = game.World.GetAllTreasurePilesAt(game.Player.X, game.Player.Y);
+
+            if (treasures == null)
+            {
+                return;
+            }
+
+            if(treasures.Count >= 1)
+            {
+                item1OnGroundComGO.SetActive(true);
+                item1OngroundText.text = treasures[0].Treasure.GetName();
+                Isitem1Onground = true;
+            }
+            if (treasures.Count >= 2)
+            {
+                item2OnGroundComGO.SetActive(true);
+                item2OngroundText.text = treasures[1].Treasure.GetName();
+                Isitem2Onground = true;
+                grabAllCommand.SetActive(true);
+                grabAllText.SetActive(true);
+            }
+            if (treasures.Count >= 3)
+            {
+                item3OnGroundComGO.SetActive(true);
+                item3OngroundText.text = treasures[2].Treasure.GetName();
+                Isitem3Onground = true;
+            }
+            if (treasures.Count >= 4)
+            {
+                item4OnGroundComGO.SetActive(true);
+                item4OngroundText.text = treasures[3].Treasure.GetName();
+                Isitem4Onground = true;
+            }
+            if (treasures.Count >= 4)
+            {
+                moreItemsText.SetActive(true);
             }
         }
     }

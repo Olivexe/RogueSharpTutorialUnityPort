@@ -174,7 +174,7 @@ namespace RogueSharpTutorial.View
 
             switch(task)
             {
-                case ModalWindowTypes.AbilityForget:
+                case ModalWindowTypes.Abilities:
                     windowAbilities.SetActive(true);
                     uiAbilities.SetWindowType(UI_Abilities.Window.Forget);
                     break;

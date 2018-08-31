@@ -190,17 +190,9 @@ namespace RogueSharpTutorial.Controller
             }
             else
             {
-                if(command == InputCommands.ForgetAbility)
+                if(command == InputCommands.Abilities)
                 {
-                    if(Player.HaveAnyAbility())
-                    {
-                        rootConsole.OpenModalWindow(ModalWindowTypes.AbilityForget);
-                        //InputLocked = true;
-                    }
-                    else
-                    {
-                        MessageLog.Add("You have no abilities to forget!");
-                    }
+                    rootConsole.OpenModalWindow(ModalWindowTypes.Abilities);
                 }
                 else if (command == InputCommands.DropItem)
                 {
@@ -214,15 +206,6 @@ namespace RogueSharpTutorial.Controller
                 {
 
                 }
-                else if (command == InputCommands.GrabItem)
-                {
-
-                }
-                else if (command == InputCommands.GrabAllItems)
-                {
-
-                }
-
                 else if (command == InputCommands.StairsDown && World.CanMoveDownToNextLevel())
                 {
                     if (World.stairsBlocked)

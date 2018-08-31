@@ -5,30 +5,9 @@ using RogueSharpTutorial.Model.Interfaces;
 
 namespace RogueSharpTutorial.Model
 {
-    public class SummonMonster : IBehavior
+    public class SummonFungalSpore : SummonMonster
     {
-        protected MonsterList monsterToSummon;
-        protected int         numberToSummon;
-
-        public Actor       Parent  { get; private set; }
-        public Game        Game    { get; private set; }
-        public DungeonMap  World   { get; private set; }
-
-        public void SetBehavior(Game game, Actor parent, MonsterList monsterToSummon, int numberToSummon)
-        {
-            Game                = game;
-            Parent              = parent;
-            World               = game.World;
-            this.monsterToSummon= monsterToSummon;
-            this.numberToSummon = numberToSummon;
-        }
-
-        public bool Act()
-        {
-            return Summon();
-        }
-
-        public bool Summon()
+        public new bool Summon()
         {
             for(int x = 0; x < numberToSummon; x++)
             {
@@ -48,7 +27,7 @@ namespace RogueSharpTutorial.Model
                 {
                     monster.TurnsAlerted = 1;
                     World.AddMonster(monster);
-                    Game.MessageLog.Add($"{Parent.Name} summons a {monster.Name}");
+                    Game.MessageLog.Add($"A {monster.Name} pops off the {Parent.Name}.");
                 }
             }
 

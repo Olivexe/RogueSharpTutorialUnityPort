@@ -26,6 +26,11 @@ namespace RogueSharpTutorial.Model
             Owner = abilityOwner;
         }
 
+        public string GetName()
+        {
+            return Name;
+        }
+
         public bool Perform()
         {
             if (TurnsUntilRefreshed > 0)
@@ -43,7 +48,6 @@ namespace RogueSharpTutorial.Model
         {
             return false;
         }
-
 
         public void Tick()
         {

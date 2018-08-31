@@ -19,8 +19,8 @@ namespace RogueSharpTutorial.Model
             Game    = game;
             Parent  = parent;
             World   = game.World;
-            Attack      = 3;
-            AttackChance= 80;
+            Attack      = 4;
+            AttackChance= 90;
         }
 
         public bool Act()

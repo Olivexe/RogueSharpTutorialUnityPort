@@ -22,6 +22,11 @@ namespace RogueSharpTutorial.Model
             this.game   = game;
         }
 
+        public string GetName()
+        {
+            return Amount + " Gold";
+        }
+
         public bool PickUp(Actor actor)
         {
             actor.Gold += Amount;

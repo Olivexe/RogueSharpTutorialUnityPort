@@ -46,6 +46,9 @@ namespace RogueSharpTutorial.Model
         public List<IEffect>    Effects     { get; set; }
         public int              MaxEffects  { get; set; }
 
+        public List<IInventory> Inventory   { get; set; }
+        public int              MaxWeight   { get; set; }
+
         public bool             CanGrabTreasure { get; set; }
 
         // IDrawable

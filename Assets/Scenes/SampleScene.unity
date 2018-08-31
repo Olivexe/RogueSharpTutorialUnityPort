@@ -160,7 +160,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 0.039215688, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -180,7 +180,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: More items
+  m_Text: 'More items here
+
+'
 --- !u!222 &8614153
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -787,7 +789,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.000016695, y: -180}
+  m_AnchoredPosition: {x: 0.000015258789, y: -180}
   m_SizeDelta: {x: 59.85, y: 30}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &130344494
@@ -1391,7 +1393,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.050232, y: -200}
+  m_AnchoredPosition: {x: 0.050231934, y: -200}
   m_SizeDelta: {x: 59.85, y: 30}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &211789892
@@ -2132,7 +2134,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.000011206, y: -150}
+  m_AnchoredPosition: {x: 0.000015258789, y: -150}
   m_SizeDelta: {x: 59.85, y: 30}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &444930167
@@ -4319,7 +4321,7 @@ GameObject:
   - component: {fileID: 933552593}
   - component: {fileID: 933552592}
   m_Layer: 5
-  m_Name: Other_Commands_Title
+  m_Name: Items_OnGround_Title
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4355,7 +4357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0.98837775, b: 0.05490196, a: 1}
+  m_Color: {r: 1, g: 1, b: 0.039215688, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -9169,6 +9171,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rootConsole: {fileID: 1929674590}
   ui_Abilities: {fileID: 1929674596}
+  ui_Inventory: {fileID: 1929674595}
 --- !u!114 &1929674595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9208,6 +9211,17 @@ MonoBehaviour:
   effect2DurationText: {fileID: 1156901789}
   effect3DurationText: {fileID: 1008446223}
   effect4DurationText: {fileID: 198039988}
+  item1OngroundText: {fileID: 474745479}
+  item2OngroundText: {fileID: 131874875}
+  item3OngroundText: {fileID: 312664165}
+  item4OngroundText: {fileID: 550900414}
+  item1OnGroundComGO: {fileID: 1640752157}
+  item2OnGroundComGO: {fileID: 283608059}
+  item3OnGroundComGO: {fileID: 1812178140}
+  item4OnGroundComGO: {fileID: 154923082}
+  grabAllText: {fileID: 988148167}
+  grabAllCommand: {fileID: 211789890}
+  moreItemsText: {fileID: 8614150}
   scoreMonstersKilledText: {fileID: 1098685565}
   scoreGoldText: {fileID: 679154158}
   scoreLevelText: {fileID: 527231461}
@@ -9296,7 +9310,7 @@ Prefab:
     - target: {fileID: 224350420756544716, guid: a122433fdafde5f43bf4d9e0da514b2e,
         type: 2}
       propertyPath: m_AnchoredPosition.x
-      value: 0.000061035156
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224350420756544716, guid: a122433fdafde5f43bf4d9e0da514b2e,
         type: 2}

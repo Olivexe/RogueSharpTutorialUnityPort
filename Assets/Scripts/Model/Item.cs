@@ -32,6 +32,11 @@ namespace RogueSharpTutorial.Model
             Owner = owner;
         }
 
+        public string GetName()
+        {
+            return Name;
+        }
+
         public bool Use()
         {
             return UseItem();

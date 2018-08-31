@@ -23,7 +23,7 @@
         Item3,
         Item4,
         EnterKey,
-        ForgetAbility,
+        Abilities,
         ForgetQAbility,
         ForgetWAbility,
         ForgetEAbility,
@@ -31,7 +31,10 @@
         DropItem,
         UseItem,
         EquipItem,
-        GrabItem,
+        GrabItemZ,
+        GrabItemX,
+        GrabItemC,
+        GrabItemV,
         GrabAllItems,
     }
 }

@@ -7,13 +7,12 @@ namespace RogueSharpTutorial.Model
     {   
         private int         spikeCounter                = 3;
         private int         spikeCounterlimit           = 3;
-        private int         sporeCounter                = 20;
-        private int         sporeCounterlimit           = 0;
+        private int         sporeCounter                = 0;
+        private int         sporeCounterlimit           = 6;
         private bool        skipSporeSummon             = false;
 
         // Behaviors 
-        private SummonMonster       summonFungalTower;
-        private SummonMonster       summonFungalSpore;
+        private SummonFungalSpore   summonFungalSpore;
         private ShootFungalSpike    shootFungalSpike;
 
         public FungalTower(Game game) : base(game) { }
@@ -24,7 +23,7 @@ namespace RogueSharpTutorial.Model
             {
                 Attack              = 3,
                 AttackChance        = 75,
-                Awareness           = 8,
+                Awareness           = 10,
                 Color               = Colors.GoblinColor,
                 Defense             = 2,
                 DefenseChance       = 40,
@@ -37,15 +36,13 @@ namespace RogueSharpTutorial.Model
                 Symbol              = 'f',
                 IsAggressive        = true,
                 IsBoss              = false,
-                summonFungalTower   = new SummonMonster(),
-                summonFungalSpore   = new SummonMonster(),
+                summonFungalSpore   = new SummonFungalSpore(),
                 shootFungalSpike    = new ShootFungalSpike()
             };
         }
 
         public override void SetBehavior()
         {
-            summonFungalTower.SetBehavior(Game, this, MonsterList.fungalTower, 1);
             summonFungalSpore.SetBehavior(Game, this, MonsterList.fungalSpore, 1);
             shootFungalSpike.SetBehavior(Game, this);
         }
@@ -70,19 +67,11 @@ namespace RogueSharpTutorial.Model
                 }
             }
 
-            if (!skipSporeSummon && sporeCounter == sporeCounterlimit)
+            if (!skipSporeSummon && sporeCounter >= sporeCounterlimit)
             {
                 if (isPlayerInView)
                 {
-                    if (Game.Random.Next(6) == 0)
-                    {
-                        summonFungalTower.Act();
-                    }
-                    else
-                    {
-                        summonFungalSpore.Act();
-                    }
-
+                    summonFungalSpore.Act();
                     sporeCounter = 0;
                 }
             }

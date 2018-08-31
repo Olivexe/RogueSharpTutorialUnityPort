@@ -7,6 +7,7 @@ namespace RogueSharpTutorial.View
     {
         [SerializeField] private    UI_Main         rootConsole;
         [SerializeField] private    UI_Abilities    ui_Abilities;
+        [SerializeField] private    UI_Inventory    ui_Inventory;
 
         private InputCommands                       input;
         
@@ -36,7 +37,7 @@ namespace RogueSharpTutorial.View
             {
                 case ModalWindowTypes.Primary:
                     return GetPrimaryWindowKey();
-                case ModalWindowTypes.AbilityForget:
+                case ModalWindowTypes.Abilities:
                     return ui_Abilities.GetInput();
                 default:
                     return InputCommands.None;
@@ -127,7 +128,7 @@ namespace RogueSharpTutorial.View
             }
             else if (Input.GetKeyUp(KeyCode.Y))
             {
-                return InputCommands.ForgetAbility;
+                return InputCommands.Abilities;
             }
             else if (Input.GetKeyUp(KeyCode.U))
             {
@@ -143,11 +144,35 @@ namespace RogueSharpTutorial.View
             }
             else if (Input.GetKeyUp(KeyCode.G))
             {
-                return InputCommands.GrabItem;
-            }
-            else if (Input.GetKeyUp(KeyCode.A))
-            {
                 return InputCommands.GrabAllItems;
+            }
+            else if (Input.GetKeyUp(KeyCode.Z))
+            {
+                if (ui_Inventory.Isitem1Onground)
+                {
+                    return InputCommands.GrabItemZ;
+                }
+            }
+            else if (Input.GetKeyUp(KeyCode.X))
+            {
+                if (ui_Inventory.Isitem2Onground)
+                {
+                    return InputCommands.GrabItemX;
+                }
+            }
+            else if (Input.GetKeyUp(KeyCode.C))
+            {
+                if (ui_Inventory.Isitem3Onground)
+                {
+                    return InputCommands.GrabItemC;
+                }
+            }
+            else if (Input.GetKeyUp(KeyCode.V))
+            {
+                if (ui_Inventory.Isitem4Onground)
+                {
+                    return InputCommands.GrabItemV;
+                }
             }
 
             return InputCommands.None;

@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Collections.Generic;
 using RogueSharp;
 using RogueSharp.DiceNotation;
 using RogueSharpTutorial.Model;
@@ -45,14 +46,30 @@ namespace RogueSharpTutorial.Controller
             return false;
         }
 
-        //public static void Attack(Actor attacker, Actor defender)
-        //{
-        //    int hits = ResolveAttack(attacker, defender);
+        public static bool PlayerPickUp(int position)
+        {
+            if(position > 3 || position < -1)
+            {
+                return false;
+            }
 
-        //    int blocks = ResolveDefense(defender, hits);
+            List<TreasurePile> treasures = World.GetAllTreasurePilesAt(Game.Player.X, Game.Player.Y);
 
-        //    ResolveDamage(attacker, defender, hits, blocks);
-        //}
+            if(position > -1)
+            {
+                treasures[position].Treasure.PickUp(Game.Player);
+                World.RemoveTreasure(treasures[position]);
+            }
+            else
+            {
+                foreach(TreasurePile treasure in treasures)
+                {
+                    treasure.Treasure.PickUp(Game.Player);
+                    World.RemoveTreasure(treasure);
+                }
+            }
+            return true;
+        }
 
         public static bool Attack(Actor attacker, Actor defender)
         {

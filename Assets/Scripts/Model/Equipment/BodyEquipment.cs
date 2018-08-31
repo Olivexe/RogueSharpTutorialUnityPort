@@ -22,7 +22,7 @@ namespace RogueSharpTutorial.Model
                 game = gameIn,
                 Defense = 1,
                 DefenseChance = 10,
-                Name = "Leather"
+                Name = "Leather Body"
             };
         }
 
@@ -33,7 +33,7 @@ namespace RogueSharpTutorial.Model
                 game = gameIn,
                 Defense = 2,
                 DefenseChance = 5,
-                Name = "Chain"
+                Name = "Chain Body"
             };
         }
 
@@ -44,7 +44,7 @@ namespace RogueSharpTutorial.Model
                 game = gameIn,
                 Defense = 2,
                 DefenseChance = 10,
-                Name = "Plate"
+                Name = "Plate Body"
             };
         }
     }

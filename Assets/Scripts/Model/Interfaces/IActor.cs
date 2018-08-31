@@ -22,6 +22,9 @@ namespace RogueSharpTutorial.Model.Interfaces
         List<IEffect> Effects{ get; set; }
         int MaxEffects      { get; set; }
 
+        List<IInventory> Inventory { get; set; }
+        int MaxWeight       { get; set; }
+
         int Attack          { get; set; }
         int AttackChance    { get; set; }
         int Awareness       { get; set; }

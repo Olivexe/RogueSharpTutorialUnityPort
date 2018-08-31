@@ -33,6 +33,11 @@ namespace RogueSharpTutorial.Model
             this.game   = game;
         }
 
+        public string GetName()
+        {
+            return Name;
+        }
+
         protected bool Equals(Equipment other)
         {
             return Attack           == other.Attack &&

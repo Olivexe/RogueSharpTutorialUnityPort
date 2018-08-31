@@ -2,6 +2,7 @@
 {
     public interface ITreasure
     {
-        bool PickUp ( Actor actor );
+        bool    PickUp  ( Actor actor );
+        string  GetName ();
     }
 }
