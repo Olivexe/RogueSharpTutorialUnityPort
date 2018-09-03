@@ -209,6 +209,7 @@ namespace RogueSharpTutorial.View
         public void SetCameraExplore (bool isExploring)
         {
             playerCameraScript.SetCameraExploreMode(isExploring);
+            Game.MapExploringMode = isExploring;
         }
 
         public void CloseApplication()

@@ -154,7 +154,7 @@ namespace RogueSharpTutorial.View
             else if (Input.GetKeyUp(KeyCode.M))
             {
                 rootConsole.OpenModalWindow(ModalWindowTypes.ExploreMap);
-                return InputCommands.MapExploreOn;
+                return InputCommands.None;
             }
             else if (Input.GetKeyUp(KeyCode.Z))
             {

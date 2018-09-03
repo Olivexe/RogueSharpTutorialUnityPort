@@ -20,7 +20,7 @@ namespace RogueSharpTutorial.View
                 rootConsole.CloseAllModalWindows();
                 rootConsole.Game.MessageLog.Add("Resuming game.");
                 rootConsole.SetCameraExplore(false);
-                return InputCommands.MapExploreOff;
+                return InputCommands.None;
             }
             else if (Input.GetKey(KeyCode.Keypad8) || Input.GetKey(KeyCode.UpArrow))
             {

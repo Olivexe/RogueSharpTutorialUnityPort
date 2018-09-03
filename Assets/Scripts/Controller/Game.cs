@@ -26,7 +26,7 @@ namespace RogueSharpTutorial.Controller
         public  SchedulingSystem        SchedulingSystem    { get; private set; }
         public  TargetingSystem         TargetingSystem     { get; private set; }
         public  bool                    IsPlayerTurn        { get; private set; }
-        public  bool                    MapExploringMode    { get; private set; }
+        public  bool                    MapExploringMode    { get; set; }
 
         public int                      mapLevel            = 1;
 
@@ -134,7 +134,7 @@ namespace RogueSharpTutorial.Controller
 
         private void OnUpdate(object sender, UpdateEventArgs e)
         {
-            if(MapExploringMode)
+            if (MapExploringMode)
             {
                 renderRequired = true;
             }
@@ -215,14 +215,6 @@ namespace RogueSharpTutorial.Controller
                         renderRequired = true;
                         EndPlayerTurn();
                     }
-                }
-                else if(command == InputCommands.MapExploreOn)
-                {
-                    MapExploringMode = true;
-                }
-                else if(command == InputCommands.MapExploreOff)
-                {
-                    MapExploringMode = false;
                 }
                 else if(Player.PerformAction(command))
                 {
