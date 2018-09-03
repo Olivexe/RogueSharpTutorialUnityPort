@@ -41,6 +41,11 @@ namespace RogueSharpTutorial.View
         public void SetCameraExploreMode (bool isExploring)
         {
             isExploringMap = isExploring;
+
+            if(!isExploring)
+            {
+                transform.position = new Vector3(player.X, player.Y, -10);
+            }
         }
     }
 }

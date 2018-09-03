@@ -26,8 +26,8 @@ namespace RogueSharpTutorial.Controller
         public  SchedulingSystem        SchedulingSystem    { get; private set; }
         public  TargetingSystem         TargetingSystem     { get; private set; }
         public  bool                    IsPlayerTurn        { get; private set; }
-        public  bool                    MapExploringMode    { get; set; }
-
+        public  bool                    MapExploringMode    { get { return mapExploring; } set { Draw(); mapExploring = value; } }
+        private bool                    mapExploring        = false;
         public int                      mapLevel            = 1;
 
         public Game(UI_Main console)
@@ -37,7 +37,6 @@ namespace RogueSharpTutorial.Controller
             MessageLog              = new MessageLog(this);
             SchedulingSystem        = new SchedulingSystem(this);
             TargetingSystem         = new TargetingSystem(this);
-            MapExploringMode        = false;
 
             rootConsole = console;
             rootConsole.UpdateView  += OnUpdate;                         // Set up a handler for graphic engine Update event
@@ -54,6 +53,7 @@ namespace RogueSharpTutorial.Controller
             Player.Item1 = new RevealMapScroll(this);
             Player.Item2 = new RevealMapScroll(this);
 
+            MapExploringMode = false;
             Draw();
         }
 
