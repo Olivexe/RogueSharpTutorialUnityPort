@@ -3,6 +3,9 @@
     public enum ModalWindowTypes
     {
         Primary,
-        Abilities
+        Abilities,
+        Inventory,
+        Profile,
+        ExploreMap
     }
 }

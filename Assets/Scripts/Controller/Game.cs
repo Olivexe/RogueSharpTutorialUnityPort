@@ -26,6 +26,7 @@ namespace RogueSharpTutorial.Controller
         public  SchedulingSystem        SchedulingSystem    { get; private set; }
         public  TargetingSystem         TargetingSystem     { get; private set; }
         public  bool                    IsPlayerTurn        { get; private set; }
+        public  bool                    MapExploringMode    { get; private set; }
 
         public int                      mapLevel            = 1;
 
@@ -36,6 +37,7 @@ namespace RogueSharpTutorial.Controller
             MessageLog              = new MessageLog(this);
             SchedulingSystem        = new SchedulingSystem(this);
             TargetingSystem         = new TargetingSystem(this);
+            MapExploringMode        = false;
 
             rootConsole = console;
             rootConsole.UpdateView  += OnUpdate;                         // Set up a handler for graphic engine Update event
@@ -132,7 +134,11 @@ namespace RogueSharpTutorial.Controller
 
         private void OnUpdate(object sender, UpdateEventArgs e)
         {
-            if (TargetingSystem.IsPlayerTargeting)
+            if(MapExploringMode)
+            {
+                renderRequired = true;
+            }
+            else if (TargetingSystem.IsPlayerTargeting)
             {
                 InputCommands command = rootConsole.GetUserCommand();
                 TargetingSystem.HandleKey(command);
@@ -190,23 +196,7 @@ namespace RogueSharpTutorial.Controller
             }
             else
             {
-                if(command == InputCommands.Abilities)
-                {
-                    rootConsole.OpenModalWindow(ModalWindowTypes.Abilities);
-                }
-                else if (command == InputCommands.DropItem)
-                {
-
-                }
-                else if (command == InputCommands.UseItem)
-                {
-
-                }
-                else if (command == InputCommands.EquipItem)
-                {
-
-                }
-                else if (command == InputCommands.StairsDown && World.CanMoveDownToNextLevel())
+                if (command == InputCommands.StairsDown && World.CanMoveDownToNextLevel())
                 {
                     if (World.stairsBlocked)
                     {
@@ -225,6 +215,14 @@ namespace RogueSharpTutorial.Controller
                         renderRequired = true;
                         EndPlayerTurn();
                     }
+                }
+                else if(command == InputCommands.MapExploreOn)
+                {
+                    MapExploringMode = true;
+                }
+                else if(command == InputCommands.MapExploreOff)
+                {
+                    MapExploringMode = false;
                 }
                 else if(Player.PerformAction(command))
                 {

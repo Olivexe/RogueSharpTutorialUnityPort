@@ -8,6 +8,9 @@ namespace RogueSharpTutorial.View
         [SerializeField] private    UI_Main         rootConsole;
         [SerializeField] private    UI_Abilities    ui_Abilities;
         [SerializeField] private    UI_Inventory    ui_Inventory;
+        [SerializeField] private    UI_Profile      ui_Profile;
+        [SerializeField] private    UI_HUD          ui_HUD;
+        [SerializeField] private    UI_Map          ui_Map;
 
         private InputCommands                       input;
         
@@ -39,6 +42,12 @@ namespace RogueSharpTutorial.View
                     return GetPrimaryWindowKey();
                 case ModalWindowTypes.Abilities:
                     return ui_Abilities.GetInput();
+                case ModalWindowTypes.Inventory:
+                    return ui_Inventory.GetInput();
+                case ModalWindowTypes.Profile:
+                    return ui_Profile.GetInput();
+                case ModalWindowTypes.ExploreMap:
+                    return ui_Map.GetInput();
                 default:
                     return InputCommands.None;
             }
@@ -128,48 +137,49 @@ namespace RogueSharpTutorial.View
             }
             else if (Input.GetKeyUp(KeyCode.Y))
             {
-                return InputCommands.Abilities;
-            }
-            else if (Input.GetKeyUp(KeyCode.U))
-            {
-                return InputCommands.UseItem;
+                rootConsole.OpenModalWindow(ModalWindowTypes.Abilities);
             }
             else if (Input.GetKeyUp(KeyCode.I))
             {
-                return InputCommands.DropItem;
+                rootConsole.OpenModalWindow(ModalWindowTypes.Inventory);
             }
-            else if (Input.GetKeyUp(KeyCode.O))
+            else if (Input.GetKeyUp(KeyCode.P))
             {
-                return InputCommands.EquipItem;
+                rootConsole.OpenModalWindow(ModalWindowTypes.Profile);
             }
             else if (Input.GetKeyUp(KeyCode.G))
             {
                 return InputCommands.GrabAllItems;
             }
+            else if (Input.GetKeyUp(KeyCode.M))
+            {
+                rootConsole.OpenModalWindow(ModalWindowTypes.ExploreMap);
+                return InputCommands.MapExploreOn;
+            }
             else if (Input.GetKeyUp(KeyCode.Z))
             {
-                if (ui_Inventory.Isitem1Onground)
+                if (ui_HUD.Isitem1Onground)
                 {
                     return InputCommands.GrabItemZ;
                 }
             }
             else if (Input.GetKeyUp(KeyCode.X))
             {
-                if (ui_Inventory.Isitem2Onground)
+                if (ui_HUD.Isitem2Onground)
                 {
                     return InputCommands.GrabItemX;
                 }
             }
             else if (Input.GetKeyUp(KeyCode.C))
             {
-                if (ui_Inventory.Isitem3Onground)
+                if (ui_HUD.Isitem3Onground)
                 {
                     return InputCommands.GrabItemC;
                 }
             }
             else if (Input.GetKeyUp(KeyCode.V))
             {
-                if (ui_Inventory.Isitem4Onground)
+                if (ui_HUD.Isitem4Onground)
                 {
                     return InputCommands.GrabItemV;
                 }

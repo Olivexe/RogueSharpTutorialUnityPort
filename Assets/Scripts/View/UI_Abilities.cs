@@ -55,20 +55,6 @@ namespace RogueSharpTutorial.View
             }
         }
 
-        public void SetWindowType(Window windowType)
-        {
-            WindowType = windowType;
-
-            if (WindowType == Window.Forget)
-            {
-                subTitleText.text = "Forgetting";
-            }
-            else if (windowType == Window.Learn)
-            {
-                subTitleText.text = "Learning";
-            }
-        }
-
         public InputCommands GetInput()
         {
             if (Input.GetKeyUp(KeyCode.Escape))

@@ -36,5 +36,7 @@
         GrabItemC,
         GrabItemV,
         GrabAllItems,
+        MapExploreOn,
+        MapExploreOff
     }
 }

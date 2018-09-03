@@ -7,7 +7,7 @@ using RogueSharpTutorial.Model;
 
 namespace RogueSharpTutorial.View
 {
-    public class UI_Inventory : MonoBehaviour
+    public class UI_Profile : MonoBehaviour
     {
         private enum AbilityToUpdate
         {
@@ -35,7 +35,7 @@ namespace RogueSharpTutorial.View
         {
             if(thisWindow.activeSelf)
             {
-                DrawInventory();
+                DrawProfile();
             }
         }
 
@@ -51,7 +51,7 @@ namespace RogueSharpTutorial.View
             return InputCommands.None;
         }
 
-        private void DrawInventory()
+        private void DrawProfile()
         {
         
         }

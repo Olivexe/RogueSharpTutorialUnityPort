@@ -62,8 +62,9 @@ namespace RogueSharpTutorial.Model
             {
                 fullyHeal.Act();
                 turnsSpentRunning = null;
+                runAway.Reset();
             }
-            else if (Health < (MaxHealth * .67))
+            else if (Health < (MaxHealth * .75))
             {
                 runAway.Act();
 

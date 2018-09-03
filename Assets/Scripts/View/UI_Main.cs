@@ -14,8 +14,10 @@ namespace RogueSharpTutorial.View
 
         [SerializeField] private UI_Stats       uiStats;
         [SerializeField] private UI_Messages    uiMessages;
-        [SerializeField] private UI_Inventory   uiInventory;
+        [SerializeField] private UI_HUD         uiHUD;
         [SerializeField] private UI_Abilities   uiAbilities;
+        [SerializeField] private UI_Inventory   uiInventory;
+        [SerializeField] private UI_Profile     uiProfile;
 
         [SerializeField] private InputKeyboard  inputKeyboard;
         [SerializeField] private PlayerCamera   playerCameraScript;
@@ -23,6 +25,8 @@ namespace RogueSharpTutorial.View
         [SerializeField] private TileUnity      tilePrefab;
 
         [SerializeField] private GameObject     windowAbilities;
+        [SerializeField] private GameObject     windowInventory;
+        [SerializeField] private GameObject     windowProfile;
 
         public Game                             Game                { get; private set; }
         private                 TileUnity[,]    mapObjects;
@@ -32,8 +36,10 @@ namespace RogueSharpTutorial.View
             uiStats         = GetComponent<UI_Stats>();
             uiMessages      = GetComponent<UI_Messages>();
             inputKeyboard   = GetComponent<InputKeyboard>();
-            uiInventory     = GetComponent<UI_Inventory>();
+            uiHUD           = GetComponent<UI_HUD>();
             uiAbilities     = GetComponent<UI_Abilities>();
+            uiInventory     = GetComponent<UI_Inventory>();
+            uiProfile       = GetComponent<UI_Profile>();
 
             Game = new Game(this);
         }
@@ -155,7 +161,7 @@ namespace RogueSharpTutorial.View
 
         public void DrawPlayerInventory()
         {
-            uiInventory.DrawPlayerInventory(Game);
+            uiHUD.DrawPlayerInventory(Game);
         }
 
         public void DrawMonsterStats(Monster monster, int position)
@@ -176,7 +182,16 @@ namespace RogueSharpTutorial.View
             {
                 case ModalWindowTypes.Abilities:
                     windowAbilities.SetActive(true);
-                    uiAbilities.SetWindowType(UI_Abilities.Window.Forget);
+                    break;
+                case ModalWindowTypes.Inventory:
+                    windowInventory.SetActive(true);
+                    break;
+                case ModalWindowTypes.Profile:
+                    windowProfile.SetActive(true);
+                    break;
+                case ModalWindowTypes.ExploreMap:
+                    Game.MessageLog.Add("Exploring Map. Hit Esc to resume game.");
+                    SetCameraExplore(true);
                     break;
                 default:
                     break;
@@ -185,11 +200,15 @@ namespace RogueSharpTutorial.View
 
         public void CloseAllModalWindows()
         {
-            if(windowAbilities.activeSelf)
-            {
-                windowAbilities.SetActive(false);
-                inputKeyboard.CurrentWindow = ModalWindowTypes.Primary;
-            }
+            windowAbilities.SetActive(false);
+            windowInventory.SetActive(false);
+            windowProfile.SetActive(false);
+            inputKeyboard.CurrentWindow = ModalWindowTypes.Primary;
+        }
+
+        public void SetCameraExplore (bool isExploring)
+        {
+            playerCameraScript.SetCameraExploreMode(isExploring);
         }
 
         public void CloseApplication()
