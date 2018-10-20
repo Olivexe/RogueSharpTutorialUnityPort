@@ -15,18 +15,18 @@ namespace RogueSharpTutorial.Model
         {
             Player player = game.Player;
 
-            if (player.Hand == HandEquipment.None(game))
+            if (player.MainHand == MainHandEquipment.None(game))
             {
-                game.MessageLog.Add($"{player.Name} is not holding anything they can sharpen");
+                game.MessageLog.Add($"{player.Name} is not equipping anything they can sharpen");
             }
-            else if (player.AttackChance >= 80)
+            else if (player.AttackChanceMeleeAdjusted >= 80)
             {
-                game.MessageLog.Add($"{player.Name} cannot make their {player.Hand.Name} any sharper");
+                game.MessageLog.Add($"{player.Name} cannot make their {player.MainHand.Name} any sharper");
             }
             else
             {
-                game.MessageLog.Add($"{player.Name} uses a {Name} to sharper their {player.Hand.Name}");
-                player.Hand.AttackChance += Dice.Roll("1D3");
+                game.MessageLog.Add($"{player.Name} uses a {Name} to sharpen their {player.MainHand.Name}");
+                player.MainHand.AttackChance += Dice.Roll("1D3");
                 RemainingUses--;
             }
 

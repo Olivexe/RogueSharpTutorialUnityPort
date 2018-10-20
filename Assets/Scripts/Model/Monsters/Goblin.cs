@@ -22,18 +22,18 @@ namespace RogueSharpTutorial.Model
 
             return new Goblin (game)
             {
-                Attack          = Dice.Roll("1D2") + (level / 3),
-                AttackChance    = Dice.Roll("10D5") + (level / 3),
-                Awareness       = 6,
+                AttackBase      = Dice.Roll("1D2") + (level / 3),
+                AttackChanceBase= Dice.Roll("10D5") + (level / 3),
+                AwarenessBase   = 6,
                 Color           = Colors.GoblinColor,
-                Defense         = Dice.Roll("1D2") + (level / 3),
-                DefenseChance   = Dice.Roll("10D4") + (level / 3),
+                DefenseBase     = Dice.Roll("1D2") + (level / 3),
+                DefenseChanceBase = Dice.Roll("10D4") + (level / 3),
                 Gold            = Dice.Roll("1D20") + (level * 2),
-                Health          = health,
-                MaxHealth       = health,
+                CurrentHealth   = health,
+                MaxHealthBase   = health,
                 CanGrabTreasure = true,
                 Name            = "goblin",
-                Speed           = 10,
+                SpeedBase       = 10,
                 Symbol          = 'g',
                 IsAggressive    = true,
                 fullyHeal       = new FullyHeal(),
@@ -53,7 +53,7 @@ namespace RogueSharpTutorial.Model
 
         public override bool PerformAction(InputCommands command)
         {
-            FieldOfView.ComputeFov(X, Y, Awareness, true);
+            FieldOfView.ComputeFov(X, Y, AwarenessAdjusted, true);
             bool isPlayerInView = FieldOfView.IsInFov(Game.Player.X, Game.Player.Y);
 
             CommonActions.UpdateAlertStatus(this, isPlayerInView);
@@ -64,7 +64,7 @@ namespace RogueSharpTutorial.Model
                 turnsSpentRunning = null;
                 runAway.Reset();
             }
-            else if (Health < (MaxHealth * .75))
+            else if (CurrentHealth < (MaxHealthAdjusted * .75))
             {
                 runAway.Act();
 

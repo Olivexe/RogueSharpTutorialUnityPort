@@ -41,12 +41,12 @@ namespace RogueSharpTutorial.Model
 
                 Actor PoisonSpike = new Actor(Game)
                 {
-                    Attack = Attack,
-                    AttackChance = AttackChance,
+                    AttackBase      = Attack,
+                    AttackChanceBase= AttackChance,
                     Name = "Poisonous Spike"
                 };
                 
-                if(Command.Attack(PoisonSpike, actorTarget))
+                if(Command.Attack(PoisonSpike, actorTarget, false))
                 {
                     if (Game.Random.Next(1, 10) == 1)
                     {

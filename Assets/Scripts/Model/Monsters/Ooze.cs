@@ -16,18 +16,18 @@ namespace RogueSharpTutorial.Model
 
             return new Ooze (game)
             {
-                Attack          = Dice.Roll("1D2") + (level / 2),
-                AttackChance    = Dice.Roll("10D5") + (level / 2),
-                Awareness       = 3,
+                AttackBase      = Dice.Roll("1D2") + (level / 2),
+                AttackChanceBase = Dice.Roll("10D5") + (level / 2),
+                AwarenessBase   = 3,
                 Color           = Colors.OozeColor,
-                Defense         = Dice.Roll("1D2") + (level / 2),
-                DefenseChance   = Dice.Roll("10D4"),
+                DefenseBase     = Dice.Roll("1D2") + (level / 2),
+                DefenseChanceBase = Dice.Roll("10D4"),
                 Gold            = Dice.Roll("1D20") + (level * 2),
-                Health          = health,
-                MaxHealth       = health,
+                CurrentHealth   = health,
+                MaxHealthBase   = health,
                 CanGrabTreasure = false,
                 Name            = "ooze",
-                Speed           = 16,
+                SpeedBase       = 16,
                 Symbol          = 'o',
                 IsAggressive    = true,
                 splitOoze       = new SplitOoze(),
@@ -43,7 +43,7 @@ namespace RogueSharpTutorial.Model
 
         public override bool PerformAction(InputCommands command)
         {
-            FieldOfView.ComputeFov(X, Y, Awareness, true);
+            FieldOfView.ComputeFov(X, Y, AwarenessAdjusted, true);
             bool isPlayerInView = FieldOfView.IsInFov(Game.Player.X, Game.Player.Y);
 
             CommonActions.UpdateAlertStatus(this, isPlayerInView);

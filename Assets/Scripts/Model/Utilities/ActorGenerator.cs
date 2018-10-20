@@ -74,19 +74,20 @@ namespace RogueSharpTutorial.Utilities
             {
                 _player = new Player(game)
                 {
-                    Attack = 2,
-                    AttackChance = 50,
-                    Awareness = 7,
-                    Color = Colors.Player,
-                    Defense = 2,
-                    DefenseChance = 40,
-                    Gold = 0,
-                    Health = 50,
-                    MaxHealth = 50,
+                    AttackBase      = 2,
+                    AttackChanceBase = 50,
+                    AwarenessBase   = 7,
+                    Color           = Colors.Player,
+                    DefenseBase     = 2,
+                    DefenseChanceBase = 40,
+                    Gold            = 0,
+                    CurrentHealth   = 50,
+                    MaxHealthBase   = 50,
                     CanGrabTreasure = true,
-                    Name = "Rogue",
-                    Speed = 8,
-                    Symbol = '@',
+                    Name            = "Rogue",
+                    SpeedBase       = 8,
+                    Symbol          = '@',
+                    MaxInventory    = 10,
 
                     QAbility = new DoNothing(game, _player),
                     WAbility = new DoNothing(game, _player),
@@ -98,10 +99,13 @@ namespace RogueSharpTutorial.Utilities
                     Item3 = new NoItem(game),
                     Item4 = new NoItem(game),
 
-                    Head = HeadEquipment.None(game),
-                    Body = BodyEquipment.None(game),
-                    Hand = HandEquipment.None(game),
-                    Feet = FeetEquipment.None(game)
+                    Head        = HeadEquipment.None(game),
+                    Body        = BodyEquipment.None(game),
+                    Hands       = HandsEquipment.None(game),
+                    Feet        = FeetEquipment.None(game),
+                    MainHand    = MainHandEquipment.None(game),
+                    Ranged      = RangedEquipment.None(game),
+                    AmmoCarried = Ammunition.None(game)
                 };
             }
 

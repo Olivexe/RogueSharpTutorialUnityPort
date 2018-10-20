@@ -2,7 +2,7 @@
 {
     public interface IInventory
     {
-        int Weight      { get; set; }
-        int MaxStack    { get; set; }
+        int MaxStack            { get; set; }
+        int CurrentStackAmount  { get; set; }
     }
 }

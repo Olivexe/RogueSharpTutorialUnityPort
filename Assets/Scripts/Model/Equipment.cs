@@ -4,7 +4,7 @@ using RogueSharpTutorial.Model.Interfaces;
 
 namespace RogueSharpTutorial.Model
 {
-    public class Equipment : IEquipment, ITreasure, IDrawable
+    public class Equipment : IEquipment, ITreasure, IDrawable, IInventory
     {
         // IEquipment Properties
         public int      Attack          { get; set; }
@@ -23,6 +23,10 @@ namespace RogueSharpTutorial.Model
         public char     Symbol          { get; set; }
         public int      X               { get; set; }
         public int      Y               { get; set; }
+
+        // IInventory Properties
+        public int      MaxStack        { get; set; }
+        public int      CurrentStackAmount { get; set; }
 
         protected Game game;
 
@@ -49,6 +53,7 @@ namespace RogueSharpTutorial.Model
                    Health           == other.Health &&
                    MaxHealth        == other.MaxHealth &&
                    Speed            == other.Speed &&
+                   MaxStack         == other.MaxStack &&
                    string.Equals(Name, other.Name);
         }
 
@@ -62,7 +67,7 @@ namespace RogueSharpTutorial.Model
             {
                 return true;
             }
-            if (obj.GetType() != this.GetType())
+            if (obj.GetType() != GetType())
             {
                 return false;
             }
@@ -100,34 +105,74 @@ namespace RogueSharpTutorial.Model
 
         public bool PickUp(Actor actor)
         {
-            if (this is HeadEquipment)
+            if (actor.AddToInventory(this))
             {
-                actor.Head = this as HeadEquipment;
-                game.MessageLog.Add($"{actor.Name} picked up a {Name} helmet");
+                if (this is HeadEquipment && actor is Player)
+                {
+                    //actor.Head = this as HeadEquipment;
+                    game.MessageLog.Add($"{actor.Name} picked up a {Name} helmet.");
+                }
+
+                if (this is BodyEquipment && actor is Player)
+                {
+                    //actor.Body = this as BodyEquipment;
+                    game.MessageLog.Add($"{actor.Name} picked up {Name} body armor.");
+                }
+
+                if (this is HandsEquipment && actor is Player)
+                {
+                    //actor.Hand = this as HandEquipment;
+                    game.MessageLog.Add($"{actor.Name} picked up the {Name} gloves.");
+                }
+
+                if (this is FeetEquipment && actor is Player)
+                {
+                    //actor.Feet = this as FeetEquipment;
+                    game.MessageLog.Add($"{actor.Name} picked up {Name} boots.");
+                }
+
+                if ((this is MainHandEquipment ||
+                     this is RangedEquipment   ||
+                     this is Ammunition)       && actor is Player)
+                {
+                    //actor.Hand = this as HandEquipment;
+                    game.MessageLog.Add($"{actor.Name} picked up the {Name}.");
+                }
+
                 return true;
             }
-
-            if (this is BodyEquipment)
+            else
             {
-                actor.Body = this as BodyEquipment;
-                game.MessageLog.Add($"{actor.Name} picked up {Name} body armor");
-                return true;
-            }
+                if (this is HeadEquipment && actor is Player)
+                {
+                    //actor.Head = this as HeadEquipment;
+                    game.MessageLog.Add($"You can't pick up a {Name} helmet.");
+                }
 
-            if (this is HandEquipment)
-            {
-                actor.Hand = this as HandEquipment;
-                game.MessageLog.Add($"{actor.Name} picked up a {Name}");
-                return true;
-            }
+                if (this is BodyEquipment && actor is Player)
+                {
+                    //actor.Body = this as BodyEquipment;
+                    game.MessageLog.Add($"You can't pick up {Name} body armor.");
+                }
 
-            if (this is FeetEquipment)
-            {
-                actor.Feet = this as FeetEquipment;
-                game.MessageLog.Add($"{actor.Name} picked up {Name} boots");
-                return true;
-            }
+                if (this is HandsEquipment && actor is Player)
+                {
+                    game.MessageLog.Add($"You can't pick up the {Name} gloves.");
+                }
 
+                if (this is FeetEquipment && actor is Player)
+                {
+                    game.MessageLog.Add($"You can't pick up {Name} boots.");
+                }
+
+                if ((this is MainHandEquipment ||
+                     this is RangedEquipment   || 
+                     this is Ammunition)       && actor is Player)
+                { 
+                    game.MessageLog.Add($"You can't pick up the {Name}.");
+                }
+
+            }
             return false;
         }
 

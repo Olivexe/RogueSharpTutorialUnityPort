@@ -16,18 +16,18 @@ namespace RogueSharpTutorial.Utilities
                 equipmentPool.Add(BodyEquipment.Leather(game), 20);
                 equipmentPool.Add(HeadEquipment.Leather(game), 20);
                 equipmentPool.Add(FeetEquipment.Leather(game), 20);
-                equipmentPool.Add(HandEquipment.Dagger(game), 25);
-                equipmentPool.Add(HandEquipment.Sword(game), 5);
+                equipmentPool.Add(MainHandEquipment.Dagger(game), 25);
+                equipmentPool.Add(MainHandEquipment.Sword(game), 5);
                 equipmentPool.Add(HeadEquipment.Chain(game), 5);
                 equipmentPool.Add(BodyEquipment.Chain(game), 5);
             }
-            else if (level <= 6)
+            else if (level <= 5)
             {
                 equipmentPool.Add(BodyEquipment.Chain(game), 20);
                 equipmentPool.Add(HeadEquipment.Chain(game), 20);
                 equipmentPool.Add(FeetEquipment.Chain(game), 20);
-                equipmentPool.Add(HandEquipment.Sword(game), 15);
-                equipmentPool.Add(HandEquipment.Axe(game), 15);
+                equipmentPool.Add(MainHandEquipment.Sword(game), 15);
+                equipmentPool.Add(MainHandEquipment.Axe(game), 15);
                 equipmentPool.Add(HeadEquipment.Plate(game), 5);
                 equipmentPool.Add(BodyEquipment.Plate(game), 5);
             }
@@ -36,7 +36,9 @@ namespace RogueSharpTutorial.Utilities
                 equipmentPool.Add(BodyEquipment.Plate(game), 25);
                 equipmentPool.Add(HeadEquipment.Plate(game), 25);
                 equipmentPool.Add(FeetEquipment.Plate(game), 25);
-                equipmentPool.Add(HandEquipment.TwoHandedSword(game), 25);
+                equipmentPool.Add(RangedEquipment.Bow(game), 25);
+                equipmentPool.Add(Ammunition.Arrow(game), 25);
+                equipmentPool.Add(MainHandEquipment.TwoHandedSword(game), 25);
             }
         }
 

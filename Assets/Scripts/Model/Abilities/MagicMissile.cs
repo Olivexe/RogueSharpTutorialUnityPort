@@ -34,11 +34,11 @@ namespace RogueSharpTutorial.Model
                 game.MessageLog.Add($"{player.Name} casts a {Name} at {monster.Name}");
                 Actor magicMissleActor = new Actor(game)
                 {
-                    Attack      = attack,
-                    AttackChance= attackChance,
+                    AttackBase      = attack,
+                    AttackChanceBase= attackChance,
                     Name        = Name
                 };
-                Command.Attack(magicMissleActor, monster);
+                Command.Attack(magicMissleActor, monster, true);
             }
         }
     }

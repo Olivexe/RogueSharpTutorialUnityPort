@@ -2,22 +2,22 @@
 
 namespace RogueSharpTutorial.Model
 {
-    public class HandEquipment : Equipment
+    public class MainHandEquipment : Equipment
     {
-        public HandEquipment(Game gameIn) : base(gameIn) { }
+        public MainHandEquipment(Game gameIn) : base(gameIn) { }
 
-        public static HandEquipment None(Game gameIn)
+        public static MainHandEquipment None(Game gameIn)
         {
-            return new HandEquipment(gameIn)
+            return new MainHandEquipment(gameIn)
             {
                 game = gameIn,
                 Name = "None"
             };
         }
 
-        public static HandEquipment Dagger(Game gameIn)
+        public static MainHandEquipment Dagger(Game gameIn)
         {
-            return new HandEquipment(gameIn)
+            return new MainHandEquipment(gameIn)
             {
                 game = gameIn,
                 Attack = 1,
@@ -27,9 +27,9 @@ namespace RogueSharpTutorial.Model
             };
         }
 
-        public static HandEquipment Sword(Game gameIn)
+        public static MainHandEquipment Sword(Game gameIn)
         {
-            return new HandEquipment(gameIn)
+            return new MainHandEquipment(gameIn)
             {
                 game = gameIn,
                 Attack = 1,
@@ -39,9 +39,9 @@ namespace RogueSharpTutorial.Model
             };
         }
 
-        public static HandEquipment Axe(Game gameIn)
+        public static MainHandEquipment Axe(Game gameIn)
         {
-            return new HandEquipment(gameIn)
+            return new MainHandEquipment(gameIn)
             {
                 game = gameIn,
                 Attack = 2,
@@ -51,9 +51,9 @@ namespace RogueSharpTutorial.Model
             };
         }
 
-        public static HandEquipment TwoHandedSword(Game gameIn)
+        public static MainHandEquipment TwoHandedSword(Game gameIn)
         {
-            return new HandEquipment(gameIn)
+            return new MainHandEquipment(gameIn)
             {
                 game = gameIn,
                 Attack = 3,

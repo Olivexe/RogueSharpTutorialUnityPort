@@ -23,7 +23,7 @@ namespace RogueSharpTutorial.Model
 
             if(counter >= effectInterval)
             {
-                Owner.Health -= damage;
+                Owner.CurrentHealth -= damage;
                 game.MessageLog.Add("The poison weakens you.");
                 counter = 0;
             }

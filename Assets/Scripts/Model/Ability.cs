@@ -4,7 +4,7 @@ using RogueSharpTutorial.Model.Interfaces;
 
 namespace RogueSharpTutorial.Model
 {
-    public class Ability : IAbility, ITreasure, IDrawable
+    public class Ability : IAbility, ITreasure, IDrawable, IInventory
     {   
         public string   Name                { get; protected set; }
         public int      TurnsToRefresh      { get; protected set; }
@@ -14,6 +14,8 @@ namespace RogueSharpTutorial.Model
         public char     Symbol              { get; set; }
         public int      X                   { get; set; }
         public int      Y                   { get; set; }
+        public int      MaxStack            { get; set; }
+        public int      CurrentStackAmount  { get; set; }
 
         protected Game  game;
 
@@ -59,15 +61,33 @@ namespace RogueSharpTutorial.Model
 
         public bool PickUp(Actor actor)
         {
+            //if (actor != null)
+            //{
+            //    if (actor.AddAbility(this))
+            //    {
+            //        if (actor is Player)
+            //        {
+            //            game.MessageLog.Add($"{actor.Name} learned the {Name} ability");
+            //        }
+            //        return true;
+            //    }
+            //}
             if (actor != null)
             {
-                if (actor.AddAbility(this))
+                if (actor.AddToInventory(this))
                 {
                     if (actor is Player)
                     {
-                        game.MessageLog.Add($"{actor.Name} learned the {Name} ability");
+                        game.MessageLog.Add($"You picked up {Name}.");
                     }
                     return true;
+                }
+                else
+                {
+                    if (actor is Player)
+                    {
+                        game.MessageLog.Add($"You can't pick up {Name}.");
+                    }
                 }
             }
 

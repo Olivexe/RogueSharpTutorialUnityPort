@@ -15,18 +15,18 @@ namespace RogueSharpTutorial.Model
 
             return new FungalSpore(game)
             {
-                Attack          = Dice.Roll("1D2"),
-                AttackChance    = Dice.Roll("20D3") + (level / 2),
-                Awareness       = 7,
+                AttackBase      = Dice.Roll("1D2"),
+                AttackChanceBase= Dice.Roll("20D3") + (level / 2),
+                AwarenessBase   = 7,
                 Color           = Colors.GoblinColor,
-                Defense         = Dice.Roll("1D2"),
-                DefenseChance   = Dice.Roll("10D4"),
+                DefenseBase     = Dice.Roll("1D2"),
+                DefenseChanceBase = Dice.Roll("10D4"),
                 Gold            = 0,
-                Health          = health,
-                MaxHealth       = health,
+                CurrentHealth   = health,
+                MaxHealthBase = health,
                 CanGrabTreasure = false,
                 Name            = "fungal spore",
-                Speed           = 6,
+                SpeedBase       = 6,
                 Symbol          = 's',
                 IsAggressive    = true,
                 standardMoveAndAttack = new StandardMoveAndAttack()
@@ -40,7 +40,7 @@ namespace RogueSharpTutorial.Model
 
         public override bool PerformAction(InputCommands command)
         {
-            FieldOfView.ComputeFov(X, Y, Awareness, true);
+            FieldOfView.ComputeFov(X, Y, AwarenessAdjusted, true);
             bool isPlayerInView = FieldOfView.IsInFov(Game.Player.X, Game.Player.Y);
 
             CommonActions.UpdateAlertStatus(this, isPlayerInView);

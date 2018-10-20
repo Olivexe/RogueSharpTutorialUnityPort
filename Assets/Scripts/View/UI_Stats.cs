@@ -32,9 +32,9 @@ namespace RogueSharpTutorial.View
             goldField.color = ColorMap.UnityColors[Colors.Gold];
 
             nameField.text      = "Name:    " + game.Player.Name;
-            healthField.text    = "Health:   " + game.Player.Health + "/" + game.Player.MaxHealth;
-            attackField.text    = "Attack:   " + game.Player.Attack + " (" + game.Player.AttackChance + "%)";
-            defenseField.text   = "Defense: " + game.Player.Defense + " (" + game.Player.DefenseChance + "%)";
+            healthField.text    = "Health:   " + game.Player.CurrentHealth + "/" + game.Player.MaxHealthAdjusted;
+            attackField.text    = "Attack:   " + game.Player.AttackMeleeAdjusted + " (" + game.Player.AttackChanceMeleeAdjusted + "%)";
+            defenseField.text   = "Defense: " + game.Player.DefenseAdjusted + " (" + game.Player.DefenseChanceAdjusted + "%)";
             goldField.text      = "Gold:      " + game.Player.Gold;
             mapLevelField.text  = "Map Level: " + game.mapLevel;
         }
@@ -56,7 +56,7 @@ namespace RogueSharpTutorial.View
 
             StatBar bar = obj.GetComponent<StatBar>();
 
-            bar.SetSlider(monster.Health, monster.MaxHealth, monster.Name, ColorMap.UnityColors[monster.Color], monster.Symbol);
+            bar.SetSlider(monster.CurrentHealth, monster.MaxHealthAdjusted, monster.Name, ColorMap.UnityColors[monster.Color], monster.Symbol);
         }
 
         /// <summary>

@@ -74,56 +74,56 @@ namespace RogueSharpTutorial.View
                 return;
             }
 
-            DrawyEquipment(game);
+            //DrawEquipment(game);
             DrawAbilities(game);
             DrawItems(game);
             DrawEffects(game);
             DrawItemsOnGround(game);
         }
 
-        private void DrawyEquipment(Game game)
-        {
-            inventoryHeadText.text = game.Player.Head.Name;
-            inventoryHandsText.text = game.Player.Hand.Name;
-            inventoryBodyText.text = game.Player.Body.Name;
-            inventoryFeetText.text = game.Player.Feet.Name;
+        //private void DrawEquipment(Game game)
+        //{
+        //    inventoryHeadText.text = game.Player.Head.Name;
+        //    inventoryHandsText.text = game.Player.Hand.Name;
+        //    inventoryBodyText.text = game.Player.Body.Name;
+        //    inventoryFeetText.text = game.Player.Feet.Name;
 
-            if (game.Player.Head == HeadEquipment.None(game))
-            {
-                inventoryHeadText.color = ColorMap.UnityColors[Colors.DbOldStone];
-            }
-            else
-            {
-                inventoryHeadText.color = ColorMap.UnityColors[Colors.DbLight];
-            }
+        //    if (game.Player.Head == HeadEquipment.None(game))
+        //    {
+        //        inventoryHeadText.color = ColorMap.UnityColors[Colors.DbOldStone];
+        //    }
+        //    else
+        //    {
+        //        inventoryHeadText.color = ColorMap.UnityColors[Colors.DbLight];
+        //    }
 
-            if (game.Player.Hand == HandEquipment.None(game))
-            {
-                inventoryHandsText.color = ColorMap.UnityColors[Colors.DbOldStone];
-            }
-            else
-            {
-                inventoryHandsText.color = ColorMap.UnityColors[Colors.DbLight];
-            }
+        //    if (game.Player.Hand == HandEquipment.None(game))
+        //    {
+        //        inventoryHandsText.color = ColorMap.UnityColors[Colors.DbOldStone];
+        //    }
+        //    else
+        //    {
+        //        inventoryHandsText.color = ColorMap.UnityColors[Colors.DbLight];
+        //    }
 
-            if (game.Player.Body == BodyEquipment.None(game))
-            {
-                inventoryBodyText.color = ColorMap.UnityColors[Colors.DbOldStone];
-            }
-            else
-            {
-                inventoryBodyText.color = ColorMap.UnityColors[Colors.DbLight];
-            }
+        //    if (game.Player.Body == BodyEquipment.None(game))
+        //    {
+        //        inventoryBodyText.color = ColorMap.UnityColors[Colors.DbOldStone];
+        //    }
+        //    else
+        //    {
+        //        inventoryBodyText.color = ColorMap.UnityColors[Colors.DbLight];
+        //    }
 
-            if (game.Player.Feet == FeetEquipment.None(game))
-            {
-                inventoryFeetText.color = ColorMap.UnityColors[Colors.DbOldStone];
-            }
-            else
-            {
-                inventoryFeetText.color = ColorMap.UnityColors[Colors.DbLight];
-            }
-        }
+        //    if (game.Player.Feet == FeetEquipment.None(game))
+        //    {
+        //        inventoryFeetText.color = ColorMap.UnityColors[Colors.DbOldStone];
+        //    }
+        //    else
+        //    {
+        //        inventoryFeetText.color = ColorMap.UnityColors[Colors.DbLight];
+        //    }
+        //}
 
         private void DrawAbilities(Game game)
         {

@@ -18,10 +18,10 @@ namespace RogueSharpTutorial.Model
 
         public bool Act()
         {
-            if (Parent.Health < Parent.MaxHealth)
+            if (Parent.CurrentHealth < Parent.MaxHealthAdjusted)
             {
-                int healthToRecover = Parent.MaxHealth - Parent.Health;
-                Parent.Health = Parent.MaxHealth;
+                int healthToRecover = Parent.MaxHealthAdjusted - Parent.CurrentHealth;
+                Parent.CurrentHealth = Parent.MaxHealthAdjusted;
                 Game.MessageLog.Add($"{Parent.Name} catches their breath and recovers {healthToRecover} health.");
                 return true;
             }

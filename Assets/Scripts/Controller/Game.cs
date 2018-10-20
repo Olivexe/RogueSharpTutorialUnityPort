@@ -28,7 +28,7 @@ namespace RogueSharpTutorial.Controller
         public  bool                    IsPlayerTurn        { get; private set; }
         public  bool                    MapExploringMode    { get { return mapExploring; } set { Draw(); mapExploring = value; } }
         private bool                    mapExploring        = false;
-        public int                      mapLevel            = 1;
+        public  int                     mapLevel            = 1;
 
         public Game(UI_Main console)
         {
@@ -39,7 +39,8 @@ namespace RogueSharpTutorial.Controller
             TargetingSystem         = new TargetingSystem(this);
 
             rootConsole = console;
-            rootConsole.UpdateView  += OnUpdate;                         // Set up a handler for graphic engine Update event
+            rootConsole.UpdateView      += OnUpdate;                        // Set up a handler for graphic engine Update event
+            rootConsole.ItemToManage    += OnItemManage;                    // Set up handler for when player drops an item to the ground
 
             MessageLog.Add("The rogue arrives on level " + mapLevel + ".");
             MessageLog.Add("Level created with seed '" + seed + "'.");
@@ -236,6 +237,19 @@ namespace RogueSharpTutorial.Controller
             Command.SetGame(this);
             Draw();
             MessageLog = new MessageLog(this);
+        }
+
+        private void OnItemManage(object sender, ItemActionEventArgs e)
+        {
+            switch(e.Action)
+            {
+                case ItemActionType.DropFromInventory:
+                    Player.DropItem(e.Item, false);
+                    break;
+                case ItemActionType.DropFromEquipped:
+                    Player.DropItem(e.Item, true);
+                    break;
+            }
         }
 
         private void StartOver()

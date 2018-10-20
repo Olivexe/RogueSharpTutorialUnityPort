@@ -20,12 +20,12 @@ namespace RogueSharpTutorial.Model
 
         public bool Act()
         {
-            if (Parent.Health >= Parent.MaxHealth)                          // Ooze only splits when wounded
+            if (Parent.CurrentHealth >= Parent.MaxHealthAdjusted)                   // Ooze only splits when wounded
             {
                 return false;
             }
 
-            int halfHealth = Parent.MaxHealth / 2;
+            int halfHealth = Parent.MaxHealthBase / 2;
             if (halfHealth <= 0)
             {
                 return false;                                               // Health would be too low so bail out
@@ -43,8 +43,8 @@ namespace RogueSharpTutorial.Model
             if (newOoze != null)
             {
                 newOoze.TurnsAlerted = 1;
-                newOoze.MaxHealth = halfHealth;
-                newOoze.Health = halfHealth;
+                newOoze.MaxHealthBase = halfHealth;
+                newOoze.CurrentHealth = halfHealth;
                 World.AddMonster(newOoze);
                 newOoze.SetMapAwareness();
                 newOoze.SetBehavior();
@@ -55,8 +55,8 @@ namespace RogueSharpTutorial.Model
                 return false;                                               // Not an ooze so bail out
             }
 
-            Parent.MaxHealth = halfHealth;                                  // Halve the original ooze's health too       
-            Parent.Health = halfHealth;
+            Parent.MaxHealthBase = halfHealth;                              // Halve the original ooze's health too       
+            Parent.CurrentHealth = halfHealth;
 
             return true;
         }

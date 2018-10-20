@@ -22,8 +22,8 @@ namespace RogueSharpTutorial.Model
 
             Actor voidAttackActor = new Actor(game)
             {
-                Attack = 6,
-                AttackChance = 90,
+                AttackBase = 6,
+                AttackChanceBase = 90,
                 Name = "The Void"
             };
 
@@ -40,7 +40,7 @@ namespace RogueSharpTutorial.Model
 
                 if (monster != null)
                 {
-                    Command.Attack(voidAttackActor, monster);
+                    Command.Attack(voidAttackActor, monster, true);
                 }
                 else
                 {

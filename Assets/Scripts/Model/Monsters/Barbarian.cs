@@ -20,18 +20,18 @@ namespace RogueSharpTutorial.Model
         {
             return new Barbarian(game)
             {
-                Attack              = 3,
-                AttackChance        = 75,
-                Awareness           = 8,
+                AttackBase          = 3,
+                AttackChanceBase    = 75,
+                AwarenessBase       = 8,
                 Color               = Colors.GoblinColor,
-                Defense             = 3,
-                DefenseChance       = 65,
+                DefenseBase         = 3,
+                DefenseChanceBase   = 65,
                 Gold                = Dice.Roll("5D20") + 50,
-                Health              = 40,
-                MaxHealth           = 40,
+                CurrentHealth       = 40,
+                MaxHealthBase       = 40,
                 CanGrabTreasure     = true,
                 Name                = "Barbarian",
-                Speed               = 8,
+                SpeedBase           = 8,
                 Symbol              = 'B',
                 IsAggressive        = true,
                 IsBoss              = true,
@@ -49,7 +49,7 @@ namespace RogueSharpTutorial.Model
 
         public override bool PerformAction(InputCommands command)
         {
-            FieldOfView.ComputeFov(X, Y, Awareness, true);
+            FieldOfView.ComputeFov(X, Y, AwarenessBase, true);
             bool isPlayerInView = FieldOfView.IsInFov(Game.Player.X, Game.Player.Y);
 
             CommonActions.UpdateAlertStatus(this, isPlayerInView);
@@ -64,12 +64,12 @@ namespace RogueSharpTutorial.Model
                         turnsAfterSpear = 1;
                     }
                 }
-                else if(Health < (MaxHealth * .5) && !madeFirstSummon)
+                else if(CurrentHealth < (MaxHealthAdjusted * .5) && !madeFirstSummon)
                 {
                     summonHelp.Act();
                     madeFirstSummon = true;
                 }
-                else if (Health < (MaxHealth * .25) && !madeSecondSummon)
+                else if (CurrentHealth < (MaxHealthAdjusted * .25) && !madeSecondSummon)
                 {
                     summonHelp.Act();
                     madeSecondSummon = true;

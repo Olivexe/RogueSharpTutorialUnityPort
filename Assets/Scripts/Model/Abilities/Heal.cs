@@ -19,7 +19,7 @@ namespace RogueSharpTutorial.Model
         {
             Player player = game.Player;
 
-            player.Health = Math.Min(player.MaxHealth, player.Health + amountToHeal);
+            player.CurrentHealth = Math.Min(player.MaxHealthAdjusted, player.CurrentHealth + amountToHeal);
 
             return true;
         }

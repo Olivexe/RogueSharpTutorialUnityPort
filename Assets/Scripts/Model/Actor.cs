@@ -9,29 +9,99 @@ namespace RogueSharpTutorial.Model
     public class Actor : IActor, IDrawable, IScheduleable
     {
         // IActor
-        public string   Name                { get; set; }
-        public int      Gold                { get; set; }
-        public int      Health              { get; set; }
+        public string   Name            { get; set; }
+        public int      Gold            { get; set; }
 
-        private int     attack;
-        public  int     Attack              { get { return attack + Head.Attack + Body.Attack + Hand.Attack + Feet.Attack; }                set { attack = value; } }
-        private int     attackChance;
-        public  int     AttackChance        { get { return attackChance + Head.AttackChance + Body.AttackChance + Hand.AttackChance + Feet.AttackChance; } set { attackChance = value; } }
-        private int     defense;
-        public  int     Defense             { get { return defense + Head.Defense + Body.Defense + Hand.Defense + Feet.Defense; }           set { defense = value; } }
-        private int     defenseChance;
-        public  int     DefenseChance       { get { return defenseChance + Head.DefenseChance + Body.DefenseChance + Hand.DefenseChance + Feet.DefenseChance; } set { defenseChance = value; } }
-        private int     maxHealth;
-        public  int     MaxHealth           { get { return maxHealth + Head.MaxHealth + Body.MaxHealth + Hand.MaxHealth + Feet.MaxHealth; } set { maxHealth = value; } }
-        private int     speed;
-        public  int     Speed               { get { return speed + Head.Speed + Body.Speed + Hand.Speed + Feet.Speed; }                     set { speed = value; } }
-        private int     awareness;
-        public  int     Awareness           { get { return awareness + Head.Awareness + Body.Awareness + Hand.Awareness + Feet.Awareness; } set { awareness = value; } }
+        public int AttackBase           { get; set; }
+        public int AttackMeleeAdjusted
+        {
+            get
+            {
+                return AttackBase + Hands.Attack + Head.Attack + Body.Attack + Feet.Attack + MainHand.Attack;
+            }
+        }
+        public int AttackRangedAdjusted
+        {
+            get
+            {
+                return AttackBase + Hands.Attack + Head.Attack + Body.Attack + Feet.Attack + Ranged.Attack + AmmoCarried.Attack;
+            }
+        }
+
+        public int AttackChanceBase     { get; set; }
+        public int AttackChanceMeleeAdjusted
+        {
+            get
+            {
+                return AttackChanceBase + Hands.AttackChance + Head.AttackChance + Body.AttackChance + 
+                       Feet.AttackChance + MainHand.AttackChance;
+            }
+        }
+        public int AttackChanceRangedAdjusted
+        {
+            get
+            {
+                return AttackChanceBase + Hands.AttackChance + Head.AttackChance + Body.AttackChance +
+                       Feet.AttackChance + Ranged.AttackChance + AmmoCarried.AttackChance;
+            }
+        }
+
+        public int DefenseBase          { get; set; }
+        public int DefenseAdjusted
+        {
+            get
+            {
+                return DefenseBase + Hands.Defense + Head.Defense + Body.Defense + Feet.Defense + MainHand.Defense + Ranged.Defense + AmmoCarried.Defense;
+            }
+        }
+
+        public  int DefenseChanceBase    { get; set; }
+        public  int DefenseChanceAdjusted
+        {
+            get
+            {
+                return DefenseChanceBase + Hands.DefenseChance + Head.DefenseChance + Body.DefenseChance + 
+                       Feet.DefenseChance + MainHand.DefenseChance + Ranged.DefenseChance + AmmoCarried.DefenseChance;
+            }
+        }
+
+        public int  CurrentHealth        { get; set; }
+        public int  MaxHealthBase        { get; set; }
+        public int  MaxHealthAdjusted
+        {
+            get
+            {
+                return MaxHealthBase + Hands.MaxHealth + Head.MaxHealth + Body.MaxHealth + Feet.MaxHealth + 
+                       MainHand.MaxHealth + Ranged.MaxHealth + AmmoCarried.MaxHealth;
+            }
+        }
+
+        public int SpeedBase             { get; set; }
+        public int SpeedAdjusted
+        {
+            get
+            {
+                return SpeedBase + Hands.Speed + Head.Speed + Body.Speed + Feet.Speed + MainHand.Speed + Ranged.Speed + AmmoCarried.Speed;
+            }
+        }
+
+        public int AwarenessBase         { get; set; }
+        public int AwarenessAdjusted
+        {
+            get
+            {
+                return AwarenessBase + Hands.Awareness + Head.Awareness + Body.Awareness + Feet.Awareness + 
+                       MainHand.Awareness + Ranged.Awareness + AmmoCarried.Awareness;
+            }
+        }
 
         public HeadEquipment    Head        { get; set; }
         public BodyEquipment    Body        { get; set; }
-        public HandEquipment    Hand        { get; set; }
+        public HandsEquipment   Hands       { get; set; }
         public FeetEquipment    Feet        { get; set; }
+        public MainHandEquipment MainHand   { get; set; }
+        public RangedEquipment  Ranged      { get; set; }
+        public Ammunition       AmmoCarried { get; set; }
 
         public IAbility         QAbility    { get; set; }
         public IAbility         WAbility    { get; set; }
@@ -47,7 +117,7 @@ namespace RogueSharpTutorial.Model
         public int              MaxEffects  { get; set; }
 
         public List<IInventory> Inventory   { get; set; }
-        public int              MaxWeight   { get; set; }
+        public int              MaxInventory{ get; set; }
 
         public bool             CanGrabTreasure { get; set; }
 
@@ -58,20 +128,24 @@ namespace RogueSharpTutorial.Model
         public int          Y               { get; set; }
 
         // Ischeduleable
-        public  int         Time            { get {return Speed;} }
+        public int          Time            { get { return SpeedAdjusted; } }
 
-        public Game          Game           { get; protected set; }
-        public DungeonMap    world          { get; protected set; }
-        public FieldOfView   FieldOfView    { get; protected set; }
+        public Game         Game            { get; protected set; }
+        public DungeonMap   world           { get; protected set; }
+        public FieldOfView  FieldOfView     { get; protected set; }
 
         public Actor(Game game)
         {
             Game        = game;
+            world       = game.World;
 
             Head        = HeadEquipment.None(game);
             Body        = BodyEquipment.None(game);
-            Hand        = HandEquipment.None(game);
+            Hands       = HandsEquipment.None(game);
             Feet        = FeetEquipment.None(game);
+            MainHand    = MainHandEquipment.None(game);
+            Ranged      = RangedEquipment.None(game);
+            AmmoCarried = Ammunition.None(game);
 
             QAbility    = new DoNothing(game, this);
             WAbility    = new DoNothing(game, this);
@@ -85,6 +159,9 @@ namespace RogueSharpTutorial.Model
                 
             Effects     = new List<IEffect>();
             MaxEffects  = 4;                            //Should not be hardcoded in the future
+
+            Inventory  = new List<IInventory>();
+            MaxInventory = 10;                          //Should not be hardcoded in the future
         }
 
         public void SetMapAwareness()
@@ -105,6 +182,23 @@ namespace RogueSharpTutorial.Model
                 // When not in field-of-view just draw a normal floor
                 Game.SetMapCell(X, Y, Colors.Floor, Colors.FloorBackground, '.', map.GetCell(X, Y).IsExplored);
             }
+        }
+
+        public bool AddToInventory(IInventory item)
+        {
+            if (Inventory.Count >= MaxInventory)
+            {
+                return false;
+            }
+
+            Inventory.Add(item);
+            return true;
+        }
+
+        public bool RemoveFromInventory(IInventory item)
+        {
+            Inventory.Remove(item);
+            return true;
         }
 
         public bool AddAbility(IAbility ability)

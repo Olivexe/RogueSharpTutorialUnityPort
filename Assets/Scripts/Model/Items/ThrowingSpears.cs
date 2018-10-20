@@ -60,15 +60,15 @@ namespace RogueSharpTutorial.Model
                 game.MessageLog.Add($"{Owner.Name} throws a spear at {actorTarget.Name}.");
                 Actor throwingSpearActor = new Actor(game)
                 {
-                    Attack = Attack,
-                    AttackChance = AttackChance,
+                    AttackBase = Attack,
+                    AttackChanceBase = AttackChance,
                     Name = Name
                 };
 
                 RemainingUses--;
                 Owner.RemoveItemsWithNoRemainingUses();
 
-                Command.Attack(throwingSpearActor, actorTarget);
+                Command.Attack(throwingSpearActor, actorTarget, false);
             }
         }
     }

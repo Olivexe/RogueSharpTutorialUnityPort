@@ -30,9 +30,9 @@ namespace RogueSharpTutorial.Model
 
             Actor lightningBoltActor = new Actor(game)
             {
-                Attack      = attack,
-                AttackChance= attackChance,
-                Name        = Name
+                AttackBase      = attack,
+                AttackChanceBase= attackChance,
+                Name            = Name
             };
 
             foreach (Cell cell in map.GetCellsAlongLine(Owner.X, Owner.Y, target.X, target.Y))
@@ -50,7 +50,7 @@ namespace RogueSharpTutorial.Model
                 Monster monster = map.GetMonsterAt(cell.X, cell.Y);
                 if (monster != null)
                 {
-                    Command.Attack(lightningBoltActor, monster);
+                    Command.Attack(lightningBoltActor, monster, true);
                 }
                 else
                 {

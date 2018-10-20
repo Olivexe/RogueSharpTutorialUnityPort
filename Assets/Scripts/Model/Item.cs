@@ -4,7 +4,7 @@ using RogueSharpTutorial.Model.Interfaces;
 
 namespace RogueSharpTutorial.Model
 {
-    public class Item : IItem, ITreasure, IDrawable
+    public class Item : IItem, ITreasure, IDrawable, IInventory
     {
 
         public  Colors  Color           { get; set; }
@@ -12,9 +12,11 @@ namespace RogueSharpTutorial.Model
         public  int     X               { get; set; }
         public  int     Y               { get; set; }
         public  Actor   Owner           { get; set; }
+        public  int     MaxStack        { get; set; }
+        public  int     CurrentStackAmount { get; set; }
         public  string  Name            { get; protected set; }
         public  int     RemainingUses   { get; protected set; }
-        
+
         protected Game  game;
 
         public Item(Game game)
@@ -51,10 +53,20 @@ namespace RogueSharpTutorial.Model
         {
             if (actor != null)
             {
-                if (actor.AddItem(this))
+                if (actor.AddToInventory(this))
                 {
-                    game.MessageLog.Add($"{actor.Name} picked up {Name}.");
+                    if (actor is Player)
+                    {
+                        game.MessageLog.Add($"You picked up {Name}.");
+                    }
                     return true;
+                }
+                else
+                {
+                    if (actor is Player)
+                    {
+                        game.MessageLog.Add($"You can't pick up {Name}.");
+                    }
                 }
             }
 

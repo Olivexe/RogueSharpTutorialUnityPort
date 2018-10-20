@@ -18,7 +18,7 @@ namespace RogueSharpTutorial.Model
             {
                 game.MessageLog.Add($"{player.Name} is not wearing any body armor to enhance");
             }
-            else if (player.Defense >= 8)
+            else if (player.DefenseAdjusted >= 10)
             {
                 game.MessageLog.Add($"{player.Name} cannot enhance their {player.Body.Name} any more");
             }

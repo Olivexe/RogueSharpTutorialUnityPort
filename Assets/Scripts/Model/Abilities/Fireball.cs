@@ -33,8 +33,8 @@ namespace RogueSharpTutorial.Model
 
             Actor fireballActor = new Actor (game)
             {
-                Attack      = attack,
-                AttackChance= attackChance,
+                AttackBase      = attack,
+                AttackChanceBase= attackChance,
                 Name        = Name
             };
 
@@ -43,7 +43,7 @@ namespace RogueSharpTutorial.Model
                 Monster monster = map.GetMonsterAt(cell.X, cell.Y);
                 if (monster != null)
                 {
-                    Command.Attack(fireballActor, monster);
+                    Command.Attack(fireballActor, monster, true);
                 }
             }
         }

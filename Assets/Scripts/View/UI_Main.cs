@@ -4,13 +4,15 @@ using UnityEngine;
 using RogueSharpTutorial.Controller;
 using RogueSharpTutorial.Utilities;
 using RogueSharpTutorial.Model;
+using RogueSharpTutorial.Model.Interfaces;
 
 namespace RogueSharpTutorial.View
 {
-    [System.Serializable]
+    [Serializable]
     public class UI_Main : MonoBehaviour
     {
         public event UpdateEventHandler         UpdateView;
+        public event ItemActionEventHandler     ItemToManage;
 
         [SerializeField] private UI_Stats       uiStats;
         [SerializeField] private UI_Messages    uiMessages;
@@ -28,8 +30,8 @@ namespace RogueSharpTutorial.View
         [SerializeField] private GameObject     windowInventory;
         [SerializeField] private GameObject     windowProfile;
 
-        public Game                             Game                { get; private set; }
-        private                 TileUnity[,]    mapObjects;
+        public                   Game           Game                { get; private set; }
+        private                  TileUnity[,]   mapObjects;
 
         private void Start()
         {
@@ -79,6 +81,11 @@ namespace RogueSharpTutorial.View
         public InputCommands GetUserCommand()
         {
             return inputKeyboard.Command;
+        }
+
+        public void ManageItem(IInventory itemSelected, ItemActionType action)
+        {
+            ItemToManage(this, new ItemActionEventArgs(itemSelected, action));
         }
 
         public void GenerateMap(DungeonMap map)

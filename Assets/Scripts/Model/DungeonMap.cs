@@ -307,7 +307,7 @@ namespace RogueSharpTutorial.Model
         /// </summary>
         public void UpdatePlayerFieldOfView(Player player)
         {
-            ComputeFov(player.X, player.Y, player.Awareness, true);                             // Compute the field-of-view based on the player's location and awareness
+            ComputeFov(player.X, player.Y, player.AwarenessAdjusted, true);                     // Compute the field-of-view based on the player's location and awareness
             foreach (Cell cell in GetAllCells())                                                // Mark all cells in field-of-view as having been explored
             {
                 if (IsInFov(cell.X, cell.Y))

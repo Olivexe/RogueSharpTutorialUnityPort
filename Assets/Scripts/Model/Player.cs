@@ -71,11 +71,55 @@ namespace RogueSharpTutorial.Model
                     return Command.PlayerPickUp(3);
                 case InputCommands.GrabAllItems:
                     return Command.PlayerPickUp(-1);
+                case InputCommands.DropItem:
+                    return true;
                 default:
                     break;
             }
 
             return false;
+        }
+
+        public void DropItem(IInventory item, bool isEquipped)
+        {
+            Game.World.AddTreasure(X, Y, item as ITreasure);
+
+            if (isEquipped)
+            {
+                if(item is HeadEquipment)
+                {
+                    Head = HeadEquipment.None(Game);
+                }
+                else if (item is FeetEquipment)
+                {
+                    Feet = FeetEquipment.None(Game);
+                }
+                else if (item is HandsEquipment)
+                {
+                    Hands = HandsEquipment.None(Game);
+                }
+                else if (item is BodyEquipment)
+                {
+                    Body = BodyEquipment.None(Game);
+                }
+                else if (item is MainHandEquipment)
+                {
+                    MainHand = MainHandEquipment.None(Game);
+                }
+                else if (item is RangedEquipment)
+                {
+                    Ranged = RangedEquipment.None(Game);
+                }
+                else if (item is Ammunition)
+                {
+                    AmmoCarried = Ammunition.None(Game);
+                }
+            }
+            else
+            {
+                UnityEngine.Debug.Log("Should be removing item.");
+                Inventory.Remove(item);
+            }
         }
 
         public void DrawStats()

@@ -21,18 +21,18 @@ namespace RogueSharpTutorial.Model
         {
             return new FungalTower(game)
             {
-                Attack              = 3,
-                AttackChance        = 75,
-                Awareness           = 10,
+                AttackBase          = 3,
+                AttackChanceBase    = 75,
+                AwarenessBase       = 10,
                 Color               = Colors.GoblinColor,
-                Defense             = 2,
-                DefenseChance       = 40,
+                DefenseBase         = 2,
+                DefenseChanceBase   = 40,
                 Gold                = Dice.Roll("3d10") + 5,
-                Health              = 60,
-                MaxHealth           = 60,
+                CurrentHealth       = 60,
+                MaxHealthBase       = 60,
                 CanGrabTreasure     = false,
                 Name                = "fungal tower",
-                Speed               = 8,
+                SpeedBase           = 8,
                 Symbol              = 'f',
                 IsAggressive        = true,
                 IsBoss              = false,
@@ -49,7 +49,7 @@ namespace RogueSharpTutorial.Model
 
         public override bool PerformAction(InputCommands command)
         {
-            FieldOfView.ComputeFov(X, Y, Awareness, true);
+            FieldOfView.ComputeFov(X, Y, AwarenessAdjusted, true);
             bool isPlayerInView = FieldOfView.IsInFov(Game.Player.X, Game.Player.Y);
 
             CommonActions.UpdateAlertStatus(this, isPlayerInView);

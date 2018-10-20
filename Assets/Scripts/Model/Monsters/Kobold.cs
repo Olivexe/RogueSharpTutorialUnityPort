@@ -15,22 +15,21 @@ namespace RogueSharpTutorial.Model
 
             return new Kobold (game)
             {
-                Attack          = Dice.Roll("1D3") + (level / 2),
-                AttackChance    = Dice.Roll("25D3") + (level / 2),
-                Awareness       = 7,
+                AttackBase      = Dice.Roll("1D3") + (level / 2),
+                AttackChanceBase = Dice.Roll("25D3") + (level / 2),
+                AwarenessBase   = 7,
                 Color           = Colors.KoboldColor,
-                Defense         = Dice.Roll("1D3") + (level / 2),
-                DefenseChance   = Dice.Roll("10D4") + (level / 2),
+                DefenseBase     = Dice.Roll("1D3") + (level / 2),
+                DefenseChanceBase = Dice.Roll("10D4") + (level / 2),
                 Gold            = Dice.Roll("5D5") + (level * 2),
-                Health          = health,
-                MaxHealth       = health,
+                CurrentHealth   = health,
+                MaxHealthBase   = health,
                 CanGrabTreasure = true,
                 Name            = "kobold",
-                Speed           = 8,
+                SpeedBase       = 8,
                 Symbol          = 'k',
                 IsAggressive    = true,
                 standardMoveAndAttack = new StandardMoveAndAttack()
-
             };
         }
 
@@ -41,7 +40,7 @@ namespace RogueSharpTutorial.Model
 
         public override bool PerformAction(InputCommands command)
         {
-            FieldOfView.ComputeFov(X, Y, Awareness, true);
+            FieldOfView.ComputeFov(X, Y, AwarenessAdjusted, true);
             bool isPlayerInView = FieldOfView.IsInFov(Game.Player.X, Game.Player.Y);
 
             CommonActions.UpdateAlertStatus(this, isPlayerInView);
